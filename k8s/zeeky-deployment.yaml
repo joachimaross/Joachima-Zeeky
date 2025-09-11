@@ -1,0 +1,276 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zeeky-core
+  namespace: zeeky
+  labels:
+    app: zeeky-core
+    version: v1.0.0
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: zeeky-core
+  template:
+    metadata:
+      labels:
+        app: zeeky-core
+        version: v1.0.0
+    spec:
+      serviceAccountName: zeeky-service-account
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        fsGroup: 1001
+      containers:
+      - name: zeeky-core
+        image: zeeky/zeeky-core:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3000"
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: zeeky-secrets
+              key: redis-url
+        - name: MONGODB_URL
+          valueFrom:
+            secretKeyRef:
+              name: zeeky-secrets
+              key: mongodb-url
+        - name: POSTGRES_URL
+          valueFrom:
+            secretKeyRef:
+              name: zeeky-secrets
+              key: postgres-url
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: zeeky-secrets
+              key: jwt-secret
+        - name: ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: zeeky-secrets
+              key: encryption-key
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        volumeMounts:
+        - name: logs
+          mountPath: /app/logs
+        - name: data
+          mountPath: /app/data
+        - name: temp
+          mountPath: /app/temp
+        - name: config
+          mountPath: /app/config
+      volumes:
+      - name: logs
+        emptyDir: {}
+      - name: data
+        persistentVolumeClaim:
+          claimName: zeeky-data-pvc
+      - name: temp
+        emptyDir: {}
+      - name: config
+        configMap:
+          name: zeeky-config
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - zeeky-core
+              topologyKey: kubernetes.io/hostname
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zeeky-core-service
+  namespace: zeeky
+  labels:
+    app: zeeky-core
+spec:
+  type: ClusterIP
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
+    name: http
+  selector:
+    app: zeeky-core
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: zeeky-service-account
+  namespace: zeeky
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zeeky-config
+  namespace: zeeky
+data:
+  app.json: |
+    {
+      "features": {
+        "ai": true,
+        "plugins": true,
+        "integrations": true,
+        "security": true
+      },
+      "limits": {
+        "maxPlugins": 10000,
+        "maxIntegrations": 1000,
+        "maxUsers": 1000000
+      },
+      "timeouts": {
+        "request": 30000,
+        "plugin": 10000,
+        "integration": 15000
+      }
+    }
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: zeeky-secrets
+  namespace: zeeky
+type: Opaque
+data:
+  redis-url: cmVkaXM6Ly9yZWRpczozNjM5Lw==
+  mongodb-url: bW9uZ29kYjovL21vbmdvZGI6MjcwMTcvemVla3k=
+  postgres-url: cG9zdGdyZXNxbDovL3plZWt5OnplZWt5QHBvc3RncmVzOjU0MzIvemVla3k=
+  jwt-secret: emVla3lfanNlY3JldF9rZXk=
+  encryption-key: emVla3lfZW5jcnlwdGlvbl9rZXk=
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zeeky-data-pvc
+  namespace: zeeky
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: zeeky-ingress
+  namespace: zeeky
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+spec:
+  tls:
+  - hosts:
+    - zeeky.example.com
+    secretName: zeeky-tls
+  rules:
+  - host: zeeky.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: zeeky-core-service
+            port:
+              number: 3000
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: zeeky-hpa
+  namespace: zeeky
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: zeeky-core
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: zeeky-pdb
+  namespace: zeeky
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: zeeky-core
