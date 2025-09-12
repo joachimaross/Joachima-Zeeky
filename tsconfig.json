@@ -34,7 +34,8 @@
       "@/ai/*": ["ai/*"],
       "@/security/*": ["security/*"],
       "@/types/*": ["types/*"],
-      "@/utils/*": ["utils/*"]
+      "@/utils/*": ["utils/*"],
+      "@/interfaces/*": ["interfaces/*"]
     }
   },
   "include": [

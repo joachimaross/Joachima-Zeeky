@@ -1,0 +1,1 @@
+{"version":3,"file":"PluginManager.d.ts","sourceRoot":"","sources":["../../src/core/PluginManager.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,cAAc,CAAC;AAIjD,qBACa,aAAc,YAAW,iBAAiB;IACrD,OAAO,CAAC,OAAO,CAAqB;IAEvB,KAAK,IAAI,OAAO,CAAC,IAAI,CAAC;IAItB,IAAI,IAAI,OAAO,CAAC,IAAI,CAAC;YAMpB,WAAW;CAG1B"}

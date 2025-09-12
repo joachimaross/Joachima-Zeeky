@@ -1,11 +1,22 @@
+
 /**
  * Core Zeeky Type Definitions
  * Central type definitions for the entire Zeeky system
  */
 
-// ============================================================================
+// ===========================================================================
+// Import statements for external types
+// ===========================================================================
+
+import { Config } from '@/utils/Config';
+import { SecurityManager } from '@/security/SecurityManager';
+import { PluginManager } from '@/core/PluginManager';
+import { AIManager } from '@/services/AIManager';
+import { IntegrationManager } from '@/integrations/IntegrationManager';
+
+// ===========================================================================
 // Core System Types
-// ============================================================================
+// ===========================================================================
 
 export interface ZeekyConfig {
   config: Config;
@@ -58,9 +69,9 @@ export interface ZeekyResponse {
   metadata: ResponseMetadata;
 }
 
-// ============================================================================
+// ===========================================================================
 // Request/Response Types
-// ============================================================================
+// ===========================================================================
 
 export enum RequestType {
   VOICE = 'voice',
@@ -118,9 +129,9 @@ export interface ResponseMetadata {
   cacheHit: boolean;
 }
 
-// ============================================================================
+// ===========================================================================
 // Context Types
-// ============================================================================
+// ===========================================================================
 
 export interface ConversationContext {
   id: string;
@@ -171,36 +182,9 @@ export interface EnvironmentContext {
   activity: ActivityContext;
 }
 
-// ============================================================================
+// ===========================================================================
 // Plugin System Types
-// ============================================================================
-
-export interface ZeekyPlugin {
-  id: string;
-  name: string;
-  version: string;
-  description: string;
-  author: string;
-  license: string;
-  category: PluginCategory;
-  subcategory: string;
-  tags: string[];
-  priority: PriorityLevel;
-  complexity: ComplexityLevel;
-  dependencies: PluginDependency[];
-  peerDependencies: string[];
-  conflicts: string[];
-  capabilities: Capability[];
-  permissions: Permission[];
-  intents: Intent[];
-  initialize(context: PluginContext): Promise<void>;
-  handleIntent(intent: Intent, context: ExecutionContext): Promise<Response>;
-  cleanup(): Promise<void>;
-  getConfiguration(): PluginConfiguration;
-  updateConfiguration(config: PluginConfiguration): Promise<void>;
-  getHealthStatus(): HealthStatus;
-  getMetrics(): PluginMetrics;
-}
+// ===========================================================================
 
 export enum PluginCategory {
   CORE_UTILITIES = 'core_utilities',
@@ -251,9 +235,9 @@ export interface PluginContext {
   analytics: AnalyticsService;
 }
 
-// ============================================================================
+// ===========================================================================
 // AI System Types
-// ============================================================================
+// ===========================================================================
 
 export interface AIService {
   nlp: NLPService;
@@ -285,9 +269,9 @@ export interface VisionService {
   analyzeScene(image: ImageData): Promise<SceneAnalysisResult>;
 }
 
-// ============================================================================
+// ===========================================================================
 // Integration Types
-// ============================================================================
+// ===========================================================================
 
 export interface IntegrationService {
   home: HomeAutomationService;
@@ -313,9 +297,9 @@ export interface VehicleService {
   navigation: NavigationService;
 }
 
-// ============================================================================
+// ===========================================================================
 // Security Types
-// ============================================================================
+// ===========================================================================
 
 export interface SecurityService {
   auth: AuthenticationService;
@@ -360,9 +344,9 @@ export enum PermissionLevel {
   RESTRICTED = 'restricted'
 }
 
-// ============================================================================
+// ===========================================================================
 // System Status Types
-// ============================================================================
+// ===========================================================================
 
 export interface SystemStatus {
   isRunning: boolean;
@@ -393,9 +377,9 @@ export interface HealthStatus {
   };
 }
 
-// ============================================================================
+// ===========================================================================
 // Utility Types
-// ============================================================================
+// ===========================================================================
 
 export interface Coordinates {
   latitude: number;
@@ -473,9 +457,9 @@ export interface ActivityContext {
   isActive: boolean;
 }
 
-// ============================================================================
+// ===========================================================================
 // Action Types
-// ============================================================================
+// ===========================================================================
 
 export interface Action {
   id: string;
@@ -504,9 +488,9 @@ export enum ConfirmationLevel {
   CRITICAL = 'critical'
 }
 
-// ============================================================================
+// ===========================================================================
 // UI Types
-// ============================================================================
+// ===========================================================================
 
 export interface UIElement {
   type: UIElementType;
@@ -553,12 +537,344 @@ export enum VisualType {
   VR = 'vr'
 }
 
-// ============================================================================
-// Import statements for external types
-// ============================================================================
+// ===========================================================================
+// Missing Type Definitions
+// ===========================================================================
 
-import { Config } from '@/utils/Config';
-import { SecurityManager } from '@/security/SecurityManager';
-import { PluginManager } from '@/core/PluginManager';
-import { AIManager } from '@/ai/AIManager';
-import { IntegrationManager } from '@/integrations/IntegrationManager';
+export enum SecurityLevel {
+  LOW,
+  MEDIUM,
+  HIGH
+}
+
+export interface AuditEntry {
+  id: string;
+  timestamp: Date;
+  userId: string;
+  action: string;
+  details: any;
+}
+
+export interface ConversationEntry {
+  id: string;
+  timestamp: Date;
+  speaker: string;
+  text: string;
+}
+
+export interface Entity {
+  name: string;
+  value: any;
+}
+
+export interface Intent {
+  name: string;
+  confidence: number;
+}
+
+export interface Sentiment {
+  score: number;
+  label: string;
+}
+
+export interface UserProfile {
+  name: string;
+  email: string;
+}
+
+export interface UserPreferences {
+  theme: string;
+}
+
+export interface Role {
+  name: string;
+}
+
+export interface SessionContext {
+  id: string;
+  startTime: Date;
+}
+
+export interface UserHistory {
+  log: string[];
+}
+
+export enum DeviceType {
+  MOBILE,
+  DESKTOP,
+  HUB
+}
+
+export interface Capability {
+  name: string;
+}
+
+export interface Sensor {
+  name: string;
+  value: any;
+}
+
+export enum DeviceStatus {
+  ONLINE,
+  OFFLINE
+}
+
+export interface NetworkContext {
+  type: string;
+  speed: number;
+}
+
+export interface PluginDependency {
+  name: string;
+  version: string;
+}
+
+export interface PluginConfiguration {
+  [key: string]: any;
+}
+
+export interface PluginMetrics {
+  [key: string]: any;
+}
+
+export interface SystemInfo {
+  os: string;
+  version: string;
+}
+
+export interface ServiceRegistry {
+  [key: string]: any;
+}
+
+export interface StorageService {
+  [key: string]: any;
+}
+
+export interface NetworkService {
+  [key: string]: any;
+}
+
+export interface VoiceService {
+  [key: string]: any;
+}
+
+export interface EnterpriseService {
+  [key: string]: any;
+}
+
+export interface ConfigurationService {
+  [key: string]: any;
+}
+
+export interface FeatureFlagService {
+  [key: string]: any;
+}
+
+export interface MetricsService {
+  [key: string]: any;
+}
+
+export interface LoggingService {
+  [key: string]: any;
+}
+
+export interface AnalyticsService {
+  [key: string]: any;
+}
+
+export interface GenerativeService {
+  [key: string]: any;
+}
+
+export interface MLService {
+  [key: string]: any;
+}
+
+export interface Language {
+  name: string;
+  code: string;
+}
+
+export interface AudioData {
+  format: string;
+  data: Buffer;
+}
+
+export interface VoiceModel {
+  name: string;
+}
+
+export declare class ImageData {};
+
+export interface ObjectDetectionResult {
+  [key: string]: any;
+}
+
+export interface FaceRecognitionResult {
+  [key: string]: any;
+}
+
+export interface OCRResult {
+  text: string;
+}
+
+export interface SceneAnalysisResult {
+  [key: string]: any;
+}
+
+export interface APIService {
+  [key: string]: any;
+}
+
+export interface IoTService {
+  [key: string]: any;
+}
+
+export interface AutomationRule {
+  id: string;
+  name: string;
+}
+
+export interface Device {
+  id: string;
+  name: string;
+}
+
+export interface ProtocolSupport {
+  [key: string]: any;
+}
+
+export interface CarPlayService {
+  [key: string]: any;
+}
+
+export interface AndroidAutoService {
+  [key: string]: any;
+}
+
+export interface DiagnosticsService {
+  [key: string]: any;
+}
+
+export interface RemoteControlService {
+  [key: string]: any;
+}
+
+export interface NavigationService {
+  [key: string]: any;
+}
+
+export interface AuthenticationService {
+  [key: string]: any;
+}
+
+export interface AuthorizationService {
+  [key: string]: any;
+}
+
+export interface EncryptionService {
+  [key: string]: any;
+}
+
+export interface AuditService {
+  [key: string]: any;
+}
+
+export interface ComplianceService {
+  [key: string]: any;
+}
+
+export enum PermissionScope {
+  USER,
+  DEVICE,
+  SYSTEM
+}
+
+export interface Condition {
+  [key: string]: any;
+}
+
+export interface TimeConstraint {
+  [key: string]: any;
+}
+
+export interface LocationConstraint {
+  [key: string]: any;
+}
+
+export interface ComplianceRequirement {
+  [key: string]: any;
+}
+
+export interface RetentionPolicy {
+  [key: string]: any;
+}
+
+export interface PluginStatus {
+  [key: string]: any;
+}
+
+export interface IntegrationStatus {
+  [key: string]: any;
+}
+
+export interface AIStatus {
+  [key: string]: any;
+}
+
+export interface SecurityStatus {
+  [key: string]: any;
+}
+
+export interface RetryPolicy {
+  [key: string]: any;
+}
+
+export interface UIStyle {
+  [key: string]: any;
+}
+
+export interface UIInteraction {
+  [key: string]: any;
+}
+
+export interface UIAccessibility {
+  [key: string]: any;
+}
+
+export interface Emotion {
+  [key: string]: any;
+}
+
+export interface VisualStyle {
+  [key: string]: any;
+}
+
+export interface Animation {
+  [key: string]: any;
+}
+
+export interface Response {
+  [key: string]: any;
+}
+
+export interface ExecutionContext {
+  [key: string]: any;
+}
+
+export enum TaskPriority {
+  LOW,
+  MEDIUM,
+  HIGH
+}
+
+export interface Task {
+  id: string;
+  name: string;
+  description: string;
+  dueDate: Date;
+  priority: TaskPriority;
+  status: 'pending' | 'in-progress' | 'completed';
+  createdAt: Date;
+  updatedAt: Date;
+}
