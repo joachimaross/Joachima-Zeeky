@@ -8,11 +8,11 @@
 // ============================================================================
 
 export interface ZeekyConfig {
-  config: Config;
-  securityManager: SecurityManager;
-  pluginManager: PluginManager;
-  aiManager: AIManager;
-  integrationManager: IntegrationManager;
+  config: any; // Config type will be imported separately
+  securityManager: any; // SecurityManager type will be imported separately
+  pluginManager: any; // PluginManager type will be imported separately
+  aiManager: any; // AIManager type will be imported separately
+  integrationManager: any; // IntegrationManager type will be imported separately
 }
 
 export interface ZeekyContext {
@@ -554,11 +554,456 @@ export enum VisualType {
 }
 
 // ============================================================================
-// Import statements for external types
+// Additional Type Definitions
 // ============================================================================
 
-import { Config } from '@/utils/Config';
-import { SecurityManager } from '@/security/SecurityManager';
-import { PluginManager } from '@/core/PluginManager';
-import { AIManager } from '@/ai/AIManager';
-import { IntegrationManager } from '@/integrations/IntegrationManager';
+// Basic types for missing interfaces
+export interface SecurityLevel {
+  level: string;
+  permissions: string[];
+}
+
+export interface AuditEntry {
+  id: string;
+  action: string;
+  timestamp: Date;
+  userId: string;
+  details: any;
+}
+
+export interface ConversationEntry {
+  id: string;
+  speaker: string;
+  content: string;
+  timestamp: Date;
+}
+
+export interface Entity {
+  name: string;
+  value: string;
+  confidence: number;
+  type: string;
+}
+
+export interface Intent {
+  id: string;
+  name: string;
+  confidence: number;
+  entities: Entity[];
+}
+
+export interface Sentiment {
+  polarity: number;
+  confidence: number;
+  emotions: string[];
+}
+
+export interface Language {
+  code: string;
+  name: string;
+  confidence: number;
+}
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  preferences: any;
+}
+
+export interface UserPreferences {
+  language: string;
+  timezone: string;
+  theme: string;
+  notifications: any;
+}
+
+export interface Role {
+  id: string;
+  name: string;
+  permissions: string[];
+}
+
+export interface SessionContext {
+  id: string;
+  userId: string;
+  startTime: Date;
+  lastActivity: Date;
+}
+
+export interface UserHistory {
+  interactions: any[];
+  preferences: any;
+  patterns: any;
+}
+
+export interface DeviceType {
+  type: string;
+  capabilities: string[];
+}
+
+export interface Capability {
+  name: string;
+  type: string;
+  parameters: any;
+}
+
+export interface Sensor {
+  id: string;
+  type: string;
+  value: any;
+  timestamp: Date;
+}
+
+export interface DeviceStatus {
+  online: boolean;
+  battery?: number;
+  signal?: number;
+  lastSeen: Date;
+}
+
+export interface NetworkContext {
+  type: string;
+  speed: number;
+  latency: number;
+  quality: string;
+}
+
+export interface PluginDependency {
+  name: string;
+  version: string;
+  optional: boolean;
+}
+
+export interface ExecutionContext {
+  requestId: string;
+  userId: string;
+  sessionId: string;
+  timestamp: Date;
+  permissions: Permission[];
+}
+
+export interface Response {
+  success: boolean;
+  data?: any;
+  error?: string;
+  message?: string;
+}
+
+export interface PluginConfiguration {
+  [key: string]: any;
+}
+
+export interface PluginMetrics {
+  calls: number;
+  errors: number;
+  avgResponseTime: number;
+  lastActivity: Date;
+}
+
+export interface SystemInfo {
+  version: string;
+  platform: string;
+  arch: string;
+  memory: number;
+}
+
+export interface ServiceRegistry {
+  [key: string]: any;
+}
+
+export interface StorageService {
+  get(key: string): Promise<any>;
+  set(key: string, value: any): Promise<void>;
+  delete(key: string): Promise<void>;
+}
+
+export interface NetworkService {
+  request(url: string, options?: any): Promise<any>;
+}
+
+export interface SecurityService {
+  validate(token: string): Promise<boolean>;
+  encrypt(data: any): Promise<string>;
+  decrypt(data: string): Promise<any>;
+}
+
+export interface AIService {
+  process(text: string): Promise<any>;
+}
+
+export interface VoiceService {
+  synthesize(text: string): Promise<any>;
+  recognize(audio: any): Promise<string>;
+}
+
+export interface VisionService {
+  analyze(image: any): Promise<any>;
+}
+
+export interface IntegrationService {
+  connect(config: any): Promise<void>;
+  disconnect(): Promise<void>;
+}
+
+export interface HomeAutomationService {
+  controlDevice(deviceId: string, action: string): Promise<any>;
+}
+
+export interface VehicleService {
+  getStatus(): Promise<any>;
+}
+
+export interface EnterpriseService {
+  authenticate(credentials: any): Promise<any>;
+}
+
+export interface ConfigurationService {
+  get(key: string): any;
+  set(key: string, value: any): void;
+}
+
+export interface FeatureFlagService {
+  isEnabled(feature: string): boolean;
+}
+
+export interface MetricsService {
+  record(metric: string, value: number): void;
+}
+
+export interface LoggingService {
+  log(level: string, message: string, data?: any): void;
+}
+
+export interface AnalyticsService {
+  track(event: string, properties?: any): void;
+}
+
+export interface GenerativeService {
+  generate(prompt: string): Promise<string>;
+}
+
+export interface MLService {
+  predict(input: any): Promise<any>;
+}
+
+export interface AudioData {
+  data: Buffer;
+  format: string;
+  sampleRate: number;
+}
+
+export interface VoiceModel {
+  id: string;
+  name: string;
+  language: string;
+  gender: string;
+}
+
+export interface ImageData {
+  data: Buffer;
+  format: string;
+  width: number;
+  height: number;
+}
+
+export interface ObjectDetectionResult {
+  objects: Array<{
+    label: string;
+    confidence: number;
+    bbox: number[];
+  }>;
+}
+
+export interface FaceRecognitionResult {
+  faces: Array<{
+    identity: string;
+    confidence: number;
+    landmarks: number[][];
+  }>;
+}
+
+export interface OCRResult {
+  text: string;
+  confidence: number;
+  boundingBoxes: number[][];
+}
+
+export interface SceneAnalysisResult {
+  scene: string;
+  objects: string[];
+  activities: string[];
+  confidence: number;
+}
+
+export interface APIService {
+  call(endpoint: string, data?: any): Promise<any>;
+}
+
+export interface IoTService {
+  connect(deviceId: string): Promise<void>;
+  disconnect(deviceId: string): Promise<void>;
+}
+
+export interface AutomationRule {
+  id: string;
+  name: string;
+  conditions: any[];
+  actions: any[];
+}
+
+export interface Device {
+  id: string;
+  name: string;
+  type: string;
+  status: string;
+}
+
+export interface ProtocolSupport {
+  mqtt: boolean;
+  modbus: boolean;
+  http: boolean;
+  websocket: boolean;
+}
+
+export interface CarPlayService {
+  connect(): Promise<void>;
+  disconnect(): Promise<void>;
+}
+
+export interface AndroidAutoService {
+  connect(): Promise<void>;
+  disconnect(): Promise<void>;
+}
+
+export interface DiagnosticsService {
+  getStatus(): Promise<any>;
+}
+
+export interface RemoteControlService {
+  sendCommand(command: string): Promise<any>;
+}
+
+export interface NavigationService {
+  setDestination(destination: string): Promise<any>;
+}
+
+export interface AuthenticationService {
+  login(credentials: any): Promise<any>;
+  logout(): Promise<void>;
+}
+
+export interface AuthorizationService {
+  checkPermission(userId: string, permission: string): Promise<boolean>;
+}
+
+export interface EncryptionService {
+  encrypt(data: any): Promise<string>;
+  decrypt(data: string): Promise<any>;
+}
+
+export interface AuditService {
+  log(action: string, details: any): Promise<void>;
+}
+
+export interface ComplianceService {
+  validate(data: any): Promise<boolean>;
+}
+
+export interface PermissionScope {
+  type: string;
+  resources: string[];
+}
+
+export interface Condition {
+  type: string;
+  value: any;
+}
+
+export interface TimeConstraint {
+  start: Date;
+  end: Date;
+  timezone: string;
+}
+
+export interface LocationConstraint {
+  type: string;
+  coordinates: number[];
+  radius: number;
+}
+
+export interface ComplianceRequirement {
+  standard: string;
+  requirements: string[];
+}
+
+export interface RetentionPolicy {
+  duration: number;
+  unit: string;
+  autoDelete: boolean;
+}
+
+export interface PluginStatus {
+  id: string;
+  name: string;
+  status: string;
+  version: string;
+  lastActivity: Date;
+}
+
+export interface IntegrationStatus {
+  id: string;
+  name: string;
+  status: string;
+  lastActivity: Date;
+}
+
+export interface AIStatus {
+  status: string;
+  models: string[];
+  lastUpdate: Date;
+}
+
+export interface SecurityStatus {
+  status: string;
+  threats: any[];
+  lastScan: Date;
+}
+
+export interface RetryPolicy {
+  maxAttempts: number;
+  delay: number;
+  backoff: string;
+}
+
+export interface UIStyle {
+  theme: string;
+  colors: any;
+  fonts: any;
+}
+
+export interface UIInteraction {
+  type: string;
+  enabled: boolean;
+}
+
+export interface UIAccessibility {
+  screenReader: boolean;
+  highContrast: boolean;
+  fontSize: number;
+}
+
+export interface Emotion {
+  type: string;
+  intensity: number;
+}
+
+export interface VisualStyle {
+  theme: string;
+  layout: string;
+}
+
+export interface Animation {
+  type: string;
+  duration: number;
+}

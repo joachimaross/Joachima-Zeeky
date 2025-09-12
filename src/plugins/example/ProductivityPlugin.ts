@@ -36,9 +36,9 @@ export class ProductivityPlugin implements ZeekyPlugin {
       id: 'calendar_access',
       name: 'Calendar Access',
       description: 'Access to calendar data',
-      category: 'user_data',
-      level: 'confidential',
-      scope: 'user',
+      category: 'user_data' as any,
+      level: 'confidential' as any,
+      scope: { type: 'user', resources: ['calendar'] },
       resources: ['calendar'],
       actions: ['read', 'write', 'delete'],
       conditions: [],
@@ -46,7 +46,7 @@ export class ProductivityPlugin implements ZeekyPlugin {
       locationConstraints: [],
       compliance: [],
       auditRequired: true,
-      retentionPolicy: { duration: '1y', autoDelete: true }
+      retentionPolicy: { duration: 1, unit: 'year', autoDelete: true }
     }
   ];
   
@@ -101,7 +101,7 @@ export class ProductivityPlugin implements ZeekyPlugin {
     }
   ];
   
-  private context: PluginContext;
+  private context!: PluginContext;
   private logger: Logger;
   private tasks: Map<string, Task> = new Map();
   private notes: Map<string, Note> = new Map();
@@ -146,7 +146,7 @@ export class ProductivityPlugin implements ZeekyPlugin {
         timestamp: new Date(),
         success: false,
         type: 'error',
-        message: `Failed to handle intent: ${error.message}`,
+        message: `Failed to handle intent: ${error instanceof Error ? error.message : String(error)}`,
         error: error,
         metadata: {
           pluginId: this.id,
@@ -232,9 +232,9 @@ export class ProductivityPlugin implements ZeekyPlugin {
 
   // Intent Handlers
   private async handleCreateTask(intent: Intent, context: ExecutionContext): Promise<Response> {
-    const taskName = intent.entities.find(e => e.name === 'task_name')?.value;
-    const dueDate = intent.entities.find(e => e.name === 'due_date')?.value;
-    const priority = intent.entities.find(e => e.name === 'priority')?.value || 'medium';
+    const taskName = intent.entities.find((e: any) => e.name === 'task_name')?.value;
+    const dueDate = intent.entities.find((e: any) => e.name === 'due_date')?.value;
+    const priority = intent.entities.find((e: any) => e.name === 'priority')?.value || 'medium';
 
     if (!taskName) {
       throw new Error('Task name is required');
