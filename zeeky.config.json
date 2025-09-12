@@ -1,1 +1,37 @@
-{}
+{
+  "appName": "Zeeky",
+  "version": "0.1.0",
+  "logging": {
+    "level": "info",
+    "file": "logs/zeeky.log"
+  },
+  "web": {
+    "port": 3000,
+    "host": "localhost"
+  },
+  "security": {
+    "jwtSecret": "your-super-secret-jwt-key",
+    "apiKey": "your-api-key"
+  },
+  "ai": {
+    "defaultProvider": "openai",
+    "providers": {
+      "openai": {
+        "apiKey": "YOUR_OPENAI_API_KEY"
+      },
+      "anthropic": {
+        "apiKey": "YOUR_ANTHROPIC_API_KEY"
+      },
+      "google": {
+        "apiKey": "YOUR_GOOGLE_AI_API_KEY"
+      }
+    }
+  },
+  "plugins": {
+    "enabled": [
+      "ProductivityPlugin",
+      "CreativePlugin",
+      "SmartHomePlugin"
+    ]
+  }
+}

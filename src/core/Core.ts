@@ -23,6 +23,12 @@ export class Core {
     this.logger.info("Zeeky Core initialized successfully");
   }
 
+  public async processCommand(command: string): Promise<any> {
+    this.logger.info(`Processing command: ${command}`);
+    // Add your command processing logic here
+    return { response: "Command processed successfully" };
+  }
+
   public async cleanup(): Promise<void> {
     this.logger.info("Cleaning up Zeeky Core...");
 

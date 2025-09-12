@@ -1,22 +1,20 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { Logger } from "@/utils";
-import {
-  ConfigService,
-  ContextManager,
-  FeatureRegistry,
-  IntentRouter,
-  AIManager,
-  AppLifecycleManager,
-  IntegrationManager,
-} from "@/services";
+import { Logger } from "@/utils/Logger";
+import { ConfigService } from "@/services/ConfigService";
+import { ContextManager } from "@/services/ContextManager";
+import { FeatureRegistry } from "@/services/FeatureRegistry";
+import { IntentRouter } from "@/services/IntentRouter";
+import { AIManager } from "@/services/AIManager";
+import { AppLifecycleManager } from "@/services/AppLifecycleManager";
+import { IntegrationManager } from "@/services/IntegrationManager";
 import { Core } from "@/core/Core";
 import { PluginManager } from "@/core/PluginManager";
 import { SecurityManager } from "@/security/SecurityManager";
 import { ILifecycleService } from "@/interfaces";
 import { WebServer } from "./web/WebServer";
 
-// Register services
+// Register services with direct imports to prevent circular dependencies
 container.register<Logger>(Logger, { useClass: Logger });
 container.register<ConfigService>(ConfigService, { useClass: ConfigService });
 container.register<ContextManager>(ContextManager, {
@@ -40,10 +38,15 @@ container.register<SecurityManager>(SecurityManager, {
 container.register<Core>(Core, { useClass: Core });
 container.register<WebServer>(WebServer, { useClass: WebServer });
 
-// Register lifecycle services
+// Register all services that implement the ILifecycleService interface
+// This allows AppLifecycleManager to manage their start/stop cycles
 container.register<ILifecycleService>("ILifecycleService", {
   useClass: AIManager,
 });
+container.register<ILifecycleService>("ILifecycleService", {
+  useClass: IntegrationManager,
+});
+// Add other lifecycle services here as needed
 
 export class ZeekyApplication {
   private logger: Logger;
@@ -61,7 +64,7 @@ export class ZeekyApplication {
       await configService.load();
       this.logger.info("Configuration loaded and validated");
 
-      // Initialize and start all services
+      // Start all registered lifecycle services
       const lifecycleManager = container.resolve(AppLifecycleManager);
       await lifecycleManager.start();
 
@@ -74,7 +77,12 @@ export class ZeekyApplication {
 
       this.setupGracefulShutdown();
     } catch (error) {
-      this.logger.error("Failed to start Zeeky application:", error);
+      if (error instanceof Error) {
+        this.logger.error(`Failed to start Zeeky application: ${error.message}`);
+        this.logger.error(`Stack: ${error.stack}`);
+      } else {
+        this.logger.error(`Failed to start Zeeky application with an unknown error: ${error}`);
+      }
       process.exit(1);
     }
   }
@@ -88,7 +96,11 @@ export class ZeekyApplication {
         this.logger.info("Zeeky application stopped successfully");
         process.exit(0);
       } catch (error) {
-        this.logger.error("Error during shutdown:", error);
+        if (error instanceof Error) {
+          this.logger.error(`Error during shutdown: ${error.message}`);
+        } else {
+          this.logger.error(`Error during shutdown with an unknown error: ${error}`);
+        }
         process.exit(1);
       }
     };

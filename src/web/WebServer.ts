@@ -26,14 +26,14 @@ export class WebServer {
       }
       try {
         const response = await this.core.processCommand(command);
-        res.send(response);
+        return res.send(response);
       } catch (error: unknown) {
         this.logger.error(`Error processing command: ${command}`, error);
         const message =
           error instanceof Error
             ? error.message
             : "An unknown error has occurred.";
-        res.status(500).send({ error: message });
+        return res.status(500).send({ error: message });
       }
     });
   }
