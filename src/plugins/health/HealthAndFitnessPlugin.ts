@@ -30,7 +30,7 @@ export class HealthAndFitnessPlugin extends ZeekyPlugin {
   description = "Your personal health and fitness companion.";
   author = "Zeeky Team";
   license = "MIT";
-  category = PluginCategory.HEALTH_AND_FITNESS;
+  category = PluginCategory.HEALTHCARE;
   subcategory = "personal_tracking";
   tags = ["health", "fitness", "workout", "vitals", "wellness"];
   priority = PriorityLevel.HIGH;
@@ -52,15 +52,15 @@ export class HealthAndFitnessPlugin extends ZeekyPlugin {
       name: "Health Data Access",
       description:
         "Access to personal health data, including workouts and vitals.",
-      category: PermissionCategory.PERSONAL_DATA,
-      level: PermissionLevel.SENSITIVE,
+      category: PermissionCategory.USER_DATA,
+      level: PermissionLevel.RESTRICTED,
       scope: PermissionScope.USER,
       resources: ["health_metrics", "workouts"],
       actions: ["read", "write", "delete"],
       conditions: [],
       timeConstraints: [],
       locationConstraints: [],
-      compliance: ["HIPAA"], // Example compliance for health data
+      compliance: [{ name: "HIPAA" }], // Example compliance for health data
       auditRequired: true,
       retentionPolicy: { duration: "permanent", autoDelete: false }, // User-controlled deletion
     },
