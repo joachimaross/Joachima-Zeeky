@@ -1,10 +1,10 @@
 import { EventEmitter } from 'events';
-import { Logger } from '@/utils/Logger';
-import { Config } from '@/utils/Config';
-import { SecurityManager } from '@/security/SecurityManager';
+import { Logger } from '../utils/Logger';
+// import { Config } from '../utils/Config';
+import { SecurityManager } from '../security/SecurityManager';
 import { PluginManager } from './PluginManager';
-import { AIManager } from '@/ai/AIManager';
-import { IntegrationManager } from '@/integrations/IntegrationManager';
+import { AIManager } from '../ai/AIManager';
+import { IntegrationManager } from '../integrations/IntegrationManager';
 import { IntentRouter } from './IntentRouter';
 import { ContextManager } from './ContextManager';
 import { MemoryManager } from './MemoryManager';
@@ -13,12 +13,11 @@ import { WebServer } from './WebServer';
 import { WebSocketServer } from './WebSocketServer';
 import { 
   ZeekyConfig, 
-  ZeekyContext, 
   ZeekyRequest, 
   ZeekyResponse,
   SystemStatus,
   HealthStatus
-} from '@/types/ZeekyTypes';
+} from '../types/ZeekyTypes';
 
 /**
  * Zeeky Core - Master Orchestrator
@@ -26,7 +25,7 @@ import {
  */
 export class ZeekyCore extends EventEmitter {
   private logger: Logger;
-  private config: Config;
+  // private _config: Config;
   private securityManager: SecurityManager;
   private pluginManager: PluginManager;
   private aiManager: AIManager;
@@ -44,7 +43,7 @@ export class ZeekyCore extends EventEmitter {
     super();
     
     this.logger = new Logger('ZeekyCore');
-    this.config = config.config;
+    // this._config = config.config;
     this.securityManager = config.securityManager;
     this.pluginManager = config.pluginManager;
     this.aiManager = config.aiManager;
@@ -252,32 +251,32 @@ export class ZeekyCore extends EventEmitter {
    */
   private setupEventHandlers(): void {
     // Plugin events
-    this.pluginManager.on('plugin:loaded', (plugin) => {
+    this.pluginManager.on('plugin:loaded', (plugin: any) => {
       this.logger.info(`Plugin loaded: ${plugin.id}`);
       this.featureRegistry.registerPlugin(plugin);
     });
 
-    this.pluginManager.on('plugin:unloaded', (pluginId) => {
+    this.pluginManager.on('plugin:unloaded', (pluginId: any) => {
       this.logger.info(`Plugin unloaded: ${pluginId}`);
       this.featureRegistry.unregisterPlugin(pluginId);
     });
 
     // AI events
-    this.aiManager.on('ai:model:updated', (model) => {
+    this.aiManager.on('ai:model:updated', (model: any) => {
       this.logger.info(`AI model updated: ${model.id}`);
     });
 
     // Integration events
-    this.integrationManager.on('integration:connected', (integration) => {
+    this.integrationManager.on('integration:connected', (integration: any) => {
       this.logger.info(`Integration connected: ${integration.id}`);
     });
 
-    this.integrationManager.on('integration:disconnected', (integrationId) => {
+    this.integrationManager.on('integration:disconnected', (integrationId: any) => {
       this.logger.info(`Integration disconnected: ${integrationId}`);
     });
 
     // Security events
-    this.securityManager.on('security:threat:detected', (threat) => {
+    this.securityManager.on('security:threat:detected', (threat: any) => {
       this.logger.warn(`Security threat detected: ${threat.type}`);
       this.emit('security:threat', threat);
     });

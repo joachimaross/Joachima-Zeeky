@@ -8,11 +8,11 @@
 // ============================================================================
 
 export interface ZeekyConfig {
-  config: Config;
-  securityManager: SecurityManager;
-  pluginManager: PluginManager;
-  aiManager: AIManager;
-  integrationManager: IntegrationManager;
+  config: any;
+  securityManager: any;
+  pluginManager: any;
+  aiManager: any;
+  integrationManager: any;
 }
 
 export interface ZeekyContext {
@@ -368,7 +368,7 @@ export interface SystemStatus {
   isRunning: boolean;
   isInitialized: boolean;
   uptime: number;
-  memory: NodeJS.MemoryUsage;
+  memory: any;
   plugins: PluginStatus[];
   features: number;
   integrations: IntegrationStatus[];
@@ -554,11 +554,81 @@ export enum VisualType {
 }
 
 // ============================================================================
-// Import statements for external types
+// Placeholder Types (to be implemented)
 // ============================================================================
 
-import { Config } from '@/utils/Config';
-import { SecurityManager } from '@/security/SecurityManager';
-import { PluginManager } from '@/core/PluginManager';
-import { AIManager } from '@/ai/AIManager';
-import { IntegrationManager } from '@/integrations/IntegrationManager';
+export type SecurityLevel = 'low' | 'medium' | 'high' | 'critical';
+export type AuditEntry = any;
+export type ConversationEntry = any;
+export type Entity = any;
+export type Intent = any;
+export type Sentiment = any;
+export type UserProfile = any;
+export type UserPreferences = any;
+export type Role = any;
+export type SessionContext = any;
+export type UserHistory = any;
+export type DeviceType = any;
+export type Capability = any;
+export type Sensor = any;
+export type DeviceStatus = any;
+export type NetworkContext = any;
+export type PluginDependency = any;
+export type ExecutionContext = any;
+export type PluginConfiguration = any;
+export type PluginMetrics = any;
+export type SystemInfo = any;
+export type ServiceRegistry = any;
+export type StorageService = any;
+export type NetworkService = any;
+export type VoiceService = any;
+export type VisionServiceType = any;
+export type EnterpriseService = any;
+export type ConfigurationService = any;
+export type FeatureFlagService = any;
+export type MetricsService = any;
+export type LoggingService = any;
+export type AnalyticsService = any;
+export type GenerativeService = any;
+export type MLService = any;
+export type Language = any;
+export type AudioData = any;
+export type VoiceModel = any;
+export type ImageData = any;
+export type ObjectDetectionResult = any;
+export type FaceRecognitionResult = any;
+export type OCRResult = any;
+export type SceneAnalysisResult = any;
+export type APIService = any;
+export type IoTService = any;
+export type AutomationRule = any;
+export type Device = any;
+export type ProtocolSupport = any;
+export type CarPlayService = any;
+export type AndroidAutoService = any;
+export type DiagnosticsService = any;
+export type RemoteControlService = any;
+export type NavigationService = any;
+export type AuthenticationService = any;
+export type AuthorizationService = any;
+export type EncryptionService = any;
+export type AuditService = any;
+export type ComplianceService = any;
+export type PermissionScope = any;
+export type Condition = any;
+export type TimeConstraint = any;
+export type LocationConstraint = any;
+export type ComplianceRequirement = any;
+export type RetentionPolicy = any;
+export type PluginStatus = any;
+export type IntegrationStatus = any;
+export type AIStatus = any;
+export type SecurityStatus = any;
+export type RetryPolicy = any;
+export type UIStyle = any;
+export type UIInteraction = any;
+export type UIAccessibility = any;
+export type Emotion = any;
+export type VisualStyle = any;
+export type Animation = any;
+export type Response = any;
