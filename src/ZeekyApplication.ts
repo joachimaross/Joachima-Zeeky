@@ -14,6 +14,7 @@ import { Core } from "@/core/Core";
 import { PluginManager } from "@/core/PluginManager";
 import { SecurityManager } from "@/security/SecurityManager";
 import { ILifecycleService } from "@/interfaces";
+import { WebServer } from "./web/WebServer";
 
 // Register services
 container.register<Logger>(Logger, { useClass: Logger });
@@ -37,6 +38,7 @@ container.register<SecurityManager>(SecurityManager, {
   useClass: SecurityManager,
 });
 container.register<Core>(Core, { useClass: Core });
+container.register<WebServer>(WebServer, { useClass: WebServer });
 
 // Register lifecycle services
 container.register<ILifecycleService>("ILifecycleService", {
@@ -62,6 +64,11 @@ export class ZeekyApplication {
       // Initialize and start all services
       const lifecycleManager = container.resolve(AppLifecycleManager);
       await lifecycleManager.start();
+
+      // Start the web server
+      const webServer = container.resolve(WebServer);
+      const port = configService.get<number>("web.port", 3000);
+      webServer.start(port);
 
       this.logger.info("Zeeky AI Assistant started successfully");
 
