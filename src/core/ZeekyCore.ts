@@ -1,6 +1,5 @@
 import { EventEmitter } from 'events';
 import { Logger } from '@/utils/Logger';
-import { Config } from '@/utils/Config';
 import { SecurityManager } from '@/security/SecurityManager';
 import { PluginManager } from './PluginManager';
 import { AIManager } from '@/ai/AIManager';
@@ -13,7 +12,6 @@ import { WebServer } from './WebServer';
 import { WebSocketServer } from './WebSocketServer';
 import { 
   ZeekyConfig, 
-  ZeekyContext, 
   ZeekyRequest, 
   ZeekyResponse,
   SystemStatus,
@@ -26,7 +24,6 @@ import {
  */
 export class ZeekyCore extends EventEmitter {
   private logger: Logger;
-  private config: Config;
   private securityManager: SecurityManager;
   private pluginManager: PluginManager;
   private aiManager: AIManager;
@@ -44,7 +41,6 @@ export class ZeekyCore extends EventEmitter {
     super();
     
     this.logger = new Logger('ZeekyCore');
-    this.config = config.config;
     this.securityManager = config.securityManager;
     this.pluginManager = config.pluginManager;
     this.aiManager = config.aiManager;
