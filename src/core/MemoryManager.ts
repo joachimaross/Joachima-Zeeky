@@ -8,7 +8,7 @@ import { Logger } from '@/utils/Logger';
 export class MemoryManager extends EventEmitter {
   private logger: Logger;
   private memories: Map<string, any> = new Map();
-  private isInitialized: boolean = false;
+  // private isInitialized: boolean = false; // Will be used in future implementation
 
   constructor() {
     super();
@@ -17,7 +17,7 @@ export class MemoryManager extends EventEmitter {
 
   async initialize(): Promise<void> {
     this.logger.info('Initializing memory manager...');
-    this.isInitialized = true;
+    // this.isInitialized = true; // Will be used in future implementation
   }
 
   async start(): Promise<void> {

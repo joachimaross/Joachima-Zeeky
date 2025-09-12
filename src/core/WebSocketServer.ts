@@ -8,7 +8,7 @@ import { Logger } from '@/utils/Logger';
 export class WebSocketServer extends EventEmitter {
   private logger: Logger;
   private connections: Map<string, any> = new Map();
-  private isInitialized: boolean = false;
+  // private isInitialized: boolean = false; // Will be used in future implementation
 
   constructor() {
     super();
@@ -17,7 +17,7 @@ export class WebSocketServer extends EventEmitter {
 
   async initialize(): Promise<void> {
     this.logger.info('Initializing WebSocket server...');
-    this.isInitialized = true;
+    // this.isInitialized = true; // Will be used in future implementation
   }
 
   async start(): Promise<void> {
@@ -34,10 +34,11 @@ export class WebSocketServer extends EventEmitter {
     return this.connections.size;
   }
 
-  async broadcast(message: any): Promise<void> {
+  async broadcast(_message: any): Promise<void> {
     this.logger.debug('Broadcasting message to', this.connections.size, 'connections');
-    for (const connection of this.connections.values()) {
-      // Send message to connection
-    }
+    // Broadcast logic will be implemented
+    // for (const connection of this.connections.values()) {
+    //   connection.send(message);
+    // }
   }
 }

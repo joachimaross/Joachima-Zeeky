@@ -24,11 +24,11 @@ export class SmartHomePlugin implements ZeekyPlugin {
   conflicts = [];
   
   capabilities = [
-    'device_control',
-    'scene_management',
-    'automation_rules',
-    'energy_monitoring',
-    'security_monitoring'
+    'device_control' as any,
+    'scene_management' as any,
+    'automation_rules' as any,
+    'energy_monitoring' as any,
+    'security_monitoring' as any
   ];
   
   permissions = [
@@ -36,9 +36,9 @@ export class SmartHomePlugin implements ZeekyPlugin {
       id: 'device_control',
       name: 'Device Control',
       description: 'Control smart home devices',
-      category: 'device_control',
-      level: 'confidential',
-      scope: 'home',
+      category: 'device_control' as any,
+      level: 'confidential' as any,
+      scope: { type: 'home', resources: ['devices'] },
       resources: ['devices'],
       actions: ['read', 'control'],
       conditions: [],
@@ -48,7 +48,7 @@ export class SmartHomePlugin implements ZeekyPlugin {
       auditRequired: true,
       retentionPolicy: { duration: '30d', autoDelete: true }
     }
-  ];
+  ] as any;
   
   intents = [
     {
@@ -56,7 +56,7 @@ export class SmartHomePlugin implements ZeekyPlugin {
       name: 'Control Light',
       description: 'Control lighting devices',
       action: 'control',
-      entities: ['device_name', 'action', 'brightness', 'color'],
+      entities: ['device_name', 'action', 'brightness', 'color'] as any,
       parameters: [],
       context: {},
       requiredEntities: ['device_name', 'action'],
@@ -65,14 +65,15 @@ export class SmartHomePlugin implements ZeekyPlugin {
       handler: 'handleControlLight',
       timeout: 5000,
       retryPolicy: { maxRetries: 3, backoff: 'exponential' },
-      fallback: { strategy: 'manual', message: 'Please control the light manually' }
+      fallback: { strategy: 'manual', message: 'Please control the light manually' },
+      confidence: 0.9
     },
     {
       id: 'set_temperature',
       name: 'Set Temperature',
       description: 'Control thermostat temperature',
       action: 'control',
-      entities: ['device_name', 'temperature', 'mode'],
+      entities: ['device_name', 'temperature', 'mode'] as any,
       parameters: [],
       context: {},
       requiredEntities: ['device_name', 'temperature'],
@@ -81,14 +82,15 @@ export class SmartHomePlugin implements ZeekyPlugin {
       handler: 'handleSetTemperature',
       timeout: 5000,
       retryPolicy: { maxRetries: 3, backoff: 'exponential' },
-      fallback: { strategy: 'manual', message: 'Please set the temperature manually' }
+      fallback: { strategy: 'manual', message: 'Please set the temperature manually' },
+      confidence: 0.9
     },
     {
       id: 'activate_scene',
       name: 'Activate Scene',
       description: 'Activate a smart home scene',
       action: 'activate',
-      entities: ['scene_name'],
+      entities: ['scene_name'] as any,
       parameters: [],
       context: {},
       requiredEntities: ['scene_name'],
@@ -97,14 +99,15 @@ export class SmartHomePlugin implements ZeekyPlugin {
       handler: 'handleActivateScene',
       timeout: 10000,
       retryPolicy: { maxRetries: 3, backoff: 'exponential' },
-      fallback: { strategy: 'manual', message: 'Please activate the scene manually' }
+      fallback: { strategy: 'manual', message: 'Please activate the scene manually' },
+      confidence: 0.9
     },
     {
       id: 'security_arm',
       name: 'Security Arm',
       description: 'Arm security system',
       action: 'control',
-      entities: ['mode'],
+      entities: ['mode'] as any,
       parameters: [],
       context: {},
       requiredEntities: ['mode'],
@@ -113,11 +116,12 @@ export class SmartHomePlugin implements ZeekyPlugin {
       handler: 'handleSecurityArm',
       timeout: 5000,
       retryPolicy: { maxRetries: 3, backoff: 'exponential' },
-      fallback: { strategy: 'manual', message: 'Please arm the security system manually' }
+      fallback: { strategy: 'manual', message: 'Please arm the security system manually' },
+      confidence: 0.9
     }
   ];
   
-  private context: PluginContext;
+  private context!: PluginContext;
   private logger: Logger;
   private devices: Map<string, SmartDevice> = new Map();
   private scenes: Map<string, Scene> = new Map();
@@ -170,8 +174,8 @@ export class SmartHomePlugin implements ZeekyPlugin {
         timestamp: new Date(),
         success: false,
         type: 'error',
-        message: `Failed to handle intent: ${error.message}`,
-        error: error,
+        message: `Failed to handle intent: ${error instanceof Error ? error.message : String(error)}`,
+        error: error instanceof Error ? error.message : String(error),
         metadata: {
           pluginId: this.id,
           featureId: intent.id,
@@ -228,7 +232,7 @@ export class SmartHomePlugin implements ZeekyPlugin {
     };
   }
 
-  async updateConfiguration(config: any): Promise<void> {
+  async updateConfiguration(_config: any): Promise<void> {
     this.logger.info('Updating Smart Home Plugin configuration...');
     // Update configuration logic here
   }
@@ -596,7 +600,7 @@ export class SmartHomePlugin implements ZeekyPlugin {
     };
   }
 
-  private async checkDeviceConnectivity(device: SmartDevice): Promise<boolean> {
+  private async checkDeviceConnectivity(_device: SmartDevice): Promise<boolean> {
     // Simulate connectivity check
     return Math.random() > 0.1; // 90% chance of being online
   }

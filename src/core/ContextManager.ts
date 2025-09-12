@@ -8,7 +8,7 @@ import { Logger } from '@/utils/Logger';
 export class ContextManager extends EventEmitter {
   private logger: Logger;
   private contexts: Map<string, any> = new Map();
-  private isInitialized: boolean = false;
+  // private isInitialized: boolean = false; // Will be used in future implementation
 
   constructor() {
     super();
@@ -17,7 +17,7 @@ export class ContextManager extends EventEmitter {
 
   async initialize(): Promise<void> {
     this.logger.info('Initializing context manager...');
-    this.isInitialized = true;
+    // this.isInitialized = true; // Will be used in future implementation
   }
 
   async start(): Promise<void> {

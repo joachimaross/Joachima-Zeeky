@@ -24,11 +24,11 @@ export class CreativePlugin implements ZeekyPlugin {
   conflicts = [];
   
   capabilities = [
-    'music_generation',
-    'image_generation',
-    'content_creation',
-    'style_transfer',
-    'creative_writing'
+    'music_generation' as any,
+    'image_generation' as any,
+    'content_creation' as any,
+    'style_transfer' as any,
+    'creative_writing' as any
   ];
   
   permissions = [
@@ -36,9 +36,9 @@ export class CreativePlugin implements ZeekyPlugin {
       id: 'ai_generation',
       name: 'AI Generation',
       description: 'Generate creative content using AI',
-      category: 'ai_services',
-      level: 'internal',
-      scope: 'user',
+      category: 'ai_services' as any,
+      level: 'internal' as any,
+      scope: { type: 'user', resources: ['ai_models'] },
       resources: ['ai_models'],
       actions: ['generate'],
       conditions: [],
@@ -48,7 +48,7 @@ export class CreativePlugin implements ZeekyPlugin {
       auditRequired: false,
       retentionPolicy: { duration: '7d', autoDelete: true }
     }
-  ];
+  ] as any;
   
   intents = [
     {
@@ -56,7 +56,7 @@ export class CreativePlugin implements ZeekyPlugin {
       name: 'Generate Music',
       description: 'Generate music based on description',
       action: 'generate',
-      entities: ['genre', 'mood', 'duration', 'instruments', 'style'],
+      entities: ['genre', 'mood', 'duration', 'instruments', 'style'] as any,
       parameters: [],
       context: {},
       requiredEntities: ['genre'],
@@ -65,14 +65,15 @@ export class CreativePlugin implements ZeekyPlugin {
       handler: 'handleGenerateMusic',
       timeout: 30000,
       retryPolicy: { maxRetries: 2, backoff: 'linear' },
-      fallback: { strategy: 'manual', message: 'Please create music manually' }
+      fallback: { strategy: 'manual', message: 'Please create music manually' },
+      confidence: 0.9
     },
     {
       id: 'generate_image',
       name: 'Generate Image',
       description: 'Generate image based on description',
       action: 'generate',
-      entities: ['description', 'style', 'size', 'quality'],
+      entities: ['description', 'style', 'size', 'quality'] as any,
       parameters: [],
       context: {},
       requiredEntities: ['description'],
@@ -81,14 +82,15 @@ export class CreativePlugin implements ZeekyPlugin {
       handler: 'handleGenerateImage',
       timeout: 20000,
       retryPolicy: { maxRetries: 2, backoff: 'linear' },
-      fallback: { strategy: 'manual', message: 'Please create image manually' }
+      fallback: { strategy: 'manual', message: 'Please create image manually' },
+      confidence: 0.9
     },
     {
       id: 'generate_content',
       name: 'Generate Content',
       description: 'Generate written content',
       action: 'generate',
-      entities: ['content_type', 'topic', 'length', 'style', 'tone'],
+      entities: ['content_type', 'topic', 'length', 'style', 'tone'] as any,
       parameters: [],
       context: {},
       requiredEntities: ['content_type', 'topic'],
@@ -97,14 +99,15 @@ export class CreativePlugin implements ZeekyPlugin {
       handler: 'handleGenerateContent',
       timeout: 15000,
       retryPolicy: { maxRetries: 2, backoff: 'linear' },
-      fallback: { strategy: 'manual', message: 'Please create content manually' }
+      fallback: { strategy: 'manual', message: 'Please create content manually' },
+      confidence: 0.9
     },
     {
       id: 'style_transfer',
       name: 'Style Transfer',
       description: 'Apply artistic style to image',
       action: 'transform',
-      entities: ['source_image', 'style', 'intensity'],
+      entities: ['source_image', 'style', 'intensity'] as any,
       parameters: [],
       context: {},
       requiredEntities: ['source_image', 'style'],
@@ -113,11 +116,12 @@ export class CreativePlugin implements ZeekyPlugin {
       handler: 'handleStyleTransfer',
       timeout: 25000,
       retryPolicy: { maxRetries: 2, backoff: 'linear' },
-      fallback: { strategy: 'manual', message: 'Please apply style manually' }
+      fallback: { strategy: 'manual', message: 'Please apply style manually' },
+      confidence: 0.9
     }
   ];
   
-  private context: PluginContext;
+  private context!: PluginContext;
   private logger: Logger;
   private generatedContent: Map<string, GeneratedContent> = new Map();
   private aiModels: Map<string, AIModel> = new Map();
@@ -166,8 +170,8 @@ export class CreativePlugin implements ZeekyPlugin {
         timestamp: new Date(),
         success: false,
         type: 'error',
-        message: `Failed to handle intent: ${error.message}`,
-        error: error,
+        message: `Failed to handle intent: ${error instanceof Error ? error.message : String(error)}`,
+        error: error instanceof Error ? error.message : String(error),
         metadata: {
           pluginId: this.id,
           featureId: intent.id,
@@ -224,7 +228,7 @@ export class CreativePlugin implements ZeekyPlugin {
     };
   }
 
-  async updateConfiguration(config: any): Promise<void> {
+  async updateConfiguration(_config: any): Promise<void> {
     this.logger.info('Updating Creative Plugin configuration...');
     // Update configuration logic here
   }
@@ -265,10 +269,10 @@ export class CreativePlugin implements ZeekyPlugin {
     // Generate music using AI
     const music = await this.generateMusic({
       genre,
-      mood,
+      mood: mood || 'neutral',
       duration: parseInt(duration),
-      instruments: instruments ? instruments.split(',') : undefined,
-      style
+      instruments: instruments ? instruments.split(',') : [],
+      style: style || 'modern'
     });
 
     // Store generated content
@@ -318,7 +322,7 @@ export class CreativePlugin implements ZeekyPlugin {
     // Generate image using AI
     const image = await this.generateImage({
       description,
-      style,
+      style: style || 'realistic',
       size,
       quality
     });
@@ -373,8 +377,8 @@ export class CreativePlugin implements ZeekyPlugin {
       type: contentType,
       topic,
       length,
-      style,
-      tone
+      style: style || 'informative',
+      tone: tone || 'neutral'
     });
 
     // Store generated content
@@ -660,7 +664,7 @@ export class CreativePlugin implements ZeekyPlugin {
       'script': `Scene 1: A conversation about ${topic} unfolds in this engaging script.`
     };
 
-    const template = templates[type] || templates['article'];
+    const template = templates[type as keyof typeof templates] || templates['article'];
     return template.repeat(Math.ceil(wordCount / 20)).substring(0, wordCount * 5);
   }
 

@@ -588,8 +588,19 @@ export interface Entity {
 export interface Intent {
   id: string;
   name: string;
-  confidence: number;
+  description: string;
+  action: string;
   entities: Entity[];
+  parameters: any[];
+  context: any;
+  requiredEntities: string[];
+  optionalEntities: string[];
+  validationRules: any[];
+  handler: string;
+  timeout: number;
+  retryPolicy: any;
+  fallback: any;
+  confidence: number;
 }
 
 export interface Sentiment {
@@ -685,9 +696,16 @@ export interface ExecutionContext {
 
 export interface Response {
   success: boolean;
+  type?: string;
+  content?: any;
   data?: any;
   error?: string;
   message?: string;
+  metadata?: ResponseMetadata;
+  timestamp?: Date;
+  latency?: number;
+  pluginId?: string;
+  requestId?: string;
 }
 
 export interface PluginConfiguration {

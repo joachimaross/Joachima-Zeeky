@@ -24,11 +24,11 @@ export class ProductivityPlugin implements ZeekyPlugin {
   conflicts = [];
   
   capabilities = [
-    'calendar_management',
-    'task_management',
-    'note_taking',
-    'reminder_setting',
-    'schedule_optimization'
+    'calendar_management' as any,
+    'task_management' as any,
+    'note_taking' as any,
+    'reminder_setting' as any,
+    'schedule_optimization' as any
   ];
   
   permissions = [
@@ -56,7 +56,7 @@ export class ProductivityPlugin implements ZeekyPlugin {
       name: 'Create Task',
       description: 'Create a new task',
       action: 'create',
-      entities: ['task_name', 'due_date', 'priority'],
+      entities: ['task_name', 'due_date', 'priority'] as any,
       parameters: [],
       context: {},
       requiredEntities: ['task_name'],
@@ -65,14 +65,15 @@ export class ProductivityPlugin implements ZeekyPlugin {
       handler: 'handleCreateTask',
       timeout: 5000,
       retryPolicy: { maxRetries: 3, backoff: 'exponential' },
-      fallback: { strategy: 'manual', message: 'Please create the task manually' }
+      fallback: { strategy: 'manual', message: 'Please create the task manually' },
+      confidence: 0.9
     },
     {
       id: 'schedule_meeting',
       name: 'Schedule Meeting',
       description: 'Schedule a meeting',
       action: 'schedule',
-      entities: ['meeting_title', 'attendees', 'date_time', 'duration'],
+      entities: ['meeting_title', 'attendees', 'date_time', 'duration'] as any,
       parameters: [],
       context: {},
       requiredEntities: ['meeting_title', 'date_time'],
@@ -81,14 +82,15 @@ export class ProductivityPlugin implements ZeekyPlugin {
       handler: 'handleScheduleMeeting',
       timeout: 10000,
       retryPolicy: { maxRetries: 3, backoff: 'exponential' },
-      fallback: { strategy: 'manual', message: 'Please schedule the meeting manually' }
+      fallback: { strategy: 'manual', message: 'Please schedule the meeting manually' },
+      confidence: 0.9
     },
     {
       id: 'take_note',
       name: 'Take Note',
       description: 'Create a note',
       action: 'create',
-      entities: ['note_content', 'note_title', 'tags'],
+      entities: ['note_content', 'note_title', 'tags'] as any,
       parameters: [],
       context: {},
       requiredEntities: ['note_content'],
@@ -97,7 +99,8 @@ export class ProductivityPlugin implements ZeekyPlugin {
       handler: 'handleTakeNote',
       timeout: 3000,
       retryPolicy: { maxRetries: 2, backoff: 'linear' },
-      fallback: { strategy: 'manual', message: 'Please take the note manually' }
+      fallback: { strategy: 'manual', message: 'Please take the note manually' },
+      confidence: 0.9
     }
   ];
   
@@ -141,13 +144,13 @@ export class ProductivityPlugin implements ZeekyPlugin {
     } catch (error) {
       this.logger.error(`Error handling intent ${intent.id}:`, error);
       return {
-        requestId: context.requestId,
+        // requestId: context.requestId, // Not part of Response interface
         pluginId: this.id,
         timestamp: new Date(),
         success: false,
         type: 'error',
         message: `Failed to handle intent: ${error instanceof Error ? error.message : String(error)}`,
-        error: error,
+        error: error instanceof Error ? error.message : String(error),
         metadata: {
           pluginId: this.id,
           featureId: intent.id,
@@ -203,7 +206,7 @@ export class ProductivityPlugin implements ZeekyPlugin {
     };
   }
 
-  async updateConfiguration(config: any): Promise<void> {
+  async updateConfiguration(_config: any): Promise<void> {
     this.logger.info('Updating Productivity Plugin configuration...');
     // Update configuration logic here
   }
@@ -244,7 +247,7 @@ export class ProductivityPlugin implements ZeekyPlugin {
       id: this.generateId(),
       name: taskName,
       description: '',
-      dueDate: dueDate ? new Date(dueDate) : undefined,
+      dueDate: dueDate ? new Date(dueDate) : new Date(),
       priority: priority as TaskPriority,
       status: 'pending',
       createdAt: new Date(),
@@ -287,7 +290,7 @@ export class ProductivityPlugin implements ZeekyPlugin {
       title: title,
       description: '',
       startTime: new Date(dateTime),
-      duration: parseInt(duration),
+      duration: parseInt(String(duration)),
       attendees: attendees ? attendees.split(',') : [],
       location: '',
       status: 'scheduled',

@@ -7,7 +7,7 @@ import { Logger } from '@/utils/Logger';
 
 export class IntentRouter extends EventEmitter {
   private logger: Logger;
-  private isInitialized: boolean = false;
+  // private isInitialized: boolean = false; // Will be used in future implementation
 
   constructor() {
     super();
@@ -16,7 +16,7 @@ export class IntentRouter extends EventEmitter {
 
   async initialize(): Promise<void> {
     this.logger.info('Initializing intent router...');
-    this.isInitialized = true;
+    // this.isInitialized = true; // Will be used in future implementation
   }
 
   async start(): Promise<void> {
@@ -27,7 +27,7 @@ export class IntentRouter extends EventEmitter {
     this.logger.info('Stopping intent router...');
   }
 
-  async routeIntent(request: any, context: any): Promise<any> {
+  async routeIntent(request: any, _context: any): Promise<any> {
     this.logger.debug('Routing intent for request:', request.id);
     return {
       id: `intent-${request.id}`,
@@ -38,7 +38,7 @@ export class IntentRouter extends EventEmitter {
     };
   }
 
-  async executeIntent(intent: any, context: any): Promise<any> {
+  async executeIntent(intent: any, _context: any): Promise<any> {
     this.logger.debug('Executing intent:', intent.id);
     return {
       id: `response-${intent.id}`,

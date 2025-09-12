@@ -9,7 +9,7 @@ export class FeatureRegistry extends EventEmitter {
   private logger: Logger;
   private features: Map<string, any> = new Map();
   private plugins: Map<string, any> = new Map();
-  private isInitialized: boolean = false;
+  // private isInitialized: boolean = false; // Will be used in future implementation
 
   constructor() {
     super();
@@ -18,7 +18,7 @@ export class FeatureRegistry extends EventEmitter {
 
   async initialize(): Promise<void> {
     this.logger.info('Initializing feature registry...');
-    this.isInitialized = true;
+    // this.isInitialized = true; // Will be used in future implementation
   }
 
   async registerPlugin(plugin: any): Promise<void> {

@@ -8,7 +8,7 @@ import { Logger } from '@/utils/Logger';
 export class WebServer extends EventEmitter {
   private logger: Logger;
   private server: any = null;
-  private isInitialized: boolean = false;
+  // private isInitialized: boolean = false; // Will be used in future implementation
 
   constructor() {
     super();
@@ -17,7 +17,7 @@ export class WebServer extends EventEmitter {
 
   async initialize(): Promise<void> {
     this.logger.info('Initializing web server...');
-    this.isInitialized = true;
+    // this.isInitialized = true; // Will be used in future implementation
   }
 
   async start(): Promise<void> {
