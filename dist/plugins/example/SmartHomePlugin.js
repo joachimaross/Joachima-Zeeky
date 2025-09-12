@@ -64,6 +64,10 @@ class SmartHomePlugin extends ZeekyPlugin_1.ZeekyPlugin {
             switch (intent.name) {
                 case 'control_light':
                     return await this.handleControlLight(intent, context);
+                case 'turnOn':
+                    return await this.handleTurnOn(intent, context);
+                case 'turnOff':
+                    return await this.handleTurnOff(intent, context);
                 default:
                     throw new Error(`Unknown intent handler: ${intent.name}`);
             }
@@ -101,6 +105,18 @@ class SmartHomePlugin extends ZeekyPlugin_1.ZeekyPlugin {
     async handleControlLight(intent, context) {
         this.logger.info('Controlling light...', intent, context);
         return {};
+    }
+    async handleTurnOn(_intent, _context) {
+        this.logger.info('Turning on the lights...');
+        return {
+            message: 'Turning on the lights'
+        };
+    }
+    async handleTurnOff(_intent, _context) {
+        this.logger.info('Turning off the lights...');
+        return {
+            message: 'Turning off the lights'
+        };
     }
     async initializeDevices() { }
     setupDeviceMonitoring() { }

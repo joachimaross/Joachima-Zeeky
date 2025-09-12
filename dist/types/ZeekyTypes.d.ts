@@ -1,3 +1,6 @@
+/// <reference types="node" />
+/// <reference types="node" />
+/// <reference types="node" />
 import { Config } from '@/utils/Config';
 import { SecurityManager } from '@/security/SecurityManager';
 import { PluginManager } from '@/core/PluginManager';

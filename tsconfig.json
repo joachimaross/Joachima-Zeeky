@@ -27,15 +27,7 @@
     "emitDecoratorMetadata": true,
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"],
-      "@/core/*": ["core/*"],
-      "@/plugins/*": ["plugins/*"],
-      "@/integrations/*": ["integrations/*"],
-      "@/ai/*": ["ai/*"],
-      "@/security/*": ["security/*"],
-      "@/types/*": ["types/*"],
-      "@/utils/*": ["utils/*"],
-      "@/interfaces/*": ["interfaces/*"]
+      "@/*": ["*"]
     }
   },
   "include": [

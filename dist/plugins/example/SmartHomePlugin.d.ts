@@ -31,6 +31,8 @@ export declare class SmartHomePlugin extends ZeekyPlugin {
     getHealthStatus(): HealthStatus;
     getMetrics(): PluginMetrics;
     private handleControlLight;
+    private handleTurnOn;
+    private handleTurnOff;
     private initializeDevices;
     private setupDeviceMonitoring;
 }

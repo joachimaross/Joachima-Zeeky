@@ -1,4 +1,3 @@
-
 /**
  * Core Zeeky Type Definitions
  * Central type definitions for the entire Zeeky system
@@ -8,11 +7,11 @@
 // Import statements for external types
 // ===========================================================================
 
-import { Config } from '@/utils/Config';
-import { SecurityManager } from '@/security/SecurityManager';
-import { PluginManager } from '@/core/PluginManager';
-import { AIManager } from '@/services/AIManager';
-import { IntegrationManager } from '@/integrations/IntegrationManager';
+import { Config } from "@/utils/Config";
+import { SecurityManager } from "@/security/SecurityManager";
+import { PluginManager } from "@/core/PluginManager";
+import { AIManager } from "@/services/AIManager";
+import { IntegrationManager } from "@/integrations/IntegrationManager";
 
 // ===========================================================================
 // Core System Types
@@ -74,33 +73,33 @@ export interface ZeekyResponse {
 // ===========================================================================
 
 export enum RequestType {
-  VOICE = 'voice',
-  TEXT = 'text',
-  GESTURE = 'gesture',
-  TOUCH = 'touch',
-  API = 'api',
-  WEBHOOK = 'webhook'
+  VOICE = "voice",
+  TEXT = "text",
+  GESTURE = "gesture",
+  TOUCH = "touch",
+  API = "api",
+  WEBHOOK = "webhook",
 }
 
 export enum RequestSource {
-  MOBILE = 'mobile',
-  DESKTOP = 'desktop',
-  WEB = 'web',
-  HARDWARE_HUB = 'hardware_hub',
-  CAR = 'car',
-  SMART_HOME = 'smart_home',
-  API = 'api'
+  MOBILE = "mobile",
+  DESKTOP = "desktop",
+  WEB = "web",
+  HARDWARE_HUB = "hardware_hub",
+  CAR = "car",
+  SMART_HOME = "smart_home",
+  API = "api",
 }
 
 export enum ResponseType {
-  TEXT = 'text',
-  VOICE = 'voice',
-  VISUAL = 'visual',
-  ACTION = 'action',
-  DATA = 'data',
-  ERROR = 'error',
-  CONFIRMATION = 'confirmation',
-  PROGRESS = 'progress'
+  TEXT = "text",
+  VOICE = "voice",
+  VISUAL = "visual",
+  ACTION = "action",
+  DATA = "data",
+  ERROR = "error",
+  CONFIRMATION = "confirmation",
+  PROGRESS = "progress",
 }
 
 export interface RequestContext {
@@ -187,16 +186,16 @@ export interface EnvironmentContext {
 // ===========================================================================
 
 export enum PluginCategory {
-  CORE_UTILITIES = 'core_utilities',
-  PRODUCTIVITY = 'productivity',
-  SMART_HOME = 'smart_home',
-  HEALTHCARE = 'healthcare',
-  SAFETY_SECURITY = 'safety_security',
-  CREATIVE = 'creative',
-  ENTERPRISE = 'enterprise',
-  MEDIA_ENTERTAINMENT = 'media_entertainment',
-  JOB_SITES_INDUSTRIAL = 'job_sites_industrial',
-  VEHICLE_CONTROL = 'vehicle_control'
+  CORE_UTILITIES = "core_utilities",
+  PRODUCTIVITY = "productivity",
+  SMART_HOME = "smart_home",
+  HEALTHCARE = "healthcare",
+  SAFETY_SECURITY = "safety_security",
+  CREATIVE = "creative",
+  ENTERPRISE = "enterprise",
+  MEDIA_ENTERTAINMENT = "media_entertainment",
+  JOB_SITES_INDUSTRIAL = "job_sites_industrial",
+  VEHICLE_CONTROL = "vehicle_control",
 }
 
 export enum PriorityLevel {
@@ -204,13 +203,13 @@ export enum PriorityLevel {
   HIGH = 2,
   MEDIUM = 3,
   LOW = 4,
-  FUTURE = 5
+  FUTURE = 5,
 }
 
 export enum ComplexityLevel {
-  SMALL = 'S',
-  MEDIUM = 'M',
-  LARGE = 'L'
+  SMALL = "S",
+  MEDIUM = "M",
+  LARGE = "L",
 }
 
 export interface PluginContext {
@@ -282,7 +281,11 @@ export interface IntegrationService {
 }
 
 export interface HomeAutomationService {
-  controlDevice(deviceId: string, action: string, params: any): Promise<Response>;
+  controlDevice(
+    deviceId: string,
+    action: string,
+    params: any,
+  ): Promise<Response>;
   activateScene(sceneId: string): Promise<Response>;
   createRule(rule: AutomationRule): Promise<Response>;
   discoverDevices(): Promise<Device[]>;
@@ -327,21 +330,21 @@ export interface Permission {
 }
 
 export enum PermissionCategory {
-  SYSTEM = 'system',
-  USER_DATA = 'user_data',
-  DEVICE_CONTROL = 'device_control',
-  NETWORK_ACCESS = 'network_access',
-  AI_SERVICES = 'ai_services',
-  INTEGRATIONS = 'integrations',
-  STORAGE = 'storage',
-  COMMUNICATION = 'communication'
+  SYSTEM = "system",
+  USER_DATA = "user_data",
+  DEVICE_CONTROL = "device_control",
+  NETWORK_ACCESS = "network_access",
+  AI_SERVICES = "ai_services",
+  INTEGRATIONS = "integrations",
+  STORAGE = "storage",
+  COMMUNICATION = "communication",
 }
 
 export enum PermissionLevel {
-  PUBLIC = 'public',
-  INTERNAL = 'internal',
-  CONFIDENTIAL = 'confidential',
-  RESTRICTED = 'restricted'
+  PUBLIC = "public",
+  INTERNAL = "internal",
+  CONFIDENTIAL = "confidential",
+  RESTRICTED = "restricted",
 }
 
 // ===========================================================================
@@ -361,7 +364,7 @@ export interface SystemStatus {
 }
 
 export interface HealthStatus {
-  status: 'healthy' | 'degraded' | 'unhealthy';
+  status: "healthy" | "degraded" | "unhealthy";
   timestamp: Date;
   components: {
     core: string;
@@ -472,20 +475,20 @@ export interface Action {
 }
 
 export enum ActionType {
-  DEVICE_CONTROL = 'device_control',
-  DATA_ACCESS = 'data_access',
-  COMMUNICATION = 'communication',
-  AUTOMATION = 'automation',
-  INTEGRATION = 'integration',
-  AI_PROCESSING = 'ai_processing'
+  DEVICE_CONTROL = "device_control",
+  DATA_ACCESS = "data_access",
+  COMMUNICATION = "communication",
+  AUTOMATION = "automation",
+  INTEGRATION = "integration",
+  AI_PROCESSING = "ai_processing",
 }
 
 export enum ConfirmationLevel {
-  NONE = 'none',
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  CRITICAL = 'critical'
+  NONE = "none",
+  LOW = "low",
+  MEDIUM = "medium",
+  HIGH = "high",
+  CRITICAL = "critical",
 }
 
 // ===========================================================================
@@ -501,14 +504,14 @@ export interface UIElement {
 }
 
 export enum UIElementType {
-  TEXT = 'text',
-  BUTTON = 'button',
-  INPUT = 'input',
-  CARD = 'card',
-  LIST = 'list',
-  CHART = 'chart',
-  MAP = 'map',
-  MEDIA = 'media'
+  TEXT = "text",
+  BUTTON = "button",
+  INPUT = "input",
+  CARD = "card",
+  LIST = "list",
+  CHART = "chart",
+  MAP = "map",
+  MEDIA = "media",
 }
 
 export interface VoiceResponse {
@@ -528,13 +531,13 @@ export interface VisualResponse {
 }
 
 export enum VisualType {
-  TEXT = 'text',
-  IMAGE = 'image',
-  VIDEO = 'video',
-  CHART = 'chart',
-  MAP = 'map',
-  AR = 'ar',
-  VR = 'vr'
+  TEXT = "text",
+  IMAGE = "image",
+  VIDEO = "video",
+  CHART = "chart",
+  MAP = "map",
+  AR = "ar",
+  VR = "vr",
 }
 
 // ===========================================================================
@@ -544,7 +547,7 @@ export enum VisualType {
 export enum SecurityLevel {
   LOW,
   MEDIUM,
-  HIGH
+  HIGH,
 }
 
 export interface AuditEntry {
@@ -602,7 +605,7 @@ export interface UserHistory {
 export enum DeviceType {
   MOBILE,
   DESKTOP,
-  HUB
+  HUB,
 }
 
 export interface Capability {
@@ -616,7 +619,7 @@ export interface Sensor {
 
 export enum DeviceStatus {
   ONLINE,
-  OFFLINE
+  OFFLINE,
 }
 
 export interface NetworkContext {
@@ -704,7 +707,7 @@ export interface VoiceModel {
   name: string;
 }
 
-export declare class ImageData {};
+export declare class ImageData {}
 
 export interface ObjectDetectionResult {
   [key: string]: any;
@@ -787,7 +790,7 @@ export interface ComplianceService {
 export enum PermissionScope {
   USER,
   DEVICE,
-  SYSTEM
+  SYSTEM,
 }
 
 export interface Condition {
@@ -865,7 +868,7 @@ export interface ExecutionContext {
 export enum TaskPriority {
   LOW,
   MEDIUM,
-  HIGH
+  HIGH,
 }
 
 export interface Task {
@@ -874,7 +877,7 @@ export interface Task {
   description: string;
   dueDate: Date;
   priority: TaskPriority;
-  status: 'pending' | 'in-progress' | 'completed';
+  status: "pending" | "in-progress" | "completed";
   createdAt: Date;
   updatedAt: Date;
 }

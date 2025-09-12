@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+require("module-alias/register");
 require("reflect-metadata");
 const tsyringe_1 = require("tsyringe");
 const ZeekyApplication_1 = require("@/ZeekyApplication");
