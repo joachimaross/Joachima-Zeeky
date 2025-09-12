@@ -293,8 +293,8 @@ export interface IntegrationService {
   home: HomeAutomationService;
   vehicle: VehicleService;
   enterprise: EnterpriseService;
-  apis: APIService;
-  iot: IoTService;
+  apis: any;
+  iot: any;
 }
 
 export interface HomeAutomationService {
@@ -368,7 +368,7 @@ export interface SystemStatus {
   isRunning: boolean;
   isInitialized: boolean;
   uptime: number;
-  memory: NodeJS.MemoryUsage;
+  memory: any;
   plugins: PluginStatus[];
   features: number;
   integrations: IntegrationStatus[];
@@ -551,6 +551,492 @@ export enum VisualType {
   MAP = 'map',
   AR = 'ar',
   VR = 'vr'
+}
+
+// ============================================================================
+// Missing Type Definitions
+// ============================================================================
+
+export interface ExecutionContext {
+  requestId: string;
+  userId: string;
+  sessionId: string;
+  timestamp: Date;
+  source: RequestSource;
+  device: DeviceContext;
+  location: LocationContext;
+  permissions: Permission[];
+  securityLevel: SecurityLevel;
+  auditTrail: AuditEntry[];
+}
+
+export interface Response {
+  requestId: string;
+  pluginId: string;
+  timestamp: Date;
+  success: boolean;
+  type: ResponseType;
+  message: string;
+  data?: any;
+  error?: any;
+  metadata: ResponseMetadata;
+}
+
+export interface Intent {
+  id: string;
+  name: string;
+  description: string;
+  action: string;
+  entities: Entity[];
+  parameters: any[];
+  context: any;
+  requiredEntities: string[];
+  optionalEntities: string[];
+  validationRules: any[];
+  handler: string;
+  timeout: number;
+  retryPolicy: RetryPolicy;
+  fallback: any;
+}
+
+export interface Entity {
+  name: string;
+  value: any;
+  confidence: number;
+  type: string;
+}
+
+export interface SecurityLevel {
+  level: 'low' | 'medium' | 'high' | 'critical';
+}
+
+export interface AuditEntry {
+  id: string;
+  timestamp: Date;
+  action: string;
+  userId: string;
+  details: any;
+}
+
+export interface ConversationEntry {
+  id: string;
+  timestamp: Date;
+  type: 'user' | 'assistant';
+  content: string;
+  metadata: any;
+}
+
+export interface Sentiment {
+  score: number;
+  magnitude: number;
+  label: string;
+}
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  preferences: any;
+}
+
+export interface UserPreferences {
+  language: string;
+  timezone: string;
+  theme: string;
+  notifications: any;
+}
+
+export interface Role {
+  id: string;
+  name: string;
+  permissions: string[];
+}
+
+export interface SessionContext {
+  id: string;
+  startTime: Date;
+  lastActivity: Date;
+  device: string;
+  location: string;
+}
+
+export interface UserHistory {
+  interactions: any[];
+  preferences: any;
+  achievements: any[];
+}
+
+export interface DeviceType {
+  type: 'mobile' | 'desktop' | 'tablet' | 'smart_home' | 'vehicle' | 'server';
+}
+
+export interface Capability {
+  id: string;
+  name: string;
+  type: string;
+  parameters: any[];
+}
+
+export interface Sensor {
+  id: string;
+  name: string;
+  type: string;
+  value: any;
+  unit: string;
+}
+
+export interface DeviceStatus {
+  status: 'online' | 'offline' | 'error' | 'maintenance';
+  lastSeen: Date;
+  battery?: number;
+  signal?: number;
+}
+
+export interface NetworkContext {
+  type: 'wifi' | 'cellular' | 'ethernet' | 'bluetooth';
+  strength: number;
+  speed: number;
+}
+
+export interface PluginDependency {
+  id: string;
+  version: string;
+  optional: boolean;
+}
+
+export interface PluginConfiguration {
+  enabled: boolean;
+  autoStart: boolean;
+  priority: number;
+  features: any;
+  experiments: any;
+  preferences: any;
+  customizations: any[];
+  integrations: any[];
+  apiKeys: any;
+  performance: any;
+  caching: any;
+  security: any;
+  privacy: any;
+  compliance: any;
+  audit: any;
+}
+
+export interface PluginMetrics {
+  requests: number;
+  errors: number;
+  averageResponseTime: number;
+  uptime: number;
+}
+
+export interface SystemInfo {
+  version: string;
+  environment: string;
+  platform: string;
+  architecture: string;
+}
+
+export interface ServiceRegistry {
+  [key: string]: any;
+}
+
+export interface StorageService {
+  get(key: string): Promise<any>;
+  set(key: string, value: any): Promise<void>;
+  delete(key: string): Promise<void>;
+}
+
+export interface NetworkService {
+  request(url: string, options: any): Promise<any>;
+}
+
+export interface SecurityServiceInterface {
+  validate(token: string): Promise<boolean>;
+  encrypt(data: any): Promise<string>;
+  decrypt(data: string): Promise<any>;
+}
+
+export interface VoiceService {
+  recognize(audio: any): Promise<string>;
+  synthesize(text: string): Promise<any>;
+}
+
+export interface VisionServiceInterface {
+  detect(image: any): Promise<any>;
+  recognize(image: any): Promise<any>;
+}
+
+export interface EnterpriseService {
+  authenticate(credentials: any): Promise<any>;
+  authorize(user: any, resource: any): Promise<boolean>;
+}
+
+export interface ConfigurationService {
+  get(key: string): any;
+  set(key: string, value: any): void;
+}
+
+export interface FeatureFlagService {
+  isEnabled(flag: string): boolean;
+  getFlags(): any;
+}
+
+export interface MetricsService {
+  increment(counter: string): void;
+  gauge(gauge: string, value: number): void;
+  histogram(histogram: string, value: number): void;
+}
+
+export interface LoggingService {
+  debug(message: string, meta?: any): void;
+  info(message: string, meta?: any): void;
+  warn(message: string, meta?: any): void;
+  error(message: string, error?: any, meta?: any): void;
+}
+
+export interface AnalyticsService {
+  track(event: string, properties: any): void;
+  identify(userId: string, traits: any): void;
+}
+
+export interface GenerativeService {
+  generate(prompt: string): Promise<string>;
+  complete(text: string): Promise<string>;
+}
+
+export interface MLService {
+  predict(input: any): Promise<any>;
+  train(data: any): Promise<any>;
+}
+
+export interface Language {
+  code: string;
+  name: string;
+  confidence: number;
+}
+
+export interface AudioData {
+  format: string;
+  sampleRate: number;
+  data: Buffer;
+}
+
+export interface VoiceModel {
+  id: string;
+  name: string;
+  language: string;
+  gender: string;
+}
+
+export interface ImageData {
+  format: string;
+  width: number;
+  height: number;
+  data: Buffer;
+}
+
+export interface ObjectDetectionResult {
+  objects: any[];
+  confidence: number;
+}
+
+export interface FaceRecognitionResult {
+  faces: any[];
+  confidence: number;
+}
+
+export interface OCRResult {
+  text: string;
+  confidence: number;
+  boundingBoxes: any[];
+}
+
+export interface SceneAnalysisResult {
+  scene: string;
+  objects: any[];
+  confidence: number;
+}
+
+export interface CarPlayService {
+  connect(): Promise<void>;
+  disconnect(): Promise<void>;
+}
+
+export interface AndroidAutoService {
+  connect(): Promise<void>;
+  disconnect(): Promise<void>;
+}
+
+export interface DiagnosticsService {
+  getStatus(): Promise<any>;
+  getErrors(): Promise<any[]>;
+}
+
+export interface RemoteControlService {
+  lock(): Promise<void>;
+  unlock(): Promise<void>;
+  start(): Promise<void>;
+  stop(): Promise<void>;
+}
+
+export interface NavigationService {
+  getRoute(origin: any, destination: any): Promise<any>;
+  getTraffic(): Promise<any>;
+}
+
+export interface AuthenticationService {
+  login(credentials: any): Promise<any>;
+  logout(token: string): Promise<void>;
+  refresh(token: string): Promise<any>;
+}
+
+export interface AuthorizationService {
+  check(user: any, resource: any, action: string): Promise<boolean>;
+  grant(user: any, resource: any, action: string): Promise<void>;
+  revoke(user: any, resource: any, action: string): Promise<void>;
+}
+
+export interface EncryptionService {
+  encrypt(data: any): Promise<string>;
+  decrypt(data: string): Promise<any>;
+  hash(data: string): Promise<string>;
+}
+
+export interface AuditService {
+  log(action: string, user: any, details: any): Promise<void>;
+  getLogs(filters: any): Promise<any[]>;
+}
+
+export interface ComplianceService {
+  check(data: any, standard: string): Promise<boolean>;
+  report(violation: any): Promise<void>;
+}
+
+export interface PermissionScope {
+  scope: 'user' | 'device' | 'system' | 'global';
+}
+
+export interface Condition {
+  field: string;
+  operator: string;
+  value: any;
+}
+
+export interface TimeConstraint {
+  start: string;
+  end: string;
+  days: string[];
+}
+
+export interface LocationConstraint {
+  type: 'geofence' | 'ip' | 'country';
+  value: any;
+}
+
+export interface ComplianceRequirement {
+  standard: string;
+  level: string;
+  requirements: string[];
+}
+
+export interface RetentionPolicy {
+  duration: string;
+  autoDelete: boolean;
+}
+
+export interface PluginStatus {
+  id: string;
+  name: string;
+  version: string;
+  status: string;
+  lastCheck: Date;
+}
+
+export interface IntegrationStatus {
+  id: string;
+  name: string;
+  status: string;
+  lastCheck: Date;
+}
+
+export interface AIStatus {
+  nlp: string;
+  speech: string;
+  vision: string;
+  generative: string;
+  models: any;
+}
+
+export interface SecurityStatus {
+  authentication: string;
+  authorization: string;
+  encryption: string;
+  audit: string;
+  lastThreatCheck: Date;
+}
+
+export interface RetryPolicy {
+  maxRetries: number;
+  backoff: string;
+}
+
+export interface UIStyle {
+  theme: string;
+  colors: any;
+  fonts: any;
+  spacing: any;
+}
+
+export interface UIInteraction {
+  type: string;
+  handler: string;
+  parameters: any;
+}
+
+export interface UIAccessibility {
+  screenReader: boolean;
+  highContrast: boolean;
+  largeText: boolean;
+  voiceOver: boolean;
+}
+
+export interface Emotion {
+  type: string;
+  intensity: number;
+}
+
+export interface VisualStyle {
+  theme: string;
+  layout: string;
+  colors: any;
+}
+
+export interface Animation {
+  type: string;
+  duration: number;
+  easing: string;
+}
+
+export interface AutomationRule {
+  id: string;
+  name: string;
+  conditions: any[];
+  actions: any[];
+  enabled: boolean;
+}
+
+export interface Device {
+  id: string;
+  name: string;
+  type: string;
+  status: string;
+  capabilities: string[];
+}
+
+export interface ProtocolSupport {
+  protocols: string[];
+  versions: any;
 }
 
 // ============================================================================

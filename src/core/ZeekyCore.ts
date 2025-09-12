@@ -13,7 +13,6 @@ import { WebServer } from './WebServer';
 import { WebSocketServer } from './WebSocketServer';
 import { 
   ZeekyConfig, 
-  ZeekyContext, 
   ZeekyRequest, 
   ZeekyResponse,
   SystemStatus,

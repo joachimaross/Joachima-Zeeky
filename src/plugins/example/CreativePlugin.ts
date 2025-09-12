@@ -36,9 +36,9 @@ export class CreativePlugin implements ZeekyPlugin {
       id: 'ai_generation',
       name: 'AI Generation',
       description: 'Generate creative content using AI',
-      category: 'ai_services',
-      level: 'internal',
-      scope: 'user',
+      category: 'ai_services' as any,
+      level: 'internal' as any,
+      scope: 'user' as any,
       resources: ['ai_models'],
       actions: ['generate'],
       conditions: [],
@@ -117,7 +117,7 @@ export class CreativePlugin implements ZeekyPlugin {
     }
   ];
   
-  private context: PluginContext;
+  private context!: PluginContext;
   private logger: Logger;
   private generatedContent: Map<string, GeneratedContent> = new Map();
   private aiModels: Map<string, AIModel> = new Map();
@@ -166,7 +166,7 @@ export class CreativePlugin implements ZeekyPlugin {
         timestamp: new Date(),
         success: false,
         type: 'error',
-        message: `Failed to handle intent: ${error.message}`,
+        message: `Failed to handle intent: ${error instanceof Error ? error.message : String(error)}`,
         error: error,
         metadata: {
           pluginId: this.id,
@@ -224,7 +224,7 @@ export class CreativePlugin implements ZeekyPlugin {
     };
   }
 
-  async updateConfiguration(config: any): Promise<void> {
+  async updateConfiguration(_config: any): Promise<void> {
     this.logger.info('Updating Creative Plugin configuration...');
     // Update configuration logic here
   }

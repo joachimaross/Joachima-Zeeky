@@ -36,9 +36,9 @@ export class SmartHomePlugin implements ZeekyPlugin {
       id: 'device_control',
       name: 'Device Control',
       description: 'Control smart home devices',
-      category: 'device_control',
-      level: 'confidential',
-      scope: 'home',
+      category: 'device_control' as any,
+      level: 'confidential' as any,
+      scope: 'home' as any,
       resources: ['devices'],
       actions: ['read', 'control'],
       conditions: [],
@@ -117,7 +117,7 @@ export class SmartHomePlugin implements ZeekyPlugin {
     }
   ];
   
-  private context: PluginContext;
+  private context!: PluginContext;
   private logger: Logger;
   private devices: Map<string, SmartDevice> = new Map();
   private scenes: Map<string, Scene> = new Map();
@@ -170,7 +170,7 @@ export class SmartHomePlugin implements ZeekyPlugin {
         timestamp: new Date(),
         success: false,
         type: 'error',
-        message: `Failed to handle intent: ${error.message}`,
+        message: `Failed to handle intent: ${error instanceof Error ? error.message : String(error)}`,
         error: error,
         metadata: {
           pluginId: this.id,
@@ -228,7 +228,7 @@ export class SmartHomePlugin implements ZeekyPlugin {
     };
   }
 
-  async updateConfiguration(config: any): Promise<void> {
+  async updateConfiguration(_config: any): Promise<void> {
     this.logger.info('Updating Smart Home Plugin configuration...');
     // Update configuration logic here
   }
