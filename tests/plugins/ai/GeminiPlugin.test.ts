@@ -70,4 +70,25 @@ describe('GeminiPlugin', () => {
     expect(response['type']).toBe(ResponseType.ERROR);
     expect(response['content']).toBe('Prompt is required to generate text.');
   });
+
+  it('should return an error for an unknown intent', async () => {
+    const intent: Intent = {
+      name: 'unknown_intent',
+      confidence: 0.9,
+    };
+
+    const context: ExecutionContext = {
+      requestId: 'test-request-id',
+      conversation: {
+        history: [],
+        entities: [],
+      },
+    };
+
+    const response: Response = await plugin.handleIntent(intent, context);
+
+    expect(response['success']).toBe(false);
+    expect(response['type']).toBe(ResponseType.ERROR);
+    expect(response['content']).toBe('Unknown intent handler: unknown_intent');
+  });
 });

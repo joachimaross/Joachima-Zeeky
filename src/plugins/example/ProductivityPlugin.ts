@@ -1,4 +1,4 @@
-import { ZeekyPlugin } from '@/core/ZeekyPlugin';
+import { ZeekyPlugin } from "@/core/ZeekyPlugin";
 import {
   ExecutionContext,
   Response,
@@ -15,64 +15,60 @@ import {
   HealthStatus,
   PluginMetrics,
   ResponseType,
-  ZeekyResponse,
-} from '@/types/ZeekyTypes';
-import { Logger } from '@/utils/Logger';
-import { 
-  Task, 
-  Note, 
-  Meeting, 
-} from '@/types/ProductivityPluginTypes';
+} from "@/types/ZeekyTypes";
+import { Logger } from "@/utils/Logger";
+import { Task, Note, Meeting } from "@/types/ProductivityPluginTypes";
 
 /**
  * Example Productivity Plugin
  * Demonstrates a productivity-focused plugin with calendar, task, and note management
  */
 export class ProductivityPlugin extends ZeekyPlugin {
-  id = 'com.zeeky.productivity';
-  name = 'Productivity Plugin';
-  version = '1.0.0';
-  description = 'Comprehensive productivity features including calendar, tasks, and notes';
-  author = 'Zeeky Team';
-  license = 'MIT';
+  id = "com.zeeky.productivity";
+  name = "Productivity Plugin";
+  version = "1.0.0";
+  description =
+    "Comprehensive productivity features including calendar, tasks, and notes";
+  author = "Zeeky Team";
+  license = "MIT";
   category = PluginCategory.PRODUCTIVITY;
-  subcategory = 'task_management';
-  tags = ['productivity', 'calendar', 'tasks', 'notes', 'organization'];
+  subcategory = "task_management";
+  tags = ["productivity", "calendar", "tasks", "notes", "organization"];
   priority = PriorityLevel.HIGH;
   complexity = ComplexityLevel.MEDIUM;
   dependencies = [];
   peerDependencies = [];
   conflicts = [];
-  
+
   capabilities: Capability[] = [
-    { name: 'calendar_management' },
-    { name: 'task_management' },
-    { name: 'note_taking' },
-    { name: 'reminder_setting' },
-    { name: 'schedule_optimization' }
+    { name: "calendar_management" },
+    { name: "task_management" },
+    { name: "note_taking" },
+    { name: "reminder_setting" },
+    { name: "schedule_optimization" },
   ];
-  
+
   permissions: Permission[] = [
     {
-      id: 'calendar_access',
-      name: 'Calendar Access',
-      description: 'Access to calendar data',
+      id: "calendar_access",
+      name: "Calendar Access",
+      description: "Access to calendar data",
       category: PermissionCategory.USER_DATA,
       level: PermissionLevel.CONFIDENTIAL,
       scope: PermissionScope.USER,
-      resources: ['calendar'],
-      actions: ['read', 'write', 'delete'],
+      resources: ["calendar"],
+      actions: ["read", "write", "delete"],
       conditions: [],
       timeConstraints: [],
       locationConstraints: [],
       compliance: [],
       auditRequired: true,
-      retentionPolicy: { duration: '1y', autoDelete: true }
-    }
+      retentionPolicy: { duration: "1y", autoDelete: true },
+    },
   ];
-  
+
   intents: Intent[] = [];
-  
+
   private logger: Logger;
   private tasks: Map<string, Task> = new Map();
   private notes: Map<string, Note> = new Map();
@@ -84,39 +80,47 @@ export class ProductivityPlugin extends ZeekyPlugin {
   }
 
   async initialize(): Promise<void> {
-    this.logger.info('Initializing Productivity Plugin...');
+    this.logger.info("Initializing Productivity Plugin...");
     this.setupPeriodicTasks();
-    this.logger.info('Productivity Plugin initialized successfully');
+    this.logger.info("Productivity Plugin initialized successfully");
   }
 
-  async handleIntent(intent: Intent, context: ExecutionContext): Promise<Response> {
+  async handleIntent(
+    intent: Intent,
+    context: ExecutionContext,
+  ): Promise<Response> {
     this.logger.info(`Handling intent: ${intent.name}`);
-    
+
     try {
       switch (intent.name) {
-        case 'create_task':
+        case "create_task":
           return await this.handleCreateTask(intent, context);
         default:
           throw new Error(`Unknown intent handler: ${intent.name}`);
       }
-    } catch (error: any) {
-      this.logger.error(`Error handling intent ${intent.name}:`, error);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      this.logger.error(
+        `Error handling intent ${intent.name}:`,
+        error instanceof Error ? error : new Error(String(error)),
+      );
       return {
-        requestId: context['requestId'],
+        requestId: context["requestId"],
         success: false,
         type: ResponseType.ERROR,
-        content: `Failed to handle intent: ${error.message}`,
-        error: error,
-      } as ZeekyResponse;
+        content: `Failed to handle intent: ${errorMessage}`,
+        error: error instanceof Error ? error : new Error(errorMessage),
+      } as Response;
     }
   }
 
   async cleanup(): Promise<void> {
-    this.logger.info('Cleaning up Productivity Plugin...');
+    this.logger.info("Cleaning up Productivity Plugin...");
     this.tasks.clear();
     this.notes.clear();
     this.meetings.clear();
-    this.logger.info('Productivity Plugin cleaned up successfully');
+    this.logger.info("Productivity Plugin cleaned up successfully");
   }
 
   getConfiguration(): PluginConfiguration {
@@ -124,7 +128,7 @@ export class ProductivityPlugin extends ZeekyPlugin {
   }
 
   async updateConfiguration(): Promise<void> {
-    this.logger.info('Updating Productivity Plugin configuration...');
+    this.logger.info("Updating Productivity Plugin configuration...");
   }
 
   getHealthStatus(): HealthStatus {
@@ -135,9 +139,17 @@ export class ProductivityPlugin extends ZeekyPlugin {
     return {};
   }
 
-  private async handleCreateTask(intent: Intent, context: ExecutionContext): Promise<Response> {
-    this.logger.info('Creating task...', intent, context);
-    return {} as Response;
+  private async handleCreateTask(
+    intent: Intent,
+    context: ExecutionContext,
+  ): Promise<Response> {
+    this.logger.info("Creating task...", intent, context);
+    return {
+      requestId: context["requestId"],
+      success: true,
+      type: ResponseType.CONFIRMATION,
+      content: "The task has been created successfully.",
+    };
   }
 
   private setupPeriodicTasks(): void {}

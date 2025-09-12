@@ -43,4 +43,14 @@ describe('SmartHomePlugin', () => {
     expect(result['type']).toBe(ResponseType.CONFIRMATION);
     expect(result['content']).toBe('All lights have been turned off.');
   });
+
+  it('should return an error for an unknown intent', async () => {
+    const intent: Intent = { name: 'unknown_intent', confidence: 1.0 };
+    const context: ExecutionContext = { requestId: 'test-request-unknown' };
+    const result = await plugin.handleIntent(intent, context);
+
+    expect(result['success']).toBe(false);
+    expect(result['type']).toBe(ResponseType.ERROR);
+    expect(result['content']).toBe('Unknown intent handler: unknown_intent');
+  });
 });
