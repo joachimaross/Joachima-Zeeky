@@ -15,6 +15,7 @@ import { ILifecycleService } from "@/interfaces";
 import { WebServer } from "./web/WebServer";
 import { GeminiService } from "@/services/GeminiService";
 import { GeminiPlugin } from "@/plugins/ai/GeminiPlugin";
+import { HealthAndFitnessPlugin } from "@/plugins/health/HealthAndFitnessPlugin";
 
 // Register services with direct imports to prevent circular dependencies
 container.register<Logger>(Logger, { useClass: Logger });
@@ -70,6 +71,7 @@ export class ZeekyApplication {
       // Register plugins
       const pluginManager = container.resolve(PluginManager);
       pluginManager.register(container.resolve(GeminiPlugin));
+      pluginManager.register(container.resolve(HealthAndFitnessPlugin));
       this.logger.info("Plugins registered");
 
       // Start all registered lifecycle services
@@ -86,10 +88,14 @@ export class ZeekyApplication {
       this.setupGracefulShutdown();
     } catch (error) {
       if (error instanceof Error) {
-        this.logger.error(`Failed to start Zeeky application: ${error.message}`);
+        this.logger.error(
+          `Failed to start Zeeky application: ${error.message}`,
+        );
         this.logger.error(`Stack: ${error.stack}`);
       } else {
-        this.logger.error(`Failed to start Zeeky application with an unknown error: ${error}`);
+        this.logger.error(
+          `Failed to start Zeeky application with an unknown error: ${error}`,
+        );
       }
       process.exit(1);
     }
@@ -107,7 +113,9 @@ export class ZeekyApplication {
         if (error instanceof Error) {
           this.logger.error(`Error during shutdown: ${error.message}`);
         } else {
-          this.logger.error(`Error during shutdown with an unknown error: ${error}`);
+          this.logger.error(
+            `Error during shutdown with an unknown error: ${error}`,
+          );
         }
         process.exit(1);
       }
