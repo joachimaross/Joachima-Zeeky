@@ -11,6 +11,8 @@ import { MemoryManager } from './MemoryManager';
 import { FeatureRegistry } from './FeatureRegistry';
 import { WebServer } from './WebServer';
 import { WebSocketServer } from './WebSocketServer';
+import { PluginRegistry } from './PluginRegistry';
+import { VoiceProcessor } from '../voice/VoiceProcessor';
 import { 
   ZeekyConfig, 
   ZeekyRequest, 
@@ -28,6 +30,7 @@ export class ZeekyCore extends EventEmitter {
   private config: Config;
   private securityManager: SecurityManager;
   private pluginManager: PluginManager;
+  private pluginRegistry: PluginRegistry;
   private aiManager: AIManager;
   private integrationManager: IntegrationManager;
   private intentRouter: IntentRouter;
@@ -36,6 +39,7 @@ export class ZeekyCore extends EventEmitter {
   private featureRegistry: FeatureRegistry;
   private webServer: WebServer;
   private webSocketServer: WebSocketServer;
+  private voiceProcessor: VoiceProcessor;
   private isInitialized: boolean = false;
   private isRunning: boolean = false;
 
@@ -50,12 +54,14 @@ export class ZeekyCore extends EventEmitter {
     this.integrationManager = config.integrationManager;
     
     // Initialize core components
+    this.pluginRegistry = new PluginRegistry(this.logger, this.config);
     this.intentRouter = new IntentRouter();
     this.contextManager = new ContextManager();
     this.memoryManager = new MemoryManager();
     this.featureRegistry = new FeatureRegistry();
     this.webServer = new WebServer();
     this.webSocketServer = new WebSocketServer();
+    this.voiceProcessor = new VoiceProcessor(this.logger, this.config);
   }
 
   /**
@@ -71,6 +77,8 @@ export class ZeekyCore extends EventEmitter {
       this.logger.info('Initializing Zeeky core system...');
 
       // Initialize core components
+      await this.pluginRegistry.initialize();
+      await this.voiceProcessor.initialize();
       await this.featureRegistry.initialize();
       await this.memoryManager.initialize();
       await this.contextManager.initialize();
