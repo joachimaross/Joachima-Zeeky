@@ -1,0 +1,205 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "zeeky.fullname" . }}-kernel
+  labels:
+    {{- include "zeeky.labels" . | nindent 4 }}
+    app.kubernetes.io/component: kernel
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount | default 2 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "zeeky.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: kernel
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        {{- include "zeeky.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: kernel
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "zeeky.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: kernel
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          env:
+            - name: POSTGRES_HOST
+              value: "{{ .Values.env.POSTGRES_HOST }}"
+            - name: POSTGRES_PORT
+              value: "{{ .Values.env.POSTGRES_PORT }}"
+            - name: POSTGRES_DB
+              value: "{{ .Values.env.POSTGRES_DB }}"
+            - name: POSTGRES_USER
+              value: "{{ .Values.env.POSTGRES_USER }}"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "zeeky.fullname" . }}-secret
+                  key: postgres-password
+            - name: REDIS_HOST
+              value: "{{ .Values.env.REDIS_HOST }}"
+            - name: REDIS_PORT
+              value: "{{ .Values.env.REDIS_PORT }}"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "zeeky.fullname" . }}-secret
+                  key: redis-password
+            - name: MINIO_ENDPOINT
+              value: "{{ .Values.env.MINIO_ENDPOINT }}"
+            - name: MINIO_ACCESS_KEY
+              value: "{{ .Values.env.MINIO_ACCESS_KEY }}"
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "zeeky.fullname" . }}-secret
+                  key: minio-password
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "zeeky.fullname" . }}-secret
+                  key: jwt-secret
+            - name: ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "zeeky.fullname" . }}-secret
+                  key: encryption-key
+            - name: NODE_ENV
+              value: "{{ .Values.env.NODE_ENV }}"
+            - name: LOG_LEVEL
+              value: "{{ .Values.env.LOG_LEVEL }}"
+            - name: API_PORT
+              value: "{{ .Values.env.API_PORT }}"
+            {{- if .Values.env.OPENAI_API_KEY }}
+            - name: OPENAI_API_KEY
+              value: "{{ .Values.env.OPENAI_API_KEY }}"
+            {{- end }}
+            {{- if .Values.env.ANTHROPIC_API_KEY }}
+            - name: ANTHROPIC_API_KEY
+              value: "{{ .Values.env.ANTHROPIC_API_KEY }}"
+            {{- end }}
+            {{- if .Values.env.GOOGLE_API_KEY }}
+            - name: GOOGLE_API_KEY
+              value: "{{ .Values.env.GOOGLE_API_KEY }}"
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "zeeky.fullname" . }}-config
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "zeeky.fullname" . }}-frontend
+  labels:
+    {{- include "zeeky.labels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+spec:
+  replicas: {{ .Values.frontend.replicas | default 2 }}
+  selector:
+    matchLabels:
+      {{- include "zeeky.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: frontend
+  template:
+    metadata:
+      labels:
+        {{- include "zeeky.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: frontend
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: frontend
+          image: "{{ .Values.frontend.image.registry }}/{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.frontend.service.port }}
+              protocol: TCP
+          env:
+            - name: REACT_APP_API_URL
+              value: "https://api.{{ .Values.domain | default "zeeky.local" }}"
+            - name: NODE_ENV
+              value: "{{ .Values.env.NODE_ENV }}"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

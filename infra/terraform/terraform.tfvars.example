@@ -1,0 +1,79 @@
+# Zeeky Infrastructure - Example Variables
+# Copy this file to terraform.tfvars and customize for your environment
+
+# Environment Configuration
+environment = "dev"
+aws_region  = "us-west-2"
+
+# Cluster Configuration
+cluster_name        = "zeeky-cluster"
+kubernetes_version  = "1.28"
+
+# VPC Configuration
+vpc_cidr = "10.0.0.0/16"
+availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c"]
+private_subnet_cidrs = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+public_subnet_cidrs  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+
+# EKS Node Group Configuration
+node_instance_types = ["t3.medium", "t3.large"]
+node_desired_size   = 3
+node_min_size       = 1
+node_max_size       = 10
+
+# PostgreSQL Configuration
+postgres_version              = "15.4"
+postgres_instance_class       = "db.t3.micro"
+postgres_allocated_storage    = 20
+postgres_max_allocated_storage = 100
+postgres_db_name              = "zeeky"
+postgres_username             = "zeeky"
+postgres_password             = "your-secure-password-here"
+postgres_backup_retention_period = 7
+
+# Redis Configuration
+redis_node_type        = "cache.t3.micro"
+redis_num_cache_nodes  = 2
+
+# Domain Configuration
+domain_name = "zeeky.local"
+
+# Monitoring Configuration
+enable_monitoring = true
+enable_logging    = true
+enable_tracing    = true
+
+# Scaling Configuration
+enable_autoscaling        = true
+min_replicas              = 2
+max_replicas              = 10
+target_cpu_utilization    = 70
+
+# Security Configuration
+enable_network_policies           = true
+enable_pod_security_standards     = true
+enable_rbac                       = true
+
+# Resource Configuration
+resource_limits = {
+  cpu    = "1000m"
+  memory = "2Gi"
+}
+
+resource_requests = {
+  cpu    = "100m"
+  memory = "256Mi"
+}
+
+# Feature Flags
+enable_plugins             = true
+enable_mobile_sdk          = true
+enable_voice_interface     = false
+enable_enterprise_features = false
+
+# Additional Tags
+additional_tags = {
+  Owner       = "DevOps Team"
+  Project     = "Zeeky AI Assistant"
+  Environment = "Development"
+}
