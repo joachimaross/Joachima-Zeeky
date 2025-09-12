@@ -1,15 +1,15 @@
-import { singleton } from 'tsyringe';
+import { singleton } from "tsyringe";
 
 @singleton()
 export class ContextManager {
-  private context: Map<string, any> = new Map();
+  private context: Map<string, unknown> = new Map();
 
-  public set(key: string, value: any): void {
+  public set(key: string, value: unknown): void {
     this.context.set(key, value);
   }
 
   public get<T>(key: string): T | undefined {
-    return this.context.get(key);
+    return this.context.get(key) as T | undefined;
   }
 
   public has(key: string): boolean {

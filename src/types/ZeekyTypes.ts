@@ -57,7 +57,7 @@ export interface ZeekyResponse {
   success: boolean;
   type: ResponseType;
   content: string;
-  data?: any;
+  data?: unknown;
   error?: Error;
   timestamp: Date;
   latency: number;
@@ -284,7 +284,7 @@ export interface HomeAutomationService {
   controlDevice(
     deviceId: string,
     action: string,
-    params: any,
+    params: unknown,
   ): Promise<Response>;
   activateScene(sceneId: string): Promise<Response>;
   createRule(rule: AutomationRule): Promise<Response>;
@@ -468,7 +468,7 @@ export interface Action {
   id: string;
   type: ActionType;
   target: string;
-  parameters: Record<string, any>;
+  parameters: Record<string, unknown>;
   confirmation: ConfirmationLevel;
   timeout: number;
   retryPolicy: RetryPolicy;
@@ -497,7 +497,7 @@ export enum ConfirmationLevel {
 
 export interface UIElement {
   type: UIElementType;
-  content: any;
+  content: unknown;
   style: UIStyle;
   interaction: UIInteraction;
   accessibility: UIAccessibility;
@@ -525,7 +525,7 @@ export interface VoiceResponse {
 
 export interface VisualResponse {
   type: VisualType;
-  content: any;
+  content: unknown;
   style: VisualStyle;
   animation: Animation;
 }
@@ -555,7 +555,7 @@ export interface AuditEntry {
   timestamp: Date;
   userId: string;
   action: string;
-  details: any;
+  details: unknown;
 }
 
 export interface ConversationEntry {
@@ -567,7 +567,7 @@ export interface ConversationEntry {
 
 export interface Entity {
   name: string;
-  value: any;
+  value: unknown;
 }
 
 export interface Intent {
@@ -614,7 +614,7 @@ export interface Capability {
 
 export interface Sensor {
   name: string;
-  value: any;
+  value: unknown;
 }
 
 export enum DeviceStatus {
@@ -632,66 +632,38 @@ export interface PluginDependency {
   version: string;
 }
 
-export interface PluginConfiguration {
-  [key: string]: any;
-}
+export type PluginConfiguration = Record<string, unknown>;
 
-export interface PluginMetrics {
-  [key: string]: any;
-}
+export type PluginMetrics = Record<string, unknown>;
 
 export interface SystemInfo {
   os: string;
   version: string;
 }
 
-export interface ServiceRegistry {
-  [key: string]: any;
-}
+export type ServiceRegistry = Record<string, unknown>;
 
-export interface StorageService {
-  [key: string]: any;
-}
+export type StorageService = Record<string, unknown>;
 
-export interface NetworkService {
-  [key: string]: any;
-}
+export type NetworkService = Record<string, unknown>;
 
-export interface VoiceService {
-  [key: string]: any;
-}
+export type VoiceService = Record<string, unknown>;
 
-export interface EnterpriseService {
-  [key: string]: any;
-}
+export type EnterpriseService = Record<string, unknown>;
 
-export interface ConfigurationService {
-  [key: string]: any;
-}
+export type ConfigurationService = Record<string, unknown>;
 
-export interface FeatureFlagService {
-  [key: string]: any;
-}
+export type FeatureFlagService = Record<string, unknown>;
 
-export interface MetricsService {
-  [key: string]: any;
-}
+export type MetricsService = Record<string, unknown>;
 
-export interface LoggingService {
-  [key: string]: any;
-}
+export type LoggingService = Record<string, unknown>;
 
-export interface AnalyticsService {
-  [key: string]: any;
-}
+export type AnalyticsService = Record<string, unknown>;
 
-export interface GenerativeService {
-  [key: string]: any;
-}
+export type GenerativeService = Record<string, unknown>;
 
-export interface MLService {
-  [key: string]: any;
-}
+export type MLService = Record<string, unknown>;
 
 export interface Language {
   name: string;
@@ -709,29 +681,19 @@ export interface VoiceModel {
 
 export declare class ImageData {}
 
-export interface ObjectDetectionResult {
-  [key: string]: any;
-}
+export type ObjectDetectionResult = Record<string, unknown>;
 
-export interface FaceRecognitionResult {
-  [key: string]: any;
-}
+export type FaceRecognitionResult = Record<string, unknown>;
 
 export interface OCRResult {
   text: string;
 }
 
-export interface SceneAnalysisResult {
-  [key: string]: any;
-}
+export type SceneAnalysisResult = Record<string, unknown>;
 
-export interface APIService {
-  [key: string]: any;
-}
+export type APIService = Record<string, unknown>;
 
-export interface IoTService {
-  [key: string]: any;
-}
+export type IoTService = Record<string, unknown>;
 
 export interface AutomationRule {
   id: string;
@@ -743,49 +705,27 @@ export interface Device {
   name: string;
 }
 
-export interface ProtocolSupport {
-  [key: string]: any;
-}
+export type ProtocolSupport = Record<string, unknown>;
 
-export interface CarPlayService {
-  [key: string]: any;
-}
+export type CarPlayService = Record<string, unknown>;
 
-export interface AndroidAutoService {
-  [key: string]: any;
-}
+export type AndroidAutoService = Record<string, unknown>;
 
-export interface DiagnosticsService {
-  [key: string]: any;
-}
+export type DiagnosticsService = Record<string, unknown>;
 
-export interface RemoteControlService {
-  [key: string]: any;
-}
+export type RemoteControlService = Record<string, unknown>;
 
-export interface NavigationService {
-  [key: string]: any;
-}
+export type NavigationService = Record<string, unknown>;
 
-export interface AuthenticationService {
-  [key: string]: any;
-}
+export type AuthenticationService = Record<string, unknown>;
 
-export interface AuthorizationService {
-  [key: string]: any;
-}
+export type AuthorizationService = Record<string, unknown>;
 
-export interface EncryptionService {
-  [key: string]: any;
-}
+export type EncryptionService = Record<string, unknown>;
 
-export interface AuditService {
-  [key: string]: any;
-}
+export type AuditService = Record<string, unknown>;
 
-export interface ComplianceService {
-  [key: string]: any;
-}
+export type ComplianceService = Record<string, unknown>;
 
 export enum PermissionScope {
   USER,
@@ -793,77 +733,41 @@ export enum PermissionScope {
   SYSTEM,
 }
 
-export interface Condition {
-  [key: string]: any;
-}
+export type Condition = Record<string, unknown>;
 
-export interface TimeConstraint {
-  [key: string]: any;
-}
+export type TimeConstraint = Record<string, unknown>;
 
-export interface LocationConstraint {
-  [key: string]: any;
-}
+export type LocationConstraint = Record<string, unknown>;
 
-export interface ComplianceRequirement {
-  [key: string]: any;
-}
+export type ComplianceRequirement = Record<string, unknown>;
 
-export interface RetentionPolicy {
-  [key: string]: any;
-}
+export type RetentionPolicy = Record<string, unknown>;
 
-export interface PluginStatus {
-  [key: string]: any;
-}
+export type PluginStatus = Record<string, unknown>;
 
-export interface IntegrationStatus {
-  [key: string]: any;
-}
+export type IntegrationStatus = Record<string, unknown>;
 
-export interface AIStatus {
-  [key: string]: any;
-}
+export type AIStatus = Record<string, unknown>;
 
-export interface SecurityStatus {
-  [key: string]: any;
-}
+export type SecurityStatus = Record<string, unknown>;
 
-export interface RetryPolicy {
-  [key: string]: any;
-}
+export type RetryPolicy = Record<string, unknown>;
 
-export interface UIStyle {
-  [key: string]: any;
-}
+export type UIStyle = Record<string, unknown>;
 
-export interface UIInteraction {
-  [key: string]: any;
-}
+export type UIInteraction = Record<string, unknown>;
 
-export interface UIAccessibility {
-  [key: string]: any;
-}
+export type UIAccessibility = Record<string, unknown>;
 
-export interface Emotion {
-  [key: string]: any;
-}
+export type Emotion = Record<string, unknown>;
 
-export interface VisualStyle {
-  [key: string]: any;
-}
+export type VisualStyle = Record<string, unknown>;
 
-export interface Animation {
-  [key: string]: any;
-}
+export type Animation = Record<string, unknown>;
 
-export interface Response {
-  [key: string]: any;
-}
+export type Response = Record<string, unknown>;
 
-export interface ExecutionContext {
-  [key: string]: any;
-}
+export type ExecutionContext = Record<string, unknown>;
 
 export enum TaskPriority {
   LOW,

@@ -1,4 +1,15 @@
-import { Intent, ExecutionContext, Response, PluginConfiguration, HealthStatus, PluginMetrics } from '@/types/ZeekyTypes';
+import {
+  Intent,
+  ExecutionContext,
+  Response,
+  PluginConfiguration,
+  HealthStatus,
+  PluginMetrics,
+  PluginDependency,
+  Capability,
+  Permission,
+  PluginContext,
+} from "@/types/ZeekyTypes";
 
 export abstract class ZeekyPlugin {
   abstract id: string;
@@ -12,15 +23,18 @@ export abstract class ZeekyPlugin {
   abstract tags: string[];
   abstract priority: number;
   abstract complexity: string;
-  abstract dependencies: any[];
+  abstract dependencies: PluginDependency[];
   abstract peerDependencies: string[];
   abstract conflicts: string[];
-  abstract capabilities: any[];
-  abstract permissions: any[];
-  abstract intents: any[];
+  abstract capabilities: Capability[];
+  abstract permissions: Permission[];
+  abstract intents: Intent[];
 
-  abstract initialize(context: any): Promise<void>;
-  abstract handleIntent(intent: Intent, context: ExecutionContext): Promise<Response>;
+  abstract initialize(context: PluginContext): Promise<void>;
+  abstract handleIntent(
+    intent: Intent,
+    context: ExecutionContext,
+  ): Promise<Response>;
   abstract cleanup(): Promise<void>;
   abstract getConfiguration(): PluginConfiguration;
   abstract updateConfiguration(config: PluginConfiguration): Promise<void>;

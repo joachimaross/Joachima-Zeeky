@@ -1,6 +1,6 @@
-import { ILifecycleService } from '@/interfaces';
-import { ZeekyPlugin } from './ZeekyPlugin';
-import { singleton } from 'tsyringe';
+import { ILifecycleService } from "@/interfaces";
+import { ZeekyPlugin } from "./ZeekyPlugin";
+import { singleton } from "tsyringe";
 
 @singleton()
 export class PluginManager implements ILifecycleService {

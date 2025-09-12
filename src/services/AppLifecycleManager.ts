@@ -17,8 +17,11 @@ export class AppLifecycleManager {
       logger.info("Starting Zeeky Core...");
       await this.core.initialize();
       logger.info("Zeeky Core started successfully.");
-    } catch (error: any) {
-      logger.error("Failed to start Zeeky Core:", error);
+    } catch (error) {
+      logger.error(
+        "Failed to start Zeeky Core:",
+        error instanceof Error ? error : new Error(String(error)),
+      );
       process.exit(1);
     }
   }
@@ -29,13 +32,16 @@ export class AppLifecycleManager {
       await this.core.cleanup();
       logger.info("Zeeky Core stopped successfully.");
       process.exit(0);
-    } catch (error: any) {
-      logger.error("Failed to stop Zeeky Core gracefully:", error);
+    } catch (error) {
+      logger.error(
+        "Failed to stop Zeeky Core gracefully:",
+        error instanceof Error ? error : new Error(String(error)),
+      );
       process.exit(1);
     }
   }
 
-  public handleRejection(reason: any, promise: Promise<any>): void {
+  public handleRejection(reason: unknown, promise: Promise<unknown>): void {
     logger.error("Unhandled Promise Rejection:", { reason, promise });
   }
 

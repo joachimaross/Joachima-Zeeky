@@ -41,21 +41,28 @@ export interface AutomationRule {
 export interface RuleTrigger {
   type: string;
   deviceId: string;
-  value?: any;
+  value?: unknown;
 }
 
 export interface RuleCondition {
   type: string;
   start?: string;
   end?: string;
-  value?: any;
+  value?: unknown;
 }
 
 export interface RuleAction {
   type: string;
   deviceId: string;
   action: string;
-  value?: any;
+  value?: unknown;
 }
 
-export type DeviceType = 'light' | 'thermostat' | 'security' | 'sensor' | 'camera' | 'lock' | 'switch';
+export type DeviceType =
+  | "light"
+  | "thermostat"
+  | "security"
+  | "sensor"
+  | "camera"
+  | "lock"
+  | "switch";

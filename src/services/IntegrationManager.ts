@@ -1,5 +1,5 @@
-import { singleton } from 'tsyringe';
-import { ILifecycleService } from '@/interfaces';
+import { singleton } from "tsyringe";
+import { ILifecycleService } from "@/interfaces";
 
 interface Integration {
   name: string;

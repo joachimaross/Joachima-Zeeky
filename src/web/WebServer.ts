@@ -27,9 +27,13 @@ export class WebServer {
       try {
         const response = await this.core.processCommand(command);
         res.send(response);
-      } catch (error: any) {
+      } catch (error: unknown) {
         this.logger.error(`Error processing command: ${command}`, error);
-        res.status(500).send({ error: error.message });
+        const message =
+          error instanceof Error
+            ? error.message
+            : "An unknown error has occurred.";
+        res.status(500).send({ error: message });
       }
     });
   }

@@ -1,8 +1,12 @@
+export type Metadata = {
+  [key: string]: string | number | boolean | string[] | Record<string, unknown>;
+};
+
 export interface GeneratedContent {
   id: string;
-  type: 'music' | 'image' | 'text';
-  content: any;
-  metadata: any;
+  type: "music" | "image" | "text";
+  content: unknown;
+  metadata: Metadata;
   createdAt: Date;
   expiresAt: Date;
 }
@@ -51,7 +55,7 @@ export interface GeneratedMusic {
   audioData: string;
   duration: number;
   format: string;
-  metadata: any;
+  metadata: Metadata;
 }
 
 export interface GeneratedImage {
@@ -59,12 +63,12 @@ export interface GeneratedImage {
   imageData: string;
   format: string;
   size: string;
-  metadata: any;
+  metadata: Metadata;
 }
 
 export interface GeneratedText {
   id: string;
   text: string;
   wordCount: number;
-  metadata: any;
+  metadata: Metadata;
 }

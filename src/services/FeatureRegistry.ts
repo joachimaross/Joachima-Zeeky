@@ -1,10 +1,10 @@
-import { singleton } from 'tsyringe';
+import { singleton } from "tsyringe";
 
 interface Feature {
   name: string;
   description: string;
   intent: string;
-  action: (...args: any[]) => any;
+  action: (...args: unknown[]) => unknown;
 }
 
 @singleton()

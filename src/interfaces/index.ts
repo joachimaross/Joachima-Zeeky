@@ -1,1 +1,1 @@
-export * from './ILifecycleService';
+export * from "./ILifecycleService";

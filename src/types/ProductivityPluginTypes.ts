@@ -31,6 +31,10 @@ export interface Meeting {
   updatedAt: Date;
 }
 
-export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent';
-export type TaskStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
-export type MeetingStatus = 'scheduled' | 'in_progress' | 'completed' | 'cancelled';
+export type TaskPriority = "low" | "medium" | "high" | "urgent";
+export type TaskStatus = "pending" | "in_progress" | "completed" | "cancelled";
+export type MeetingStatus =
+  | "scheduled"
+  | "in_progress"
+  | "completed"
+  | "cancelled";

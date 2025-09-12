@@ -1,10 +1,10 @@
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
 export class Config {
-  static get(key: string, defaultValue?: any): any {
-    return process.env[key] || defaultValue;
+  static get<T>(key: string, defaultValue?: T): T {
+    return (process.env[key] as T) || defaultValue;
   }
 
   static getNumber(key: string, defaultValue?: number): number {
@@ -12,6 +12,6 @@ export class Config {
   }
 
   static getBoolean(key: string, defaultValue?: boolean): boolean {
-    return this.get(key, defaultValue) === 'true';
+    return this.get(key, defaultValue) === "true";
   }
 }
