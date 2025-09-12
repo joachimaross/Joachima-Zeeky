@@ -27,7 +27,7 @@ export class IntentRouter extends EventEmitter {
     this.logger.info('Stopping intent router...');
   }
 
-  async routeIntent(request: any, _context: any): Promise<any> {
+  async routeIntent(request: any): Promise<any> {
     this.logger.debug('Routing intent for request:', request.id);
     return {
       id: `intent-${request.id}`,
@@ -38,7 +38,7 @@ export class IntentRouter extends EventEmitter {
     };
   }
 
-  async executeIntent(intent: any, _context: any): Promise<any> {
+  async executeIntent(intent: any): Promise<any> {
     this.logger.debug('Executing intent:', intent.id);
     return {
       id: `response-${intent.id}`,

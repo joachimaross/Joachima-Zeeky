@@ -232,7 +232,7 @@ export class SmartHomePlugin implements ZeekyPlugin {
     };
   }
 
-  async updateConfiguration(_config: any): Promise<void> {
+  async updateConfiguration(): Promise<void> {
     this.logger.info('Updating Smart Home Plugin configuration...');
     // Update configuration logic here
   }
@@ -600,7 +600,7 @@ export class SmartHomePlugin implements ZeekyPlugin {
     };
   }
 
-  private async checkDeviceConnectivity(_device: SmartDevice): Promise<boolean> {
+  private async checkDeviceConnectivity(): Promise<boolean> {
     // Simulate connectivity check
     return Math.random() > 0.1; // 90% chance of being online
   }

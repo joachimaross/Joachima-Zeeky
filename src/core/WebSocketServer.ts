@@ -34,7 +34,7 @@ export class WebSocketServer extends EventEmitter {
     return this.connections.size;
   }
 
-  async broadcast(_message: any): Promise<void> {
+  async broadcast(): Promise<void> {
     this.logger.debug('Broadcasting message to', this.connections.size, 'connections');
     // Broadcast logic will be implemented
     // for (const connection of this.connections.values()) {

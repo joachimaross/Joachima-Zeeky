@@ -278,6 +278,11 @@ export interface SpeechService {
   detectWakeWord(audio: AudioData): Promise<boolean>;
 }
 
+export interface VoiceService {
+  synthesize(text: string): Promise<any>;
+  recognize(audio: any): Promise<string>;
+}
+
 export interface VisionService {
   detectObjects(image: ImageData): Promise<ObjectDetectionResult>;
   recognizeFaces(image: ImageData): Promise<FaceRecognitionResult>;
@@ -740,37 +745,7 @@ export interface NetworkService {
   request(url: string, options?: any): Promise<any>;
 }
 
-export interface SecurityService {
-  validate(token: string): Promise<boolean>;
-  encrypt(data: any): Promise<string>;
-  decrypt(data: string): Promise<any>;
-}
-
-export interface AIService {
-  process(text: string): Promise<any>;
-}
-
-export interface VoiceService {
-  synthesize(text: string): Promise<any>;
-  recognize(audio: any): Promise<string>;
-}
-
-export interface VisionService {
-  analyze(image: any): Promise<any>;
-}
-
-export interface IntegrationService {
-  connect(config: any): Promise<void>;
-  disconnect(): Promise<void>;
-}
-
-export interface HomeAutomationService {
-  controlDevice(deviceId: string, action: string): Promise<any>;
-}
-
-export interface VehicleService {
-  getStatus(): Promise<any>;
-}
+// Duplicate interfaces removed - already defined above
 
 export interface EnterpriseService {
   authenticate(credentials: any): Promise<any>;

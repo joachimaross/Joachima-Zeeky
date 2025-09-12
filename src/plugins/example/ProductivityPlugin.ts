@@ -206,7 +206,7 @@ export class ProductivityPlugin implements ZeekyPlugin {
     };
   }
 
-  async updateConfiguration(_config: any): Promise<void> {
+  async updateConfiguration(): Promise<void> {
     this.logger.info('Updating Productivity Plugin configuration...');
     // Update configuration logic here
   }
