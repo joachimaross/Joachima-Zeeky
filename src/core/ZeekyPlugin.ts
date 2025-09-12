@@ -1,3 +1,16 @@
+export {
+  Intent,
+  ExecutionContext,
+  Response,
+  PluginConfiguration,
+  HealthStatus,
+  PluginMetrics,
+  PluginDependency,
+  Capability,
+  Permission,
+  PluginContext,
+} from "@/types/ZeekyTypes";
+
 import {
   Intent,
   ExecutionContext,

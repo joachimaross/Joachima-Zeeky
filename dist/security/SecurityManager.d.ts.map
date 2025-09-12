@@ -1,1 +1,0 @@
-{"version":3,"file":"SecurityManager.d.ts","sourceRoot":"","sources":["../../src/security/SecurityManager.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,MAAM,cAAc,CAAC;AACjD,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEjC,qBACa,eAAgB,YAAW,iBAAiB;IAC3C,OAAO,CAAC,MAAM;gBAAN,MAAM,EAAE,MAAM;IAErB,KAAK,IAAI,OAAO,CAAC,IAAI,CAAC;IAMtB,IAAI,IAAI,OAAO,CAAC,IAAI,CAAC;CAOnC"}

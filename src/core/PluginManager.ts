@@ -6,6 +6,10 @@ import { singleton } from "tsyringe";
 export class PluginManager implements ILifecycleService {
   private plugins: ZeekyPlugin[] = [];
 
+  public register(plugin: ZeekyPlugin): void {
+    this.plugins.push(plugin);
+  }
+
   public async start(): Promise<void> {
     await this.loadPlugins();
   }
@@ -17,6 +21,11 @@ export class PluginManager implements ILifecycleService {
   }
 
   private async loadPlugins(): Promise<void> {
-    // Dynamically load plugins here
+    // The loadPlugins method is now a placeholder,
+    // as plugins are registered manually.
+  }
+
+  public getPlugins(): ZeekyPlugin[] {
+    return this.plugins;
   }
 }

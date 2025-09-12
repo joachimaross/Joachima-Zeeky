@@ -4,6 +4,14 @@ import { SecurityManager } from "../security/SecurityManager";
 import { Logger } from "@/utils";
 import { singleton } from "tsyringe";
 
+/**
+ * @interface CommandResponse
+ * @description Defines the structured response for processed commands, ensuring type safety.
+ */
+export interface CommandResponse {
+  response: string;
+}
+
 @singleton()
 export class Core {
   constructor(
@@ -23,7 +31,7 @@ export class Core {
     this.logger.info("Zeeky Core initialized successfully");
   }
 
-  public async processCommand(command: string): Promise<any> {
+  public async processCommand(command: string): Promise<CommandResponse> {
     this.logger.info(`Processing command: ${command}`);
     // Add your command processing logic here
     return { response: "Command processed successfully" };

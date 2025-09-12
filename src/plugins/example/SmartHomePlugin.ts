@@ -15,7 +15,7 @@ import {
   HealthStatus,
   PluginMetrics,
   ResponseType,
-  ZeekyResponse,
+  Entity,
 } from '@/types/ZeekyTypes';
 import { Logger } from '@/utils/Logger';
 import { 
@@ -102,7 +102,13 @@ export class SmartHomePlugin extends ZeekyPlugin {
         case 'turnOff':
           return await this.handleTurnOff(intent, context);
         default:
-          throw new Error(`Unknown intent handler: ${intent.name}`);
+          return {
+            requestId: context['requestId'],
+            success: false,
+            type: ResponseType.ERROR,
+            content: `Unknown intent handler: ${intent.name}`,
+            error: new Error(`Unknown intent handler: ${intent.name}`),
+          } as Response;
       }
     } catch (error: any) {
       this.logger.error(`Error handling intent ${intent.name}:`, error);
@@ -112,7 +118,7 @@ export class SmartHomePlugin extends ZeekyPlugin {
         type: ResponseType.ERROR,
         content: `Failed to handle intent: ${error.message}`,
         error: error,
-      } as ZeekyResponse;
+      } as Response;
     }
   }
 
@@ -140,22 +146,47 @@ export class SmartHomePlugin extends ZeekyPlugin {
     return {};
   }
 
-  private async handleControlLight(intent: Intent, context: ExecutionContext): Promise<Response> {
-    this.logger.info('Controlling light...', intent, context);
-    return {} as Response;
-  }
-
-  private async handleTurnOn(_intent: Intent, _context: ExecutionContext): Promise<Response> {
-    this.logger.info('Turning on the lights...');
+  private async handleControlLight(_intent: Intent, context: ExecutionContext): Promise<Response> {
+    const entities = (context['conversation'] as any)?.entities as Entity[] | undefined;
+    const deviceId = entities?.find(e => e.name === 'deviceId')?.value as string | undefined;
+    const state = entities?.find(e => e.name === 'state')?.value as string | undefined; // 'on' or 'off'
+    
+    this.logger.info(`Controlling light ${deviceId} to state ${state}...`, context);
+    
+    if (!deviceId || !state) {
+      return {
+        requestId: context['requestId'],
+        success: false,
+        type: ResponseType.ERROR,
+        content: 'Device ID and state are required to control a light.',
+      } as Response;
+    }
+    
     return {
-      message: 'Turning on the lights'
+      requestId: context['requestId'],
+      success: true,
+      type: ResponseType.CONFIRMATION,
+      content: `Light ${deviceId} has been turned ${state}.`,
     } as Response;
   }
 
-  private async handleTurnOff(_intent: Intent, _context: ExecutionContext): Promise<Response> {
-    this.logger.info('Turning off the lights...');
+  private async handleTurnOn(intent: Intent, context: ExecutionContext): Promise<Response> {
+    this.logger.info('Turning on the lights...', intent);
     return {
-      message: 'Turning off the lights'
+      requestId: context['requestId'],
+      success: true,
+      type: ResponseType.CONFIRMATION,
+      content: 'All lights have been turned on.'
+    } as Response;
+  }
+
+  private async handleTurnOff(intent: Intent, context: ExecutionContext): Promise<Response> {
+    this.logger.info('Turning off the lights...', intent);
+    return {
+      requestId: context['requestId'],
+      success: true,
+      type: ResponseType.CONFIRMATION,
+      content: 'All lights have been turned off.'
     } as Response;
   }
 

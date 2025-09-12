@@ -13,6 +13,8 @@ import { PluginManager } from "@/core/PluginManager";
 import { SecurityManager } from "@/security/SecurityManager";
 import { ILifecycleService } from "@/interfaces";
 import { WebServer } from "./web/WebServer";
+import { GeminiService } from "@/services/GeminiService";
+import { GeminiPlugin } from "@/plugins/ai/GeminiPlugin";
 
 // Register services with direct imports to prevent circular dependencies
 container.register<Logger>(Logger, { useClass: Logger });
@@ -37,6 +39,7 @@ container.register<SecurityManager>(SecurityManager, {
 });
 container.register<Core>(Core, { useClass: Core });
 container.register<WebServer>(WebServer, { useClass: WebServer });
+container.register<GeminiService>(GeminiService, { useClass: GeminiService });
 
 // Register all services that implement the ILifecycleService interface
 // This allows AppLifecycleManager to manage their start/stop cycles
@@ -64,13 +67,18 @@ export class ZeekyApplication {
       await configService.load();
       this.logger.info("Configuration loaded and validated");
 
+      // Register plugins
+      const pluginManager = container.resolve(PluginManager);
+      pluginManager.register(container.resolve(GeminiPlugin));
+      this.logger.info("Plugins registered");
+
       // Start all registered lifecycle services
       const lifecycleManager = container.resolve(AppLifecycleManager);
       await lifecycleManager.start();
 
       // Start the web server
       const webServer = container.resolve(WebServer);
-      const port = configService.get<number>("web.port", 3000);
+      const port = configService.get<number>("web.port") ?? 3000;
       webServer.start(port);
 
       this.logger.info("Zeeky AI Assistant started successfully");
