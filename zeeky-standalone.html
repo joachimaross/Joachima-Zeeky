@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeeky - All-in-One AI Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Zeeky AI Assistant - Modern Web Interface Styles */
+        :root {
+            --primary-color: #4F46E5;
+            --primary-dark: #3730A3;
+            --secondary-color: #06B6D4;
+            --accent-color: #10B981;
+            --warning-color: #F59E0B;
+            --error-color: #EF4444;
+            --success-color: #10B981;
+            
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8FAFC;
+            --bg-tertiary: #F1F5F9;
+            --text-primary: #1E293B;
+            --text-secondary: #64748B;
+            --text-muted: #94A3B8;
+            
+            --border-color: #E2E8F0;
+            --border-light: #F1F5F9;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 4rem;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color);
+            background-color: var(--bg-tertiary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .voice-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-lg);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .voice-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .user-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .user-avatar:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            min-height: calc(100vh - 4rem);
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dashboard */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-header p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        /* Status Grid */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .status-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .status-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .status-card .status-icon {
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .status-card .status-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .status-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .status-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .status-value.healthy {
+            color: var(--success-color);
+        }
+
+        .status-detail {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            margin-bottom: 3rem;
+        }
+
+        .quick-actions h2 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .action-btn {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .action-btn:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .action-btn i {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .action-btn span {
+            font-weight: 500;
+        }
+
+        /* Recent Activity */
+        .recent-activity h2 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .activity-list {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+
+        .activity-content h4 {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .activity-content p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Features Section */
+        .features-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .features-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .features-header p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .feature-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .category-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .category-icon {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .category-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .category-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .category-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .feature-tag {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Voice Interface Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-xl);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .voice-interface {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .voice-animation {
+            position: relative;
+            width: 8rem;
+            height: 8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pulse-ring {
+            position: absolute;
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .pulse-ring:nth-child(1) {
+            width: 8rem;
+            height: 8rem;
+            animation-delay: 0s;
+        }
+
+        .pulse-ring:nth-child(2) {
+            width: 6rem;
+            height: 6rem;
+            animation-delay: 0.5s;
+        }
+
+        .pulse-ring:nth-child(3) {
+            width: 4rem;
+            height: 4rem;
+            animation-delay: 1s;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .voice-icon {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            z-index: 10;
+        }
+
+        .voice-interface h2 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .voice-interface p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+        }
+
+        .voice-commands {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .command-example {
+            background: var(--bg-tertiary);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .close-voice {
+            background: var(--error-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius-lg);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .close-voice:hover {
+            background: #DC2626;
+            transform: translateY(-1px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
+            
+            .features-header h1 {
+                font-size: 2rem;
+            }
+            
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .feature-categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                padding: 2rem;
+                margin: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Demo Banner */
+        .demo-banner {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            font-weight: 500;
+        }
+
+        .demo-banner a {
+            color: white;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Banner -->
+    <div class="demo-banner">
+        🚀 <strong>Zeeky AI Assistant Demo</strong> - This is a preview of the actual website interface. 
+        <a href="#features">Explore the 10,000+ features</a> or 
+        <a href="#" onclick="document.getElementById('voiceModal').style.display='block'">try the voice interface</a>!
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>Zeeky</span>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="#dashboard" class="nav-link active">Dashboard</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#plugins" class="nav-link">Plugins</a>
+                <a href="#integrations" class="nav-link">Integrations</a>
+                <a href="#settings" class="nav-link">Settings</a>
+            </div>
+            <div class="nav-actions">
+                <button class="voice-btn" onclick="openVoiceInterface()">
+                    <i class="fas fa-microphone"></i>
+                    <span>Voice</span>
+                </button>
+                <div class="user-menu">
+                    <img src="https://via.placeholder.com/40x40/4F46E5/FFFFFF?text=U" alt="User" class="user-avatar">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <div class="dashboard-header">
+                <h1>Welcome to Zeeky</h1>
+                <p>Your all-in-one AI assistant with 10,000+ features</p>
+            </div>
+
+            <!-- System Status Cards -->
+            <div class="status-grid">
+                <div class="status-card">
+                    <div class="status-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="status-info">
+                        <h3>System Status</h3>
+                        <p class="status-value healthy">Online</p>
+                        <p class="status-detail">All systems operational</p>
+                    </div>
+                </div>
+
+                <div class="status-card">
+                    <div class="status-icon">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <div class="status-info">
+                        <h3>Active Plugins</h3>
+                        <p class="status-value">1,247</p>
+                        <p class="status-detail">of 10,000+ available</p>
+                    </div>
+                </div>
+
+                <div class="status-card">
+                    <div class="status-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="status-info">
+                        <h3>Smart Home</h3>
+                        <p class="status-value">23</p>
+                        <p class="status-detail">devices connected</p>
+                    </div>
+                </div>
+
+                <div class="status-card">
+                    <div class="status-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <div class="status-info">
+                        <h3>Voice Commands</h3>
+                        <p class="status-value">847</p>
+                        <p class="status-detail">processed today</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h2>Quick Actions</h2>
+                <div class="action-grid">
+                    <button class="action-btn" onclick="showSection('features')">
+                        <i class="fas fa-home"></i>
+                        <span>Smart Home</span>
+                    </button>
+                    <button class="action-btn" onclick="showSection('features')">
+                        <i class="fas fa-tasks"></i>
+                        <span>Productivity</span>
+                    </button>
+                    <button class="action-btn" onclick="showSection('features')">
+                        <i class="fas fa-palette"></i>
+                        <span>Creative</span>
+                    </button>
+                    <button class="action-btn" onclick="showSection('features')">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>Healthcare</span>
+                    </button>
+                    <button class="action-btn" onclick="showSection('features')">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Security</span>
+                    </button>
+                    <button class="action-btn" onclick="showSection('features')">
+                        <i class="fas fa-building"></i>
+                        <span>Enterprise</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <h2>Recent Activity</h2>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Turned on living room lights</h4>
+                            <p>2 minutes ago via voice command</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Scheduled team meeting</h4>
+                            <p>15 minutes ago via productivity plugin</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Generated ambient music</h4>
+                            <p>1 hour ago via creative plugin</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="content-section">
+            <div class="features-header">
+                <h1>10,000+ Features</h1>
+                <p>Comprehensive capabilities across all domains</p>
+            </div>
+
+            <div class="feature-categories">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Core Utilities</h3>
+                    <p>1,000 features</p>
+                    <div class="feature-list">
+                        <span class="feature-tag">System Management</span>
+                        <span class="feature-tag">Basic Commands</span>
+                        <span class="feature-tag">Communication</span>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3>Productivity</h3>
+                    <p>2,000 features</p>
+                    <div class="feature-list">
+                        <span class="feature-tag">Calendar</span>
+                        <span class="feature-tag">Tasks</span>
+                        <span class="feature-tag">Email</span>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>Smart Home</h3>
+                    <p>1,500 features</p>
+                    <div class="feature-list">
+                        <span class="feature-tag">Lighting</span>
+                        <span class="feature-tag">Climate</span>
+                        <span class="feature-tag">Security</span>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Healthcare</h3>
+                    <p>1,000 features</p>
+                    <div class="feature-list">
+                        <span class="feature-tag">Medical Monitoring</span>
+                        <span class="feature-tag">EHR Integration</span>
+                        <span class="feature-tag">Emergency Response</span>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Safety & Security</h3>
+                    <p>800 features</p>
+                    <div class="feature-list">
+                        <span class="feature-tag">Personal Safety</span>
+                        <span class="feature-tag">Home Security</span>
+                        <span class="feature-tag">Workplace Safety</span>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Creative</h3>
+                    <p>1,200 features</p>
+                    <div class="feature-list">
+                        <span class="feature-tag">Music Generation</span>
+                        <span class="feature-tag">Visual Arts</span>
+                        <span class="feature-tag">Writing</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Voice Interface Modal -->
+    <div id="voiceModal" class="modal">
+        <div class="modal-content">
+            <div class="voice-interface">
+                <div class="voice-animation">
+                    <div class="pulse-ring"></div>
+                    <div class="pulse-ring"></div>
+                    <div class="pulse-ring"></div>
+                    <div class="voice-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                </div>
+                <h2>Listening...</h2>
+                <p>Say "Aye Zeeky" followed by your command</p>
+                <div class="voice-commands">
+                    <span class="command-example">"Aye Zeeky, turn on the lights"</span>
+                    <span class="command-example">"Aye Zeeky, schedule a meeting"</span>
+                    <span class="command-example">"Aye Zeeky, play some music"</span>
+                </div>
+                <button class="close-voice" onclick="closeVoiceInterface()">Stop Listening</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple JavaScript for the standalone version
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Update nav links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + sectionId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        function openVoiceInterface() {
+            document.getElementById('voiceModal').style.display = 'block';
+        }
+
+        function closeVoiceInterface() {
+            document.getElementById('voiceModal').style.display = 'none';
+        }
+
+        // Setup navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetSection = link.getAttribute('href').substring(1);
+                showSection(targetSection);
+            });
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('voiceModal').addEventListener('click', (e) => {
+            if (e.target.id === 'voiceModal') {
+                closeVoiceInterface();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openVoiceInterface();
+            }
+            if (e.key === 'Escape') {
+                closeVoiceInterface();
+            }
+        });
+
+        // Animate numbers on load
+        function animateNumbers() {
+            const numbers = document.querySelectorAll('.status-value');
+            numbers.forEach(num => {
+                if (num.textContent.match(/^\d+$/)) {
+                    const target = parseInt(num.textContent);
+                    let current = 0;
+                    const increment = target / 50;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(timer);
+                        }
+                        num.textContent = Math.floor(current).toLocaleString();
+                    }, 30);
+                }
+            });
+        }
+
+        // Start animations when page loads
+        window.addEventListener('load', () => {
+            setTimeout(animateNumbers, 500);
+        });
+    </script>
+</body>
+</html>

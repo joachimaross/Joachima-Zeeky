@@ -1,0 +1,13 @@
+nohup: ignoring input
+🚀 Zeeky Web Interface running at http://localhost:8080
+📊 Dashboard: http://localhost:8080
+🔌 API Status: http://localhost:8080/api/status
+🎤 Voice Interface: Press Ctrl+K or click the Voice button
+
+✨ Features:
+   • Modern, responsive design
+   • Interactive dashboard with real-time metrics
+   • Plugin management interface
+   • Voice command simulation
+   • Integration status monitoring
+   • Settings and configuration
