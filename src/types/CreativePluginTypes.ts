@@ -24,8 +24,8 @@ export interface VisualArtwork {
 export type GeneratedContent = MusicComposition | VisualArtwork;
 
 export interface AIModel {
-    id: string;
-    name: string;
-    provider: string;
-    capabilities: string[];
+  id: string;
+  name: string;
+  provider: string;
+  capabilities: string[];
 }

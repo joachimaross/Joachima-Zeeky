@@ -79,7 +79,6 @@ export class CreativePlugin extends ZeekyPlugin {
   }
 
   async initialize(): Promise<void> {
-    const unused = "test";
     this.logger.info("Initializing Creative Plugin...");
 
     await this.initializeAIModels();
