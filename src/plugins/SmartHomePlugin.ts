@@ -77,63 +77,19 @@ export class SmartHomePlugin extends ZeekyPlugin {
   intents: Intent[] = [
     {
       name: "control_thermostat",
-      description: "Control a thermostat by setting the temperature.",
-      entities: [
-        {
-          name: "deviceId",
-          description: "The ID of the thermostat to control.",
-          type: "string",
-          required: true,
-        },
-        {
-          name: "temperature",
-          description: "The temperature to set the thermostat to.",
-          type: "number",
-          required: true,
-        },
-      ],
+      confidence: 0.8,
     },
     {
       name: "create_scene",
-      description: "Create a new scene with a specified name and description.",
-      entities: [
-        {
-          name: "sceneName",
-          description: "The name of the scene to create.",
-          type: "string",
-          required: true,
-        },
-        {
-          name: "sceneDescription",
-          description: "A description of the scene.",
-          type: "string",
-          required: true,
-        },
-      ],
+      confidence: 0.8,
     },
     {
       name: "delete_scene",
-      description: "Delete a scene by its name.",
-      entities: [
-        {
-          name: "sceneName",
-          description: "The name of the scene to delete.",
-          type: "string",
-          required: true,
-        },
-      ],
+      confidence: 0.8,
     },
     {
       name: "activate_scene",
-      description: "Activate a scene by its name.",
-      entities: [
-        {
-          name: "sceneName",
-          description: "The name of the scene to activate.",
-          type: "string",
-          required: true,
-        },
-      ],
+      confidence: 0.8,
     },
   ];
 

@@ -20,3 +20,12 @@ export interface VisualArtwork {
   url: string;
   createdAt: Date;
 }
+
+export type GeneratedContent = MusicComposition | VisualArtwork;
+
+export interface AIModel {
+    id: string;
+    name: string;
+    provider: string;
+    capabilities: string[];
+}

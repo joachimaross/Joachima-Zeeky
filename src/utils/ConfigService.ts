@@ -26,17 +26,11 @@ export class ConfigService {
       this.logger.info("Configuration loaded");
 
       // Load Gemini API key from environment variable
-      if (process.env.GEMINI_API_KEY) {
-        const geminiConfig = this.config["gemini"];
-        const existingGeminiConfig =
-          typeof geminiConfig === "object" && geminiConfig !== null
-            ? geminiConfig
-            : {};
-
-        this.config["gemini"] = {
-          ...(existingGeminiConfig as object),
-          apiKey: process.env.GEMINI_API_KEY,
-        };
+      if (process.env["GEMINI_API_KEY"]) {
+        if (!this.config["gemini"]) {
+          this.config["gemini"] = {};
+        }
+        (this.config["gemini"] as { [key: string]: unknown })["apiKey"] = process.env["GEMINI_API_KEY"];
         this.logger.info("Gemini API key loaded from environment variable");
       }
     } catch (error) {

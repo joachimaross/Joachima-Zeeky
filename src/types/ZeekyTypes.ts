@@ -7,18 +7,18 @@
 // Import statements for external types
 // ===========================================================================
 
-import { Config } from "@/utils/Config";
+import { ConfigService } from "@/utils/ConfigService";
 import { SecurityManager } from "@/security/SecurityManager";
 import { PluginManager } from "@/core/PluginManager";
 import { AIManager } from "@/services/AIManager";
-import { IntegrationManager } from "@/integrations/IntegrationManager";
+import { IntegrationManager } from "@/services/IntegrationManager";
 
 // ===========================================================================
 // Core System Types
 // ===========================================================================
 
 export interface ZeekyConfig {
-  config: Config;
+  config: ConfigService;
   securityManager: SecurityManager;
   pluginManager: PluginManager;
   aiManager: AIManager;

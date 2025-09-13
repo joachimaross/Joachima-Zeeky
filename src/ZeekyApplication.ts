@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
 import { Logger } from "@/utils/Logger";
-import { ConfigService } from "@/services/ConfigService";
+import { ConfigService } from "@/utils";
 import { ContextManager } from "@/services/ContextManager";
 import { FeatureRegistry } from "@/services/FeatureRegistry";
 import { IntentRouter } from "@/services/IntentRouter";
