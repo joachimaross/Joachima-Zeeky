@@ -77,7 +77,7 @@ export class ZeekyApplication {
     return webServer.getApp();
   }
 
-  public async start(): Promise<void> {
+  public async start(options: { listen?: boolean } = { listen: true }): Promise<void> {
     try {
       this.logger.info("Starting Zeeky AI Assistant...");
 
@@ -99,14 +99,16 @@ export class ZeekyApplication {
       const lifecycleManager = container.resolve(AppLifecycleManager);
       await lifecycleManager.start();
 
-      // Start the web server
-      const webServer = container.resolve(WebServer);
-      const port = configService.get<number>("web.port") ?? 3000;
-      webServer.start(port);
-
-      this.logger.info("Zeeky AI Assistant started successfully");
-
-      this.setupGracefulShutdown();
+      if (options.listen) {
+        // Start the web server
+        const webServer = container.resolve(WebServer);
+        const port = configService.get<number>("web.port") ?? 3000;
+        webServer.start(port);
+        this.logger.info("Zeeky AI Assistant started successfully");
+        this.setupGracefulShutdown();
+      } else {
+        this.logger.info("Zeeky AI Assistant initialized for serverless environment");
+      }
     } catch (error) {
       if (error instanceof Error) {
         this.logger.error(
@@ -118,7 +120,11 @@ export class ZeekyApplication {
           `Failed to start Zeeky application with an unknown error: ${error}`,
         );
       }
-      process.exit(1);
+      if (options.listen) {
+        process.exit(1);
+      } else {
+        throw error;
+      }
     }
   }
 

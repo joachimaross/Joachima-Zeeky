@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { SmartHomePlugin } from '@/plugins/example/SmartHomePlugin';
+import { SmartHomePlugin } from '@/plugins/SmartHomePlugin';
 import { Logger } from '@/utils';
 import { container } from 'tsyringe';
 import { ExecutionContext, Intent, ResponseType } from '@/types/ZeekyTypes';

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
-import { CreativePlugin } from '@/plugins/example/CreativePlugin';
-import { ProductivityPlugin } from '@/plugins/example/ProductivityPlugin';
+import { CreativePlugin } from '@/plugins/CreativePlugin';
+import { ProductivityPlugin } from '@/plugins/ProductivityPlugin';
 import { Logger } from '@/utils/Logger';
 import { ExecutionContext, Intent, Response, ResponseType } from '@/types/ZeekyTypes';
 

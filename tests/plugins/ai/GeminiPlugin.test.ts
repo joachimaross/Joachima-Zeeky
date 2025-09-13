@@ -6,8 +6,8 @@ import { Logger } from '@/utils/Logger';
 import { ExecutionContext, Intent, Response, ResponseType } from '@/types/ZeekyTypes';
 
 // Mock the GeminiService
-class MockGeminiService extends GeminiService {
-  public override async generateText(prompt: string): Promise<string> {
+class MockGeminiService {
+  public async generateText(prompt: string): Promise<string> {
     return `Mock response for: ${prompt}`;
   }
 }
@@ -21,7 +21,7 @@ describe('GeminiPlugin', () => {
 
     // Register the mock service
     container.register<GeminiService>(GeminiService, {
-      useClass: MockGeminiService,
+      useClass: MockGeminiService as any,
     });
     container.register<Logger>(Logger, { useClass: Logger });
 
