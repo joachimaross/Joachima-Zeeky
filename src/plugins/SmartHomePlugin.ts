@@ -22,6 +22,7 @@ import {
   SmartDevice,
   Scene,
   AutomationRule,
+  DeviceType,
 } from "@/types/SmartHomePluginTypes";
 
 /**
@@ -72,7 +73,26 @@ export class SmartHomePlugin extends ZeekyPlugin {
     },
   ];
 
-  intents: Intent[] = [];
+  intents: Intent[] = [
+    {
+      name: "control_thermostat",
+      description: "Control a thermostat by setting the temperature.",
+      entities: [
+        {
+          name: "deviceId",
+          description: "The ID of the thermostat to control.",
+          type: "string",
+          required: true,
+        },
+        {
+          name: "temperature",
+          description: "The temperature to set the thermostat to.",
+          type: "number",
+          required: true,
+        },
+      ],
+    },
+  ];
 
   private logger: Logger;
   private devices: Map<string, SmartDevice> = new Map();
@@ -105,6 +125,8 @@ export class SmartHomePlugin extends ZeekyPlugin {
           return await this.handleTurnOn(intent, context);
         case "turnOff":
           return await this.handleTurnOff(intent, context);
+        case "control_thermostat":
+          return await this.handleControlThermostat(intent, context);
         default:
           return {
             requestId: context["requestId"],
@@ -182,11 +204,23 @@ export class SmartHomePlugin extends ZeekyPlugin {
       } as Response;
     }
 
+    const device = this.devices.get(deviceId);
+    if (device && device.type === "light") {
+      device.status = state;
+      device.lastUpdated = new Date();
+      return {
+        requestId: context["requestId"],
+        success: true,
+        type: ResponseType.CONFIRMATION,
+        content: `Light ${deviceId} has been turned ${state}.`,
+      } as Response;
+    }
+
     return {
       requestId: context["requestId"],
-      success: true,
-      type: ResponseType.CONFIRMATION,
-      content: `Light ${deviceId} has been turned ${state}.`,
+      success: false,
+      type: ResponseType.ERROR,
+      content: `Light with ID ${deviceId} not found.`,
     } as Response;
   }
 
@@ -194,7 +228,13 @@ export class SmartHomePlugin extends ZeekyPlugin {
     intent: Intent,
     context: ExecutionContext,
   ): Promise<Response> {
-    this.logger.info("Turning on the lights...", intent);
+    this.logger.info("Turning on all lights...", intent);
+    this.devices.forEach((device) => {
+      if (device.type === "light") {
+        device.status = "on";
+        device.lastUpdated = new Date();
+      }
+    });
     return {
       requestId: context["requestId"],
       success: true,
@@ -207,7 +247,13 @@ export class SmartHomePlugin extends ZeekyPlugin {
     intent: Intent,
     context: ExecutionContext,
   ): Promise<Response> {
-    this.logger.info("Turning off the lights...", intent);
+    this.logger.info("Turning off all lights...", intent);
+    this.devices.forEach((device) => {
+      if (device.type === "light") {
+        device.status = "off";
+        device.lastUpdated = new Date();
+      }
+    });
     return {
       requestId: context["requestId"],
       success: true,
@@ -216,6 +262,88 @@ export class SmartHomePlugin extends ZeekyPlugin {
     } as Response;
   }
 
-  private async initializeDevices(): Promise<void> {}
+  private async handleControlThermostat(
+    _intent: Intent,
+    context: ExecutionContext,
+  ): Promise<Response> {
+    const entities = (context["conversation"] as { entities: Entity[] })
+      ?.entities;
+    const deviceId = entities?.find((e) => e.name === "deviceId")?.value as
+      | string
+      | undefined;
+    const temperature = entities?.find((e) => e.name === "temperature")
+      ?.value as number | undefined;
+
+    this.logger.info(
+      `Setting thermostat ${deviceId} to ${temperature} degrees...`,
+      context,
+    );
+
+    if (!deviceId || temperature === undefined) {
+      return {
+        requestId: context["requestId"],
+        success: false,
+        type: ResponseType.ERROR,
+        content:
+          "Device ID and temperature are required to control a thermostat.",
+      } as Response;
+    }
+
+    const device = this.devices.get(deviceId);
+    if (device && device.type === "thermostat") {
+      device.status = `${temperature}`;
+      device.lastUpdated = new Date();
+      return {
+        requestId: context["requestId"],
+        success: true,
+        type: ResponseType.CONFIRMATION,
+        content: `Thermostat ${deviceId} has been set to ${temperature} degrees.`,
+      } as Response;
+    }
+
+    return {
+      requestId: context["requestId"],
+      success: false,
+      type: ResponseType.ERROR,
+      content: `Thermostat with ID ${deviceId} not found.`,
+    } as Response;
+  }
+
+  private async initializeDevices(): Promise<void> {
+    const mockDevices: SmartDevice[] = [
+      {
+        id: "light-1",
+        name: "Living Room Light",
+        type: "light" as DeviceType,
+        status: "off",
+        capabilities: ["on", "off", "brightness"],
+        location: "living-room",
+        protocol: "zigbee",
+        lastUpdated: new Date(),
+      },
+      {
+        id: "light-2",
+        name: "Bedroom Light",
+        type: "light" as DeviceType,
+        status: "on",
+        capabilities: ["on", "off", "brightness", "color"],
+        location: "bedroom",
+        protocol: "wifi",
+        lastUpdated: new Date(),
+      },
+      {
+        id: "thermostat-1",
+        name: "Main Thermostat",
+        type: "thermostat" as DeviceType,
+        status: "72",
+        capabilities: ["temperature", "mode"],
+        location: "hallway",
+        protocol: "wifi",
+        lastUpdated: new Date(),
+      },
+    ];
+
+    mockDevices.forEach((device) => this.devices.set(device.id, device));
+  }
   private setupDeviceMonitoring(): void {}
 }
