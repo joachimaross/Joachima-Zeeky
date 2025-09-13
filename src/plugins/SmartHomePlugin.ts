@@ -23,6 +23,7 @@ import {
   Scene,
   AutomationRule,
   DeviceType,
+  DeviceAction,
 } from "@/types/SmartHomePluginTypes";
 
 /**
@@ -92,6 +93,48 @@ export class SmartHomePlugin extends ZeekyPlugin {
         },
       ],
     },
+    {
+      name: "create_scene",
+      description: "Create a new scene with a specified name and description.",
+      entities: [
+        {
+          name: "sceneName",
+          description: "The name of the scene to create.",
+          type: "string",
+          required: true,
+        },
+        {
+          name: "sceneDescription",
+          description: "A description of the scene.",
+          type: "string",
+          required: true,
+        },
+      ],
+    },
+    {
+      name: "delete_scene",
+      description: "Delete a scene by its name.",
+      entities: [
+        {
+          name: "sceneName",
+          description: "The name of the scene to delete.",
+          type: "string",
+          required: true,
+        },
+      ],
+    },
+    {
+      name: "activate_scene",
+      description: "Activate a scene by its name.",
+      entities: [
+        {
+          name: "sceneName",
+          description: "The name of the scene to activate.",
+          type: "string",
+          required: true,
+        },
+      ],
+    },
   ];
 
   private logger: Logger;
@@ -107,6 +150,7 @@ export class SmartHomePlugin extends ZeekyPlugin {
   async initialize(): Promise<void> {
     this.logger.info("Initializing Smart Home Plugin...");
     await this.initializeDevices();
+    await this.initializeScenes();
     this.setupDeviceMonitoring();
     this.logger.info("Smart Home Plugin initialized successfully");
   }
@@ -127,6 +171,12 @@ export class SmartHomePlugin extends ZeekyPlugin {
           return await this.handleTurnOff(intent, context);
         case "control_thermostat":
           return await this.handleControlThermostat(intent, context);
+        case "create_scene":
+          return await this.handleCreateScene(intent, context);
+        case "delete_scene":
+          return await this.handleDeleteScene(intent, context);
+        case "activate_scene":
+          return await this.handleActivateScene(intent, context);
         default:
           return {
             requestId: context["requestId"],
@@ -309,6 +359,135 @@ export class SmartHomePlugin extends ZeekyPlugin {
     } as Response;
   }
 
+  private async handleCreateScene(
+    _intent: Intent,
+    context: ExecutionContext,
+  ): Promise<Response> {
+    const entities = (context["conversation"] as { entities: Entity[] })
+      ?.entities;
+    const sceneName = entities?.find((e) => e.name === "sceneName")?.value as
+      | string
+      | undefined;
+    const sceneDescription = entities?.find(
+      (e) => e.name === "sceneDescription",
+    )?.value as string | undefined;
+
+    if (!sceneName || !sceneDescription) {
+      return {
+        requestId: context["requestId"],
+        success: false,
+        type: ResponseType.ERROR,
+        content: "Scene name and description are required to create a scene.",
+      } as Response;
+    }
+
+    const newScene: Scene = {
+      id: `scene-${Date.now()}`,
+      name: sceneName,
+      description: sceneDescription,
+      devices: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    this.scenes.set(newScene.id, newScene);
+
+    return {
+      requestId: context["requestId"],
+      success: true,
+      type: ResponseType.CONFIRMATION,
+      content: `Scene '${sceneName}' has been created.`,
+    } as Response;
+  }
+
+  private async handleDeleteScene(
+    _intent: Intent,
+    context: ExecutionContext,
+  ): Promise<Response> {
+    const entities = (context["conversation"] as { entities: Entity[] })
+      ?.entities;
+    const sceneName = entities?.find((e) => e.name === "sceneName")?.value as
+      | string
+      | undefined;
+
+    if (!sceneName) {
+      return {
+        requestId: context["requestId"],
+        success: false,
+        type: ResponseType.ERROR,
+        content: "Scene name is required to delete a scene.",
+      } as Response;
+    }
+
+    const sceneId = Array.from(this.scenes.values()).find(
+      (s) => s.name === sceneName,
+    )?.id;
+
+    if (sceneId && this.scenes.delete(sceneId)) {
+      return {
+        requestId: context["requestId"],
+        success: true,
+        type: ResponseType.CONFIRMATION,
+        content: `Scene '${sceneName}' has been deleted.`,
+      } as Response;
+    } else {
+      return {
+        requestId: context["requestId"],
+        success: false,
+        type: ResponseType.ERROR,
+        content: `Scene '${sceneName}' not found.`,
+      } as Response;
+    }
+  }
+
+  private async handleActivateScene(
+    _intent: Intent,
+    context: ExecutionContext,
+  ): Promise<Response> {
+    const entities = (context["conversation"] as { entities: Entity[] })
+      ?.entities;
+    const sceneName = entities?.find((e) => e.name === "sceneName")?.value as
+      | string
+      | undefined;
+
+    if (!sceneName) {
+      return {
+        requestId: context["requestId"],
+        success: false,
+        type: ResponseType.ERROR,
+        content: "Scene name is required to activate a scene.",
+      } as Response;
+    }
+
+    const scene = Array.from(this.scenes.values()).find(
+      (s) => s.name === sceneName,
+    );
+
+    if (scene) {
+      scene.devices.forEach((action: DeviceAction) => {
+        const device = this.devices.get(action.deviceId);
+        if (device) {
+          device.status = action.action;
+          device.lastUpdated = new Date();
+        }
+      });
+
+      return {
+        requestId: context["requestId"],
+        success: true,
+        type: ResponseType.CONFIRMATION,
+        content: `Scene '${sceneName}' has been activated.`,
+      } as Response;
+    } else {
+      return {
+        requestId: context["requestId"],
+        success: false,
+        type: ResponseType.ERROR,
+        content: `Scene '${sceneName}' not found.`,
+      } as Response;
+    }
+  }
+
   private async initializeDevices(): Promise<void> {
     const mockDevices: SmartDevice[] = [
       {
@@ -344,6 +523,35 @@ export class SmartHomePlugin extends ZeekyPlugin {
     ];
 
     mockDevices.forEach((device) => this.devices.set(device.id, device));
+  }
+  private async initializeScenes(): Promise<void> {
+    const mockScenes: Scene[] = [
+      {
+        id: "scene-1",
+        name: "Movie Night",
+        description: "Dim the lights and set the mood for a movie.",
+        devices: [
+          { deviceId: "light-1", action: "on", brightness: 20 },
+          { deviceId: "light-2", action: "off" },
+        ],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: "scene-2",
+        name: "Good Morning",
+        description: "Turn on the lights and warm up the house.",
+        devices: [
+          { deviceId: "light-1", action: "on", brightness: 80 },
+          { deviceId: "light-2", action: "on", brightness: 80 },
+          { deviceId: "thermostat-1", action: "72" },
+        ],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
+
+    mockScenes.forEach((scene) => this.scenes.set(scene.id, scene));
   }
   private setupDeviceMonitoring(): void {}
 }
