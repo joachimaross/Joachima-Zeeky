@@ -38,6 +38,10 @@ export class WebServer {
     });
   }
 
+  public getApp(): express.Application {
+    return this.app;
+  }
+
   public start(port: number): void {
     this.app.listen(port, () => {
       this.logger.info(`Web server started on http://localhost:${port}`);

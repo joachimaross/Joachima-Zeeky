@@ -19,6 +19,7 @@ import { HealthAndFitnessPlugin } from "@/plugins/health/HealthAndFitnessPlugin"
 import { CreativePlugin } from "@/plugins/CreativePlugin";
 import { ProductivityPlugin } from "@/plugins/ProductivityPlugin";
 import { SmartHomePlugin } from "@/plugins/SmartHomePlugin";
+import express from "express";
 
 // Register services with direct imports to prevent circular dependencies
 container.register<Logger>(Logger, { useClass: Logger });
@@ -69,6 +70,11 @@ export class ZeekyApplication {
 
   constructor() {
     this.logger = container.resolve(Logger);
+  }
+
+  public getExpressApp(): express.Application {
+    const webServer = container.resolve(WebServer);
+    return webServer.getApp();
   }
 
   public async start(): Promise<void> {
