@@ -16,6 +16,9 @@ import { WebServer } from "./web/WebServer";
 import { GeminiService } from "@/services/GeminiService";
 import { GeminiPlugin } from "@/plugins/ai/GeminiPlugin";
 import { HealthAndFitnessPlugin } from "@/plugins/health/HealthAndFitnessPlugin";
+import { CreativePlugin } from "@/plugins/CreativePlugin";
+import { ProductivityPlugin } from "@/plugins/ProductivityPlugin";
+import { SmartHomePlugin } from "@/plugins/SmartHomePlugin";
 
 // Register services with direct imports to prevent circular dependencies
 container.register<Logger>(Logger, { useClass: Logger });
@@ -41,6 +44,15 @@ container.register<SecurityManager>(SecurityManager, {
 container.register<Core>(Core, { useClass: Core });
 container.register<WebServer>(WebServer, { useClass: WebServer });
 container.register<GeminiService>(GeminiService, { useClass: GeminiService });
+container.register<CreativePlugin>(CreativePlugin, {
+  useClass: CreativePlugin,
+});
+container.register<ProductivityPlugin>(ProductivityPlugin, {
+  useClass: ProductivityPlugin,
+});
+container.register<SmartHomePlugin>(SmartHomePlugin, {
+  useClass: SmartHomePlugin,
+});
 
 // Register all services that implement the ILifecycleService interface
 // This allows AppLifecycleManager to manage their start/stop cycles
@@ -72,6 +84,9 @@ export class ZeekyApplication {
       const pluginManager = container.resolve(PluginManager);
       pluginManager.register(container.resolve(GeminiPlugin));
       pluginManager.register(container.resolve(HealthAndFitnessPlugin));
+      pluginManager.register(container.resolve(CreativePlugin));
+      pluginManager.register(container.resolve(ProductivityPlugin));
+      pluginManager.register(container.resolve(SmartHomePlugin));
       this.logger.info("Plugins registered");
 
       // Start all registered lifecycle services

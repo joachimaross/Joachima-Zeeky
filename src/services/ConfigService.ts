@@ -16,8 +16,29 @@ export class ConfigService {
     const configPath = path.resolve(process.cwd(), "zeeky.config.json");
     try {
       const fileContent = await fs.readFile(configPath, "utf-8");
-      this.config = JSON.parse(fileContent);
+      const parsedContent = JSON.parse(fileContent);
+
+      if (typeof parsedContent === "object" && parsedContent !== null) {
+        this.config = parsedContent;
+      } else {
+        this.config = {};
+      }
       this.logger.info("Configuration loaded");
+
+      // Load Gemini API key from environment variable
+      if (process.env.GEMINI_API_KEY) {
+        const geminiConfig = this.config["gemini"];
+        const existingGeminiConfig =
+          typeof geminiConfig === "object" && geminiConfig !== null
+            ? geminiConfig
+            : {};
+
+        this.config["gemini"] = {
+          ...(existingGeminiConfig as object),
+          apiKey: process.env.GEMINI_API_KEY,
+        };
+        this.logger.info("Gemini API key loaded from environment variable");
+      }
     } catch (error) {
       this.logger.error(
         "Failed to load configuration:",
@@ -27,7 +48,21 @@ export class ConfigService {
     }
   }
 
-  public get<T>(key: string): T {
-    return this.config[key] as T;
+  public get<T>(key: string): T | undefined {
+    const keys = key.split(".");
+    let value: unknown = this.config;
+
+    for (const k of keys) {
+      if (
+        typeof value === "object" &&
+        value !== null &&
+        Object.prototype.hasOwnProperty.call(value, k)
+      ) {
+        value = (value as { [key: string]: unknown })[k];
+      } else {
+        return undefined;
+      }
+    }
+    return value as T;
   }
 }

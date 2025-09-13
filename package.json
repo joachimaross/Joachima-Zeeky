@@ -45,6 +45,7 @@
     "@anthropic-ai/sdk": "^0.20.1",
     "@google-cloud/speech": "^6.0.1",
     "@google-cloud/text-to-speech": "^5.0.1",
+    "@google/generative-ai": "^0.24.1",
     "@types/node": "^20.10.0",
     "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
