@@ -1,24 +1,24 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { Logger } from "@/utils/Logger";
-import { ConfigService } from "@/utils";
-import { ContextManager } from "@/services/ContextManager";
-import { FeatureRegistry } from "@/services/FeatureRegistry";
-import { IntentRouter } from "@/services/IntentRouter";
-import { AIManager } from "@/services/AIManager";
-import { AppLifecycleManager } from "@/services/AppLifecycleManager";
-import { IntegrationManager } from "@/services/IntegrationManager";
-import { Core } from "@/core/Core";
-import { PluginManager } from "@/core/PluginManager";
-import { SecurityManager } from "@/security/SecurityManager";
-import { ILifecycleService } from "@/interfaces";
+import { Logger } from "./utils/Logger";
+import { ConfigService } from "./utils";
+import { ContextManager } from "./services/ContextManager";
+import { FeatureRegistry } from "./services/FeatureRegistry";
+import { IntentRouter } from "./services/IntentRouter";
+import { AIManager } from "./services/AIManager";
+import { AppLifecycleManager } from "./services/AppLifecycleManager";
+import { IntegrationManager } from "./services/IntegrationManager";
+import { Core } from "./core/Core";
+import { PluginManager } from "./core/PluginManager";
+import { SecurityManager } from "./security/SecurityManager";
+import { ILifecycleService } from "./interfaces";
 import { WebServer } from "./web/WebServer";
-import { GeminiService } from "@/services/GeminiService";
-import { GeminiPlugin } from "@/plugins/ai/GeminiPlugin";
-import { HealthAndFitnessPlugin } from "@/plugins/health/HealthAndFitnessPlugin";
-import { CreativePlugin } from "@/plugins/CreativePlugin";
-import { ProductivityPlugin } from "@/plugins/ProductivityPlugin";
-import { SmartHomePlugin } from "@/plugins/SmartHomePlugin";
+import { GeminiService } from "./services/GeminiService";
+import { GeminiPlugin } from "./plugins/ai/GeminiPlugin";
+import { HealthAndFitnessPlugin } from "./plugins/health/HealthAndFitnessPlugin";
+import { CreativePlugin } from "./plugins/CreativePlugin";
+import { ProductivityPlugin } from "./plugins/ProductivityPlugin";
+import { SmartHomePlugin } from "./plugins/SmartHomePlugin";
 import express from "express";
 
 // Register services with direct imports to prevent circular dependencies
@@ -77,7 +77,9 @@ export class ZeekyApplication {
     return webServer.getApp();
   }
 
-  public async start(options: { listen?: boolean } = { listen: true }): Promise<void> {
+  public async start(
+    options: { listen?: boolean } = { listen: true },
+  ): Promise<void> {
     try {
       this.logger.info("Starting Zeeky AI Assistant...");
 
@@ -107,7 +109,9 @@ export class ZeekyApplication {
         this.logger.info("Zeeky AI Assistant started successfully");
         this.setupGracefulShutdown();
       } else {
-        this.logger.info("Zeeky AI Assistant initialized for serverless environment");
+        this.logger.info(
+          "Zeeky AI Assistant initialized for serverless environment",
+        );
       }
     } catch (error) {
       if (error instanceof Error) {
