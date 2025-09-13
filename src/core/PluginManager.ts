@@ -1,4 +1,4 @@
-import { ILifecycleService } from "@/interfaces";
+import { ILifecycleService } from "../interfaces";
 import { ZeekyPlugin } from "./ZeekyPlugin";
 import { singleton } from "tsyringe";
 

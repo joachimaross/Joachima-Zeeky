@@ -1,4 +1,4 @@
-import { ZeekyPlugin } from "@/core/ZeekyPlugin";
+import { ZeekyPlugin } from "../core/ZeekyPlugin";
 import {
   ExecutionContext,
   Response,
@@ -15,9 +15,9 @@ import {
   HealthStatus,
   PluginMetrics,
   ResponseType,
-} from "@/types/ZeekyTypes";
-import { Logger } from "@/utils/Logger";
-import { Task, Note, Meeting } from "@/types/ProductivityPluginTypes";
+} from "../types/ZeekyTypes";
+import { Logger } from "../utils/Logger";
+import { Task, Note, Meeting } from "../types/ProductivityPluginTypes";
 
 /**
  * Example Productivity Plugin

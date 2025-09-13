@@ -1,4 +1,4 @@
-import { ZeekyPlugin } from "@/core/ZeekyPlugin";
+import { ZeekyPlugin } from "../core/ZeekyPlugin";
 import {
   ExecutionContext,
   Response,
@@ -15,9 +15,9 @@ import {
   HealthStatus,
   PluginMetrics,
   ResponseType,
-} from "@/types/ZeekyTypes";
-import { Logger } from "@/utils/Logger";
-import { GeneratedContent, AIModel } from "@/types/CreativePluginTypes";
+} from "../types/ZeekyTypes";
+import { Logger } from "../utils/Logger";
+import { GeneratedContent, AIModel } from "../types/CreativePluginTypes";
 
 /**
  * Example Creative Plugin

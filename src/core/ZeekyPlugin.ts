@@ -9,7 +9,7 @@ export {
   Capability,
   Permission,
   PluginContext,
-} from "@/types/ZeekyTypes";
+} from "../types/ZeekyTypes";
 
 import {
   Intent,
@@ -22,7 +22,7 @@ import {
   Capability,
   Permission,
   PluginContext,
-} from "@/types/ZeekyTypes";
+} from "../types/ZeekyTypes";
 
 export abstract class ZeekyPlugin {
   abstract id: string;

@@ -1,6 +1,6 @@
 import { singleton } from "tsyringe";
-import { Logger } from "@/utils/Logger";
-import { ConfigService } from "@/services/ConfigService";
+import { Logger } from "../utils/Logger";
+import { ConfigService } from "./ConfigService";
 import { GoogleGenerativeAI, GenerativeModel } from "@google/generative-ai";
 
 @singleton()

@@ -1,6 +1,6 @@
 import { singleton } from "tsyringe";
-import { Core } from "@/core/Core";
-import { Logger } from "@/utils/Logger";
+import { Core } from "../core/Core";
+import { Logger } from "../utils/Logger";
 import { container } from "tsyringe";
 
 const logger = new Logger();

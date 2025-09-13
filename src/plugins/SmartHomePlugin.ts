@@ -1,4 +1,4 @@
-import { ZeekyPlugin } from "@/core/ZeekyPlugin";
+import { ZeekyPlugin } from "../core/ZeekyPlugin";
 import {
   ExecutionContext,
   Response,
@@ -16,15 +16,15 @@ import {
   PluginMetrics,
   ResponseType,
   Entity,
-} from "@/types/ZeekyTypes";
-import { Logger } from "@/utils/Logger";
+} from "../types/ZeekyTypes";
+import { Logger } from "../utils/Logger";
 import {
   SmartDevice,
   Scene,
   AutomationRule,
   DeviceType,
   DeviceAction,
-} from "@/types/SmartHomePluginTypes";
+} from "../types/SmartHomePluginTypes";
 
 /**
  * Example Smart Home Plugin

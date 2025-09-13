@@ -1,4 +1,4 @@
-import { ZeekyPlugin } from "@/core/ZeekyPlugin";
+import { ZeekyPlugin } from "../../core/ZeekyPlugin";
 import {
   ExecutionContext,
   Response,
@@ -13,9 +13,9 @@ import {
   PluginConfiguration,
   HealthStatus,
   PluginMetrics,
-} from "@/types/ZeekyTypes";
-import { Logger } from "@/utils/Logger";
-import { GeminiService } from "@/services/GeminiService";
+} from "../../types/ZeekyTypes";
+import { Logger } from "../../utils/Logger";
+import { GeminiService } from "../../services/GeminiService";
 import { singleton } from "tsyringe";
 
 @singleton()

@@ -1,5 +1,5 @@
 import { singleton } from "tsyringe";
-import { Logger } from "@/utils/Logger";
+import { Logger } from "../utils/Logger";
 import * as fs from "fs/promises";
 import * as path from "path";
 

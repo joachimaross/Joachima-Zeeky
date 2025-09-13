@@ -1,7 +1,7 @@
-import { IntegrationManager } from "@/services/IntegrationManager";
+import { IntegrationManager } from "../services/IntegrationManager";
 import { PluginManager } from "./PluginManager";
 import { SecurityManager } from "../security/SecurityManager";
-import { Logger } from "@/utils";
+import { Logger } from "../utils";
 import { singleton } from "tsyringe";
 
 /**

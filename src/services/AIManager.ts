@@ -1,6 +1,6 @@
 import { singleton } from "tsyringe";
-import { ILifecycleService } from "@/interfaces";
-import { Logger } from "@/utils";
+import { ILifecycleService } from "../interfaces";
+import { Logger } from "../utils";
 
 @singleton()
 export class AIManager implements ILifecycleService {
