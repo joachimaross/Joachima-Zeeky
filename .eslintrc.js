@@ -1,17 +1,11 @@
 module.exports = {
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-  ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'prettier'],
-  root: true,
-  settings: {
-    'import/resolver': {
-      typescript: {},
-    },
-  },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
+  plugins: ['@typescript-eslint/eslint-plugin'],
   rules: {
-    'prettier/prettier': 'error',
+    '@typescript-eslint/no-unused-vars': 'warn',
   },
 };
