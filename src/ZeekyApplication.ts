@@ -14,11 +14,7 @@ import { SecurityManager } from "./security/SecurityManager";
 import { ILifecycleService } from "./interfaces";
 import { WebServer } from "./web/WebServer";
 import { GeminiService } from "./services/GeminiService";
-import { GeminiPlugin } from "./plugins/ai/GeminiPlugin";
-import { HealthAndFitnessPlugin } from "./plugins/health/HealthAndFitnessPlugin";
-import { CreativePlugin } from "./plugins/CreativePlugin";
-import { ProductivityPlugin } from "./plugins/ProductivityPlugin";
-import { SmartHomePlugin } from "./plugins/SmartHomePlugin";
+
 import express from "express";
 
 // Register services with direct imports to prevent circular dependencies
@@ -45,15 +41,6 @@ container.register<SecurityManager>(SecurityManager, {
 container.register<Core>(Core, { useClass: Core });
 container.register<WebServer>(WebServer, { useClass: WebServer });
 container.register<GeminiService>(GeminiService, { useClass: GeminiService });
-container.register<CreativePlugin>(CreativePlugin, {
-  useClass: CreativePlugin,
-});
-container.register<ProductivityPlugin>(ProductivityPlugin, {
-  useClass: ProductivityPlugin,
-});
-container.register<SmartHomePlugin>(SmartHomePlugin, {
-  useClass: SmartHomePlugin,
-});
 
 // Register all services that implement the ILifecycleService interface
 // This allows AppLifecycleManager to manage their start/stop cycles
@@ -81,21 +68,17 @@ export class ZeekyApplication {
     options: { listen?: boolean } = { listen: true },
   ): Promise<void> {
     try {
-      this.logger.info("Starting Zeeky AI Assistant...");
+      this.logger.info("Starting Zeeky AI Assistant...", { options });
 
       // Initialize configuration
       const configService = container.resolve(ConfigService);
       await configService.load();
       this.logger.info("Configuration loaded and validated");
 
-      // Register plugins
+      // Initialize plugins (now handled dynamically by PluginManager)
       const pluginManager = container.resolve(PluginManager);
-      pluginManager.register(container.resolve(GeminiPlugin));
-      pluginManager.register(container.resolve(HealthAndFitnessPlugin));
-      pluginManager.register(container.resolve(CreativePlugin));
-      pluginManager.register(container.resolve(ProductivityPlugin));
-      pluginManager.register(container.resolve(SmartHomePlugin));
-      this.logger.info("Plugins registered");
+      // The PluginManager.start() method will now handle discovery and registration
+      this.logger.info("Plugins initialized via PluginManager");
 
       // Start all registered lifecycle services
       const lifecycleManager = container.resolve(AppLifecycleManager);
@@ -106,7 +89,7 @@ export class ZeekyApplication {
         const webServer = container.resolve(WebServer);
         const port = configService.get<number>("web.port") ?? 3000;
         webServer.start(port);
-        this.logger.info("Zeeky AI Assistant started successfully");
+        this.logger.info("Zeeky AI Assistant started successfully", { port });
         this.setupGracefulShutdown();
       } else {
         this.logger.info(
@@ -114,16 +97,7 @@ export class ZeekyApplication {
         );
       }
     } catch (error) {
-      if (error instanceof Error) {
-        this.logger.error(
-          `Failed to start Zeeky application: ${error.message}`,
-        );
-        this.logger.error(`Stack: ${error.stack}`);
-      } else {
-        this.logger.error(
-          `Failed to start Zeeky application with an unknown error: ${error}`,
-        );
-      }
+      this.logger.error("Failed to start Zeeky application", error instanceof Error ? error : new Error(String(error)));
       if (options.listen) {
         process.exit(1);
       } else {

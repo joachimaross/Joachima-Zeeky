@@ -1,13 +1,14 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
-import { injectable } from 'tsyringe';
+import { injectable, inject } from 'tsyringe';
+import { Logger } from '../utils/Logger';
 
 @injectable()
 export class WebServer {
   private app: express.Express;
   private readonly PORT = process.env.PORT || 8080;
 
-  constructor() {
+  constructor(@inject(Logger) private logger: Logger) {
     this.app = express();
     this.setupMiddleware();
     this.setupRoutes();
@@ -175,18 +176,22 @@ export class WebServer {
 
   public start(port: number): void {
     this.app.listen(port, () => {
-      console.log(`🚀 Zeeky Web Interface running at http://localhost:${port}`);
-      console.log(`📊 Dashboard: http://localhost:${port}`);
-      console.log(`🔌 API Status: http://localhost:${port}/api/status`);
-      console.log(`🎤 Voice Interface: Press Ctrl+K or click the Voice button`);
-      console.log(`
-✨ Features:`);
-      console.log(`   • Modern, responsive design`);
-      console.log(`   • Interactive dashboard with real-time metrics`);
-      console.log(`   • Plugin management interface`);
-      console.log(`   • Voice command simulation`);
-      console.log(`   • Integration status monitoring`);
-      console.log(`   • Settings and configuration`);
+      this.logger.info('Zeeky Web Interface started', {
+        port,
+        endpoints: {
+          dashboard: `http://localhost:${port}`,
+          apiStatus: `http://localhost:${port}/api/status`,
+          voiceInterface: 'Press Ctrl+K or click the Voice button'
+        },
+        features: [
+          'Modern, responsive design',
+          'Interactive dashboard with real-time metrics',
+          'Plugin management interface',
+          'Voice command simulation',
+          'Integration status monitoring',
+          'Settings and configuration'
+        ]
+      });
     });
   }
 
