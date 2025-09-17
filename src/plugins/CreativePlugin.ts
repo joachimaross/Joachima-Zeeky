@@ -98,7 +98,13 @@ export class CreativePlugin extends ZeekyPlugin {
         case "generate_music":
           return await this.handleGenerateMusic(intent, context);
         default:
-          throw new Error(`Unknown intent handler: ${intent.name}`);
+          this.logger.warn(`Unknown intent received: ${intent.name}`);
+          return {
+            requestId: context["requestId"],
+            success: false,
+            type: ResponseType.ERROR,
+            content: `I don't understand the intent: ${intent.name}`,
+          } as Response;
       }
     } catch (error) {
       const errorMessage =

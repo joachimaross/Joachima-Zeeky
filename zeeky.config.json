@@ -10,20 +10,20 @@
     "host": "localhost"
   },
   "security": {
-    "jwtSecret": "your-super-secret-jwt-key",
-    "apiKey": "your-api-key"
+    "jwtSecret": "${JWT_SECRET}",
+    "apiKey": "${API_KEY}"
   },
   "ai": {
-    "defaultProvider": "openai",
+    "defaultProvider": "google",
     "providers": {
       "openai": {
-        "apiKey": "YOUR_OPENAI_API_KEY"
+        "apiKey": "${OPENAI_API_KEY}"
       },
       "anthropic": {
-        "apiKey": "YOUR_ANTHROPIC_API_KEY"
+        "apiKey": "${ANTHROPIC_API_KEY}"
       },
       "google": {
-        "apiKey": "YOUR_GOOGLE_AI_API_KEY"
+        "apiKey": "${GEMINI_API_KEY}"
       }
     }
   },

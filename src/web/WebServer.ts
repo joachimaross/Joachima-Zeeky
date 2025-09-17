@@ -1,20 +1,20 @@
 import express from "express";
-import { container } from "tsyringe";
+import { singleton } from "tsyringe";
 import { Logger } from "@/utils";
 import { Core } from "@/core/Core";
 import path from "path";
 
+@singleton()
 export class WebServer {
   private app: express.Application;
-  private logger: Logger;
-  private core: Core;
 
-  constructor() {
+  constructor(
+    private logger: Logger,
+    private core: Core,
+  ) {
     this.app = express();
     this.app.use(express.json());
     this.app.use(express.static(path.join(__dirname, "..", "web", "public")));
-    this.logger = container.resolve(Logger);
-    this.core = container.resolve(Core);
     this.setupRoutes();
   }
 

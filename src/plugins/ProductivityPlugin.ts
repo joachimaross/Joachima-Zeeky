@@ -96,7 +96,13 @@ export class ProductivityPlugin extends ZeekyPlugin {
         case "create_task":
           return await this.handleCreateTask(intent, context);
         default:
-          throw new Error(`Unknown intent handler: ${intent.name}`);
+          this.logger.warn(`Unknown intent received: ${intent.name}`);
+          return {
+            requestId: context["requestId"],
+            success: false,
+            type: ResponseType.ERROR,
+            content: `I don't understand the intent: ${intent.name}`,
+          } as Response;
       }
     } catch (error) {
       const errorMessage =

@@ -30,7 +30,7 @@ describe('Example Plugins', () => {
       expect(response['content']).toBe('Music generation started. You will be notified when it is complete.');
     });
 
-    it('should return an error for an unknown intent', async () => {
+    it('should return a default error message for an unknown intent', async () => {
       const intent: Intent = { name: 'unknown_intent', confidence: 0.9 };
       const context: ExecutionContext = {
         requestId: 'test-request-id',
@@ -39,7 +39,7 @@ describe('Example Plugins', () => {
       const response: Response = await creativePlugin.handleIntent(intent, context);
       expect(response['success']).toBe(false);
       expect(response['type']).toBe(ResponseType.ERROR);
-      expect(response['content']).toBe('Failed to handle intent: Unknown intent handler: unknown_intent');
+      expect(response['content']).toBe("I don't understand the intent: unknown_intent");
     });
   });
 
@@ -57,7 +57,7 @@ describe('Example Plugins', () => {
       expect(response['content']).toBe('The task has been created successfully.');
     });
 
-    it('should return an error for an unknown intent', async () => {
+    it('should return a default error message for an unknown intent', async () => {
       const intent: Intent = { name: 'unknown_intent', confidence: 0.9 };
       const context: ExecutionContext = {
         requestId: 'test-request-id',
@@ -66,7 +66,7 @@ describe('Example Plugins', () => {
       const response: Response = await productivityPlugin.handleIntent(intent, context);
       expect(response['success']).toBe(false);
       expect(response['type']).toBe(ResponseType.ERROR);
-      expect(response['content']).toBe('Failed to handle intent: Unknown intent handler: unknown_intent');
+      expect(response['content']).toBe("I don't understand the intent: unknown_intent");
     });
   });
 
@@ -112,7 +112,7 @@ describe('Example Plugins', () => {
       };
       const unknownResponse: Response = await creativePlugin.handleIntent(unknownIntent, unknownContext);
       expect(unknownResponse['success']).toBe(false);
-      expect(unknownResponse['content']).toContain('Unknown intent handler');
+      expect(unknownResponse['content']).toBe("I don't understand the intent: unknown_intent");
     });
   });
 });

@@ -1,0 +1,111 @@
+Feature Category,Status,Notes,File References
+Core Utilities,Missing,Detailed audit required to verify implementation.,src/core/
+Productivity,Missing,Detailed audit required to verify implementation.,src/plugins/ProductivityPlugin.ts
+Smart Home,Missing,Detailed audit required to verify implementation.,src/plugins/SmartHomePlugin.ts
+Healthcare,Missing,Detailed audit required to verify implementation.,N/A
+Safety & Security,Missing,Detailed audit required to verify implementation.,src/security/
+Creative,Missing,Detailed audit required to verify implementation.,src/plugins/CreativePlugin.ts
+Enterprise,Missing,Detailed audit required to verify implementation.,N/A
+Media & Entertainment,Missing,Detailed audit required to verify implementation.,N/A
+Job Sites & Industrial,Missing,Detailed audit required to verify implementation.,N/A
+Vehicle Control,Missing,Detailed audit required to verify implementation.,N/A
+Deepseeker - Core Features - Multi-source search & summarization,Missing,Requires integration with external search APIs and advanced NLP for layered summarization.,src/ai/AIManager.ts, src/services/GeminiService.ts
+Deepseeker - Core Features - Source linking & citation,Missing,Needs robust text analysis, reference management, and export capabilities.,N/A
+Deepseeker - Core Features - Fact-checking mode,Missing,Requires integration with trusted knowledge bases and confidence scoring mechanisms.,N/A
+Deepseeker - Core Features - Timeline builder,Missing,Needs advanced entity recognition for dates/events and a mechanism to construct chronological data.,N/A
+Deepseeker - Core Features - Document ingestion,Missing,Requires OCR (for PDFs), document parsing for various formats (PDF, Word, HTML), and content extraction logic.,N/A
+Deepseeker - Core Features - Snapshot summaries,Missing,Leverages existing summarization capabilities but needs specific formatting for brevity.,src/ai/AIManager.ts, src/services/GeminiService.ts
+Deepseeker - Core Features - Multilingual reading,Missing,Requires translation services integration and multilingual NLP processing.,N/A
+Deepseeker - Data Extraction & Structured Outputs - Named entity extraction,Missing,Needs advanced NLP for identifying and categorizing entities.,N/A
+Deepseeker - Data Extraction & Structured Outputs - Table & CSV extraction,Missing,Requires specialized parsers for tabular data from diverse document types.,N/A
+Deepseeker - Data Extraction & Structured Outputs - Key quote extractor,Missing,Needs precise text analysis to identify and contextualize key quotes.,N/A
+Deepseeker - Data Extraction & Structured Outputs - Topic clustering & automatic tagging,Missing,Requires machine learning models for topic modeling and automated content tagging.,N/A
+Deepseeker - Data Extraction & Structured Outputs - Statistical summary for datasets,Missing,Needs data parsing and statistical computation capabilities.,N/A
+Deepseeker - Advanced Analysis - Comparative analysis,Missing,Requires structured comparison logic and output formatting.,N/A
+Deepseeker - Advanced Analysis - Confidence scoring,Missing,Needs a system to assess source reliability and information veracity.,N/A
+Deepseeker - Advanced Analysis - Counterargument generator,Missing,Requires sophisticated argumentative reasoning and evidence retrieval.,N/A
+Deepseeker - Advanced Analysis - Methodology critique,Missing,Needs domain-specific knowledge and analytical frameworks to evaluate research methodologies.,N/A
+Deepseeker - Advanced Analysis - Automated literature review,Missing,Requires extensive integration with academic databases and advanced synthesis algorithms.,N/A
+Deepseeker - Integrations & Outputs - Export,Missing,Needs various document format exports (Markdown, PDF, CSV, DOCX) and reference managers (Zotero/EndNote).,N/A
+Deepseeker - Integrations & Outputs - APIs for programmatic queries,Missing,Zeeky's current web API can serve as a foundation, but specific endpoints for Deepseeker features are needed.,src/web/WebServer.ts
+Deepseeker - Integrations & Outputs - Connectors to Google Drive, Dropbox, Notion, Obsidian,Missing,Requires specific API integrations for each cloud storage and knowledge management platform.,N/A
+Deepseeker - Integrations & Outputs - Web clipping browser extension / shortcut,Missing,Needs dedicated browser extension development or system-level shortcut integration.,N/A
+Deepseeker - UI & UX - Layered view,Missing,Requires specific UI/UX components for displaying multi-layered information.,N/A
+Deepseeker - UI & UX - Highlight + annotate mode,Missing,Needs UI components for text highlighting and annotation management.,N/A
+Deepseeker - UI & UX - Search history and re-runable queries,Missing,Requires persistent storage for query history and parameter management.,src/services/ContextManager.ts (can be extended)
+Deepseeker - UI & UX - Adjustable depth slider,Missing,Needs UI control to modify summarization/analysis depth.,N/A
+Deepseeker - Safety, Privacy & Governance - Source whitelist/blacklist controls,Missing,Requires configuration management for source preferences.,src/utils/ConfigService.ts (can be extended)
+Deepseeker - Safety, Privacy & Governance - Data-retention settings and encryption at rest,Missing,Requires implementation of data lifecycle policies and encryption protocols.,src/security/SecurityManager.ts (can be extended)
+Deepseeker - Safety, Privacy & Governance - Audit logs,Missing,Requires robust logging of user actions and data access.,src/utils/Logger.ts (can be extended)
+Lloyd - Core Features - Natural spoken wake-word support and voice interactions,Partially Working,Zeeky has wake word and voice interaction capabilities, but integration with Lloyd's specific command set needs to be developed.,N/A (Zeeky's core architecture)
+Lloyd - Core Features - Calendar management,Missing,Requires integration with calendar APIs (Apple, Google, Outlook) and natural language parsing for scheduling.,N/A
+Lloyd - Core Features - Contact & messaging,Missing,Requires integration with messaging platforms (SMS, email, WhatsApp) and contact management.,N/A
+Lloyd - Core Features - Smart reminders,Missing,Needs context-awareness (location, time, people) and integration with reminder systems.,N/A
+Lloyd - Core Features - Multi-account profiles,Missing,Requires robust user authentication and profile management.,N/A
+Lloyd - Productivity & Workflow - Inbox triage,Missing,Needs email parsing, summarization, prioritization, and drafting capabilities.,N/A
+Lloyd - Productivity & Workflow - Quick task capture,Missing,Requires integration with task management systems and natural language processing for task creation.,src/plugins/ProductivityPlugin.ts (can be extended)
+Lloyd - Productivity & Workflow - Meeting assistant,Missing,Needs agenda generation, note-taking, and action item assignment features.,N/A
+Lloyd - Productivity & Workflow - Travel planner,Missing,Requires integration with travel booking APIs and itinerary management.,N/A
+Lloyd - Productivity & Workflow - Bill & subscription tracker,Missing,Needs financial data integration and reminder systems.,N/A
+Lloyd - Integrations - Calendar apps,Missing,Specific integrations for Apple Calendar, Google Calendar, Outlook are required.,N/A
+Lloyd - Integrations - Email,Missing,Specific integrations for Gmail, Outlook are required.,N/A
+Lloyd - Integrations - Payments reminders and invoicing connectors,Missing,Requires integration with payment and invoicing APIs.,N/A
+Lloyd - Integrations - Apple Shortcuts integration,Missing,Needs specific integration with Apple Shortcuts for hands-free workflows.,N/A
+Lloyd - Integrations - Contacts integration and optional CRM sync,Missing,Requires integration with contact management systems and CRMs.,N/A
+Lloyd - Personalization - Personality & tone settings,Missing,Needs configuration options for AI persona.,src/utils/ConfigService.ts (can be extended)
+Lloyd - Personalization - Preferred locations, favorite restaurants, regular tasks memory,Missing,Requires persistent storage for user preferences and habits.,src/services/ContextManager.ts (can be extended)
+Lloyd - Personalization - Routine builder,Missing,Needs workflow automation and multi-step action capabilities.,N/A
+Lloyd - Safety & Privacy - Biometric gating,Missing,Requires integration with biometric authentication systems.,src/security/SecurityManager.ts (can be extended)
+Lloyd - Safety & Privacy - Opt-in cloud memory; local-first options,Missing,Requires data storage options and user consent mechanisms.,src/security/SecurityManager.ts (can be extended)
+Lloyd - Safety & Privacy - Audit trail for commands,Missing,Requires comprehensive logging of sensitive user commands.,src/utils/Logger.ts (can be extended)
+Lloyd - UI & UX - Conversational quick-actions,Missing,Needs UI elements for suggested follow-up prompts.,N/A
+Lloyd - UI & UX - “Confirm before send” toggle,Missing,Requires UI for explicit user confirmation on sensitive actions.,N/A
+Lloyd - UI & UX - Dashboard view,Missing,Needs a dedicated dashboard UI for priorities and upcoming items.,N/A
+Steercode - Core Features - Multi-language code generation,Missing,Requires integration with code generation models and support for multiple programming languages.,N/A
+Steercode - Core Features - App scaffolding,Missing,Needs project templating and file generation capabilities for various app types.,N/A
+Steercode - Core Features - Exact step-by-step setup guides,Missing,Requires detailed knowledge base generation and instruction sequencing.,N/A
+Steercode - Core Features - Single-file react/vue components,Missing,Needs specific code generation for UI components.,N/A
+Steercode - Core Features - Apple Shortcuts generator,Missing,Requires understanding of Apple Shortcuts structure and JSON generation/UI instruction creation.,N/A
+Steercode - Core Features - Live debugging assistant,Missing,Needs stack trace analysis, error pattern recognition, and fix suggestion capabilities.,N/A
+Steercode - Core Features - Code review & refactor suggestions,Missing,Requires static code analysis, security linting, and performance profiling tools.,N/A
+Steercode - Core Features - Test generator,Missing,Needs test framework integration (Jest, Playwright, Pytest) and test data generation.,N/A
+Steercode - Core Features - CI/CD templates,Missing,Requires knowledge of various CI/CD platforms (GitHub Actions, CircleCI) and script generation.,N/A
+Steercode - Integrations & Dev Tools - Git-aware operations,Missing,Needs Git integration for repository interaction.,N/A
+Steercode - Integrations & Dev Tools - Package manager knowledge,Missing,Requires understanding of npm, pip, SwiftPM, and dependency management.,N/A
+Steercode - Integrations & Dev Tools - Replit step-by-step workflows,Missing,Needs deep integration with Replit's environment and UI interactions.,N/A
+Steercode - Integrations & Dev Tools - Local dev server guidance,Missing,Needs ability to provide instructions for setting up and running local development servers.,N/A
+Steercode - Integrations & Dev Tools - Container/Dockerfile generation,Missing,Requires Dockerfile and container orchestration knowledge.,N/A
+Steercode - Meta Tooling - Prompt engineering templates,Missing,Needs a system to store and manage reusable prompts.,N/A
+Steercode - Meta Tooling - Code-to-documentation,Missing,Requires API documentation generation (OpenAPI/Swagger) and README generation.,N/A
+Steercode - Meta Tooling - Security scanning checklist and automatic suggestions,Missing,Needs integration with security scanning tools and vulnerability remediation knowledge.,src/security/SecurityManager.ts (can be extended)
+Steercode - Meta Tooling - Low-code/no-code connector generation,Missing,Requires integration with platforms like Zapier, Make, IFTTT.,N/A
+Steercode - UX - “Explain like I’m 10” and “Explain like a senior dev” toggles,Missing,Needs dynamic response generation based on user persona/expertise.,N/A
+Steercode - UX - Inline runnable snippets,Missing,Requires an execution environment for code snippets within the UI.,N/A
+Steercode - UX - Export projects as zip,Missing,Needs file compression and packaging capabilities.,N/A
+Steercode - Safety & Governance - Detects generation of prohibited content,Missing,Requires content moderation and security scanning for generated code.,src/security/SecurityManager.ts (can be extended)
+Steercode - Safety & Governance - License suggestions & code license headers,Missing,Needs license recognition and generation capabilities.,N/A
+Marcus - Core Features - Music writing & production helper,Missing,Requires music theory knowledge, lyric generation, and vocal flow suggestions.,N/A
+Marcus - Core Features - Beat/track analysis,Missing,Needs audio analysis capabilities (BPM, mood detection) and content matching.,N/A
+Marcus - Core Features - Vocal demo generator,Missing,Requires text-to-speech with vocal styling and melody generation.,N/A
+Marcus - Core Features - Arrangement & structure builder,Missing,Needs music arrangement knowledge and instrumentation suggestions.,N/A
+Marcus - Core Features - Visual & cover art generator prompts,Missing,Requires understanding of image generation tool prompts (Kaiber, Stable Diffusion, Midjourney) and artistic concepts.,N/A
+Marcus - Core Features - Storyboarding for videos,Missing,Needs video scene breakdown, shot list generation, and mood correlation.,N/A
+Marcus - Core Features - Social content generator,Missing,Requires understanding of social media platforms, content optimization, and scheduling.,N/A
+Marcus - Core Features - Title & metadata autopopulation,Missing,Needs SEO knowledge, content summarization, and tag generation.,N/A
+Marcus - Production & Automation - Auto-craft releases,Missing,Requires integration with distribution platforms (YouTube, TikTok, Dropbox) and workflow automation.,N/A
+Marcus - Production & Automation - Mood detection from audio/lyrics,Missing,Needs NLP for lyrics and audio analysis for mood recognition.,N/A
+Marcus - Production & Automation - Auto-captioning & subtitle generation,Missing,Requires speech-to-text, timing, and subtitle formatting.,N/A
+Marcus - Production & Automation - Collaboration tools,Missing,Needs features for sharing, versioning, and review workflows.,N/A
+Marcus - Creative Assistants - Vocal flow coach,Missing,Requires vocal technique knowledge and suggestion generation.,N/A
+Marcus - Creative Assistants - Hook finder,Missing,Needs pattern recognition for identifying catchy lyrical phrases.,N/A
+Marcus - Creative Assistants - Remix suggestions,Missing,Requires audio analysis and remixing knowledge.,N/A
+Marcus - Creative Assistants - Mastering checklist,Missing,Needs audio engineering knowledge and checklist generation.,N/A
+Marcus - Integrations - DAW-friendly exports,Missing,Requires export capabilities for music production software formats (stems, MIDI, lyric sheets).,N/A
+Marcus - Integrations - Kaiber.ai / Suno / other visual/audio generation tool prompt creators,Missing,Needs specific prompt generation for these creative AI tools.,N/A
+Marcus - Integrations - YouTube/TikTok upload automation connectors,Missing,Requires API integration with YouTube and TikTok for automated uploads.,N/A
+Marcus - Integrations - Apple Shortcuts voice triggers,Missing,Needs specific integration with Apple Shortcuts for creative automation.,N/A
+Marcus - UX - Creative moodboards,Missing,Needs UI for visual mood board creation and content suggestion.,N/A
+Marcus - UX - Instant mockups of cover art concepts,Missing,Requires image generation and mockup display capabilities.,N/A
+Marcus - UX - Versioning system for iterative creative drafts,Missing,Needs a system for tracking and managing creative iterations.,N/A
+Marcus - Safety & IP - Copyright guidance,Missing,Requires plagiarism detection and legal knowledge for copyright advice.,N/A
+Marcus - Safety & IP - Attribution and credit generator,Missing,Needs a system to track and generate proper attribution.,N/A
