@@ -94,7 +94,13 @@ export class HealthAndFitnessPlugin extends ZeekyPlugin {
         case "log_workout":
           return await this.handleLogWorkout(intent, context);
         default:
-          throw new Error(`Unknown intent handler: ${intent.name}`);
+          this.logger.warn(`Unknown intent received: ${intent.name}`);
+          return {
+            requestId: context["requestId"],
+            success: false,
+            type: ResponseType.ERROR,
+            content: `I don't understand the intent: ${intent.name}`,
+          } as Response;
       }
     } catch (error) {
       const errorMessage =

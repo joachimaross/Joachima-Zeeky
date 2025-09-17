@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
 import { Logger } from "./utils/Logger";
-import { ConfigService } from "./utils";
+import { ConfigService } from "@/utils";
 import { ContextManager } from "./services/ContextManager";
 import { FeatureRegistry } from "./services/FeatureRegistry";
 import { IntentRouter } from "./services/IntentRouter";
@@ -21,55 +21,60 @@ import { ProductivityPlugin } from "./plugins/ProductivityPlugin";
 import { SmartHomePlugin } from "./plugins/SmartHomePlugin";
 import express from "express";
 
-// Register services with direct imports to prevent circular dependencies
-container.register<Logger>(Logger, { useClass: Logger });
-container.register<ConfigService>(ConfigService, { useClass: ConfigService });
-container.register<ContextManager>(ContextManager, {
-  useClass: ContextManager,
-});
-container.register<FeatureRegistry>(FeatureRegistry, {
-  useClass: FeatureRegistry,
-});
-container.register<IntentRouter>(IntentRouter, { useClass: IntentRouter });
-container.register<AIManager>(AIManager, { useClass: AIManager });
-container.register<AppLifecycleManager>(AppLifecycleManager, {
-  useClass: AppLifecycleManager,
-});
-container.register<IntegrationManager>(IntegrationManager, {
-  useClass: IntegrationManager,
-});
-container.register<PluginManager>(PluginManager, { useClass: PluginManager });
-container.register<SecurityManager>(SecurityManager, {
-  useClass: SecurityManager,
-});
-container.register<Core>(Core, { useClass: Core });
-container.register<WebServer>(WebServer, { useClass: WebServer });
-container.register<GeminiService>(GeminiService, { useClass: GeminiService });
-container.register<CreativePlugin>(CreativePlugin, {
-  useClass: CreativePlugin,
-});
-container.register<ProductivityPlugin>(ProductivityPlugin, {
-  useClass: ProductivityPlugin,
-});
-container.register<SmartHomePlugin>(SmartHomePlugin, {
-  useClass: SmartHomePlugin,
-});
-
-// Register all services that implement the ILifecycleService interface
-// This allows AppLifecycleManager to manage their start/stop cycles
-container.register<ILifecycleService>("ILifecycleService", {
-  useClass: AIManager,
-});
-container.register<ILifecycleService>("ILifecycleService", {
-  useClass: IntegrationManager,
-});
-// Add other lifecycle services here as needed
-
 export class ZeekyApplication {
   private logger: Logger;
 
   constructor() {
+    this.registerServices();
     this.logger = container.resolve(Logger);
+  }
+
+  private registerServices(): void {
+    container.register<Logger>(Logger, { useClass: Logger });
+    container.register<ConfigService>(ConfigService, {
+      useClass: ConfigService,
+    });
+    container.register<ContextManager>(ContextManager, {
+      useClass: ContextManager,
+    });
+    container.register<FeatureRegistry>(FeatureRegistry, {
+      useClass: FeatureRegistry,
+    });
+    container.register<IntentRouter>(IntentRouter, { useClass: IntentRouter });
+    container.register<AIManager>(AIManager, { useClass: AIManager });
+    container.register<AppLifecycleManager>(AppLifecycleManager, {
+      useClass: AppLifecycleManager,
+    });
+    container.register<IntegrationManager>(IntegrationManager, {
+      useClass: IntegrationManager,
+    });
+    container.register<PluginManager>(PluginManager, {
+      useClass: PluginManager,
+    });
+    container.register<SecurityManager>(SecurityManager, {
+      useClass: SecurityManager,
+    });
+    container.register<Core>(Core, { useClass: Core });
+    container.register<WebServer>(WebServer, { useClass: WebServer });
+    container.register<GeminiService>(GeminiService, {
+      useClass: GeminiService,
+    });
+    container.register<CreativePlugin>(CreativePlugin, {
+      useClass: CreativePlugin,
+    });
+    container.register<ProductivityPlugin>(ProductivityPlugin, {
+      useClass: ProductivityPlugin,
+    });
+    container.register<SmartHomePlugin>(SmartHomePlugin, {
+      useClass: SmartHomePlugin,
+    });
+
+    container.register<ILifecycleService>("ILifecycleService", {
+      useClass: AIManager,
+    });
+    container.register<ILifecycleService>("ILifecycleService", {
+      useClass: IntegrationManager,
+    });
   }
 
   public getExpressApp(): express.Application {
@@ -83,12 +88,9 @@ export class ZeekyApplication {
     try {
       this.logger.info("Starting Zeeky AI Assistant...");
 
-      // Initialize configuration
       const configService = container.resolve(ConfigService);
       await configService.load();
-      this.logger.info("Configuration loaded and validated");
 
-      // Register plugins
       const pluginManager = container.resolve(PluginManager);
       pluginManager.register(container.resolve(GeminiPlugin));
       pluginManager.register(container.resolve(HealthAndFitnessPlugin));
@@ -97,12 +99,10 @@ export class ZeekyApplication {
       pluginManager.register(container.resolve(SmartHomePlugin));
       this.logger.info("Plugins registered");
 
-      // Start all registered lifecycle services
       const lifecycleManager = container.resolve(AppLifecycleManager);
       await lifecycleManager.start();
 
       if (options.listen) {
-        // Start the web server
         const webServer = container.resolve(WebServer);
         const port = configService.get<number>("web.port") ?? 3000;
         webServer.start(port);

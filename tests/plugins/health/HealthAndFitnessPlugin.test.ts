@@ -31,7 +31,7 @@ describe('HealthAndFitnessPlugin', () => {
     expect(response['content']).toBe('Your workout has been successfully logged.');
   });
 
-  it('should return an error for an unknown intent', async () => {
+  it('should return a default error message for an unknown intent', async () => {
     const intent: Intent = { name: 'unknown_health_intent', confidence: 0.9 };
     const context: ExecutionContext = {
       requestId: 'test-request-id',
@@ -41,6 +41,6 @@ describe('HealthAndFitnessPlugin', () => {
 
     expect(response['success']).toBe(false);
     expect(response['type']).toBe(ResponseType.ERROR);
-    expect(response['content']).toContain('Unknown intent handler');
+    expect(response['content']).toBe("I don't understand the intent: unknown_health_intent");
   });
 });

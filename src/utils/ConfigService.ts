@@ -3,9 +3,20 @@ import { Logger } from "./Logger";
 import * as fs from "fs/promises";
 import * as path from "path";
 
+// Define a type for the configuration object to avoid 'any'
+type ConfigValue =
+  | string
+  | number
+  | boolean
+  | ConfigObject
+  | Array<ConfigValue>;
+interface ConfigObject {
+  [key: string]: ConfigValue;
+}
+
 @singleton()
 export class ConfigService {
-  private config: { [key: string]: unknown };
+  private config: ConfigObject;
 
   constructor(private logger: Logger) {
     this.config = {};
@@ -16,24 +27,9 @@ export class ConfigService {
     const configPath = path.resolve(process.cwd(), "zeeky.config.json");
     try {
       const fileContent = await fs.readFile(configPath, "utf-8");
-      const parsedContent = JSON.parse(fileContent);
-
-      if (typeof parsedContent === "object" && parsedContent !== null) {
-        this.config = parsedContent;
-      } else {
-        this.config = {};
-      }
-      this.logger.info("Configuration loaded");
-
-      // Load Gemini API key from environment variable
-      if (process.env["GEMINI_API_KEY"]) {
-        if (!this.config["gemini"]) {
-          this.config["gemini"] = {};
-        }
-        (this.config["gemini"] as { [key: string]: unknown })["apiKey"] =
-          process.env["GEMINI_API_KEY"];
-        this.logger.info("Gemini API key loaded from environment variable");
-      }
+      this.config = JSON.parse(fileContent) as ConfigObject;
+      this.resolveEnvVariables(this.config);
+      this.logger.info("Configuration loaded and validated");
     } catch (error) {
       this.logger.error(
         "Failed to load configuration:",
@@ -43,17 +39,47 @@ export class ConfigService {
     }
   }
 
+  private resolveEnvVariables(obj: ConfigObject) {
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        // Added hasOwnProperty check
+        if (typeof obj[key] === "string") {
+          const match = (obj[key] as string).match(/^\${(.*)}$/);
+          if (match && match[1]) {
+            const envVarName = match[1];
+            const envVar = process.env[envVarName];
+            if (envVar) {
+              obj[key] = envVar;
+              this.logger.info(`Resolved env variable for: ${key}`);
+            } else {
+              this.logger.warn(
+                `Environment variable not found for: ${envVarName}`,
+              );
+            }
+          }
+        } else if (
+          typeof obj[key] === "object" &&
+          obj[key] !== null &&
+          !Array.isArray(obj[key])
+        ) {
+          this.resolveEnvVariables(obj[key] as ConfigObject);
+        }
+      }
+    }
+  }
+
   public get<T>(key: string): T | undefined {
     const keys = key.split(".");
-    let value: unknown = this.config;
+    let value: ConfigValue | undefined = this.config;
 
     for (const k of keys) {
       if (
+        value &&
         typeof value === "object" &&
-        value !== null &&
-        Object.prototype.hasOwnProperty.call(value, k)
+        !Array.isArray(value) &&
+        k in (value as ConfigObject)
       ) {
-        value = (value as { [key: string]: unknown })[k];
+        value = (value as ConfigObject)[k];
       } else {
         return undefined;
       }

@@ -1,5 +1,7 @@
 import "module-alias/register";
 import "reflect-metadata";
+import * as dotenv from "dotenv";
+dotenv.config();
 import * as functions from "firebase-functions";
 import { container } from "tsyringe";
 import { ZeekyApplication } from "@/ZeekyApplication";

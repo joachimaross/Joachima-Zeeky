@@ -18,7 +18,7 @@
     "url": "https://github.com/joachimaross/Joachima-Zeeky.git"
   },
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node -r module-alias/register dist/index.js",
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc && npm run copy-assets",
     "build:watch": "tsc --watch",
@@ -66,6 +66,7 @@
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mongoose": "^8.18.1",
+    "module-alias": "^2.2.3",
     "mqtt": "^5.14.1",
     "node-record-lpcm16": "^1.0.1",
     "openai": "^5.20.2",
@@ -86,6 +87,7 @@
     "@types/aws-lambda": "^8.10.152",
     "@types/bcryptjs": "^3.0.0",
     "@types/compression": "^1.8.1",
+    "ts-jest": "^29.4.1",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
@@ -109,7 +111,6 @@
     "rimraf": "^6.0.1",
     "snyk": "^1.1299.0",
     "supertest": "^7.1.4",
-    "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "typedoc": "^0.28.12",
     "typescript": "^5.9.2",
@@ -118,5 +119,8 @@
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }

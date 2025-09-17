@@ -1,6 +1,6 @@
 import { singleton } from "tsyringe";
-import { Logger } from "../utils/Logger";
-import { ConfigService } from "./ConfigService";
+import { Logger } from "@/utils/Logger";
+import { ConfigService } from "@/utils/ConfigService";
 import { GoogleGenerativeAI, GenerativeModel } from "@google/generative-ai";
 
 @singleton()
@@ -11,7 +11,7 @@ export class GeminiService {
     private logger: Logger,
     private configService: ConfigService,
   ) {
-    const apiKey = this.configService.get<string>("gemini.apiKey");
+    const apiKey = this.configService.get<string>("ai.providers.google.apiKey");
     if (!apiKey) {
       throw new Error("Gemini API key not found in configuration.");
     }

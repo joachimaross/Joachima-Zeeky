@@ -1,0 +1,35 @@
+[debug] [2025-09-15T04:25:40.448Z] ----------------------------------------------------------------------
+[debug] [2025-09-15T04:25:40.451Z] Command:       /nix/store/ws50yvm6vzlzf7jzz6n7xh4szddrack1-nodejs-20.19.1/bin/node /nix/store/wma3rvxxva78rqvnpja82nx5b3mclpxg-firebase-tools-14.15.2/lib/node_modules/firebase-tools/lib/bin/firebase.js init hosting
+[debug] [2025-09-15T04:25:40.452Z] CLI Version:   14.15.2
+[debug] [2025-09-15T04:25:40.452Z] Platform:      linux
+[debug] [2025-09-15T04:25:40.452Z] Node Version:  v20.19.1
+[debug] [2025-09-15T04:25:40.452Z] Time:          Mon Sep 15 2025 04:25:40 GMT+0000 (Coordinated Universal Time)
+[debug] [2025-09-15T04:25:40.453Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-09-15T04:25:40.969Z] No OAuth tokens found
+[debug] [2025-09-15T04:25:40.970Z] No OAuth tokens found
+[error] Failed to fetch Firebase Project from current Studio Workspace: Unable to refresh auth: not yet authenticated.
+[debug] [2025-09-15T04:25:40.981Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-09-15T04:25:40.982Z] > authorizing via signed-in user (joachima2008@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /home/user/Joachima-Zeeky
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
